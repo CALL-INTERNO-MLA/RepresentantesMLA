@@ -1576,12 +1576,14 @@ function updateBadges() {
 }
 
 function updateBizInfoBar() {
-  const holAR = HOLIDAYS.ar.size > 0 ? 'AR: feriados ' + [...HOLIDAYS.ar].filter(d => d.startsWith('2026-02') || d.startsWith('2026-03')).join(', ') + ' | ' : '';
-  document.getElementById('biz-info-bar').textContent =
-    'Días hábiles al ' + fmtDate(LATEST_MAR) + ': ' +
-    'MAR d.h. ' + MAR_BIZ_AR + ' (AR) / ' + MAR_BIZ_CL + ' (CL)  â†’  ' +
-    'Equivalente en FEB: hasta ' + fmtDate(FEB_CUTOFF_AR) + ' (AR) / ' + fmtDate(FEB_CUTOFF_CL) + ' (CL)  ·  ' +
-    holAR + 'CL: sin feriados en feb/mar 2026';
+  const holAR = [...HOLIDAYS.ar].filter(d => d >= '2026-02-01' && d <= '2026-03-31').sort().map(fmtDate).join(', ');
+  const holCL = [...HOLIDAYS.cl].filter(d => d >= '2026-02-01' && d <= '2026-03-31').sort().map(fmtDate).join(', ');
+  document.getElementById('biz-info-bar').innerHTML =
+    '<b>Comparación MTD (días hábiles al ' + fmtDate(LATEST_MAR) + '):</b><br>' +
+    '&nbsp;&nbsp;â€¢ Días hábiles transcurridos en Mar-26: <b>' + MAR_BIZ_AR + '</b> (AR) / <b>' + MAR_BIZ_CL + '</b> (CL)<br>' +
+    '&nbsp;&nbsp;â€¢ Equivalente en Feb-26: hasta el <b>' + fmtDate(FEB_CUTOFF_AR) + '</b> (AR) / <b>' + fmtDate(FEB_CUTOFF_CL) + '</b> (CL)<br>' +
+    '&nbsp;&nbsp;â€¢ Feriados AR excluidos en feb-mar: ' + (holAR || 'ninguno') + '<br>' +
+    '&nbsp;&nbsp;â€¢ Feriados CL excluidos en feb-mar: ' + (holCL || 'ninguno');
   document.getElementById('lbl-feb-biz').textContent = '(d.h.' + MAR_BIZ_AR + ')';
   document.getElementById('lbl-mar-biz').textContent = '(d.h.' + MAR_BIZ_AR + ')';
   document.getElementById('header-date').textContent = 'Datos al ' + fmtDate(LATEST_MAR);
