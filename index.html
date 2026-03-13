@@ -184,8 +184,16 @@ const RATES = { ar: 1408.3889, cl: 862.3355 }; // feb-26 promedio (proxy mar-26)
 // â”€â”€ Cartera (fuente: LK_COL_PORTFOLIO, COL_LAST_CALL_CENTER_ASSIGNED) â”€â”€â”€â”€â”€â”€â”€
 // feb = mes cerrado · feb_mtd = hasta 11/02 (d.h.8) · mar = MTD hasta 11/03 (d.h.8)
 const PORTFOLIO = {
-  ar: { feb: 72802, feb_mtd: 39259, mar: 42260 },
-  cl: { feb: 16977, feb_mtd: 11321, mar: 10061 }
+  ar: {
+    feb:     { total:72802, con:23161, point:21076, ccard:20353, parce:5617, mer:2126, otros:469 },
+    feb_mtd: { total:39259, con:12535, point:13290, ccard:7825,  parce:3956, mer:1398, otros:255 },
+    mar:     { total:42260, con:14129, point:16109, ccard:5837,  parce:4372, mer:1532, otros:281 }
+  },
+  cl: {
+    feb:     { total:16977, con:16080, point:4,  ccard:0, parce:509, mer:380, otros:4  },
+    feb_mtd: { total:11321, con:10582, point:3,  ccard:0, parce:380, mer:356, otros:0  },
+    mar:     { total:10061, con:9292,  point:3,  ccard:0, parce:395, mer:363, otros:8  }
+  }
 };
 
 // â”€â”€ Feriados nacionales Feb y Mar 2026 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1333,14 +1341,12 @@ function renderKPIs(rows) {
     '<div class="kpi orange"><div class="kpi-label">Gestiones Telefónicas</div><div class="kpi-value">' + fmtN(t.gest) + '</div><div class="kpi-sub">' + periodLabel + '</div></div>';
 
   if (currentAgency === 'all') {
-    const portTotal = PORTFOLIO.ar[portKey] + PORTFOLIO.cl[portKey];
-    const portArPct = (PORTFOLIO.ar[portKey] / portTotal * 100).toFixed(1);
-    const portClPct = (PORTFOLIO.cl[portKey] / portTotal * 100).toFixed(1);
+    const portTotal = PORTFOLIO.ar[portKey].total + PORTFOLIO.cl[portKey].total;
     html += '<div class="kpi"><div class="kpi-label">GDM_AR — Recupero USD</div><div class="kpi-value" style="color:#1565c0">' + fmt(tAr.usd) + '</div><div class="kpi-sub">' + ((tAr.usd/t.usd)*100).toFixed(1) + '% del recupero GDM</div><div class="kpi-sub" style="font-size:12px;color:#888;margin-top:4px">' + fmtLC(tAr.lc,'ARS') + '</div></div>' +
       '<div class="kpi teal"><div class="kpi-label">GDM_CL — Recupero USD</div><div class="kpi-value">' + fmt(tCl.usd) + '</div><div class="kpi-sub">' + ((tCl.usd/t.usd)*100).toFixed(1) + '% del recupero GDM</div><div class="kpi-sub" style="font-size:12px;color:#888;margin-top:4px">' + fmtLC(tCl.lc,'CLP') + '</div></div>' +
-      '<div class="kpi" style="border-left-color:#5e35b1"><div class="kpi-label">Cuentas en Cartera</div><div class="kpi-value" style="color:#4527a0">' + fmtN(portTotal) + '</div><div class="kpi-sub"><span style="color:#1565c0">AR ' + fmtN(PORTFOLIO.ar[portKey]) + '</span> · <span style="color:#00695c">CL ' + fmtN(PORTFOLIO.cl[portKey]) + '</span></div><div class="kpi-sub" style="font-size:11px;color:#aaa;margin-top:3px">Fuente: LK_COL_PORTFOLIO</div></div>';
+      '<div class="kpi" style="border-left-color:#5e35b1"><div class="kpi-label">Cuentas en Cartera</div><div class="kpi-value" style="color:#4527a0">' + fmtN(portTotal) + '</div><div class="kpi-sub"><span style="color:#1565c0">AR ' + fmtN(PORTFOLIO.ar[portKey].total) + '</span> · <span style="color:#00695c">CL ' + fmtN(PORTFOLIO.cl[portKey].total) + '</span></div><div class="kpi-sub" style="font-size:11px;color:#aaa;margin-top:3px">Fuente: LK_COL_PORTFOLIO</div></div>';
   } else {
-    const portCount = PORTFOLIO[currentAgency][portKey];
+    const portCount = PORTFOLIO[currentAgency][portKey].total;
     const penetration = t.gest > 0 ? Math.min((t.gest / portCount * 100), 100).toFixed(1) : '0.0';
     html += '<div class="kpi" style="border-left-color:#5e35b1"><div class="kpi-label">Cuentas en Cartera</div><div class="kpi-value" style="color:#4527a0">' + fmtN(portCount) + '</div><div class="kpi-sub">Fuente: LK_COL_PORTFOLIO</div></div>';
   }
@@ -1355,20 +1361,40 @@ function renderPortfolio() {
   const agColors = { ar: '#1565c0', cl: '#00695c' };
   const febCutAR = fmtDate(FEB_CUTOFF_AR), marCut = fmtDate(LATEST_MAR);
 
+  const PROD_LABELS = { con:'Consumer', point:'Point', ccard:'Tarjeta Crédito', parce:'Parcelas', mer:'Merchant', otros:'Otros' };
+  const PROD_COLORS = { con:'#1565c0', point:'#6a1b9a', ccard:'#c62828', parce:'#e65100', mer:'#2e7d32', otros:'#777' };
+  const PROD_ORDER  = ['con','point','ccard','parce','mer','otros'];
+
+  function prodRows(pData) {
+    return PROD_ORDER
+      .filter(k => pData[k] > 0)
+      .map(k => '<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid #f5f5f5">' +
+        '<span style="font-size:11px;color:' + PROD_COLORS[k] + ';font-weight:500">' + PROD_LABELS[k] + '</span>' +
+        '<span style="font-size:12px;font-weight:600;color:#444">' + fmtN(pData[k]) + '</span></div>')
+      .join('');
+  }
+
   let html = '<div class="port-grid">';
   agencies.forEach(ag => {
     const p = PORTFOLIO[ag];
-    const delta    = p.mar - p.feb_mtd;
-    const deltaPct = (delta / p.feb_mtd * 100).toFixed(1);
+    const delta    = p.mar.total - p.feb_mtd.total;
+    const deltaPct = (delta / p.feb_mtd.total * 100).toFixed(1);
     const deltaClass = delta >= 0 ? 'up' : 'down';
     const deltaSign  = delta >= 0 ? '+' : '';
     const cutFeb = ag === 'ar' ? febCutAR : fmtDate(FEB_CUTOFF_CL);
 
     html += '<div class="port-card">' +
       '<div class="port-card-title" style="color:' + agColors[ag] + '">' + agLabels[ag] + '</div>' +
-      '<div class="port-row"><span class="port-label">Mes Cerrado Feb-26</span><span class="port-value" style="color:' + agColors[ag] + '">' + fmtN(p.feb) + ' cuentas</span></div>' +
-      '<div class="port-row"><span class="port-label">MTD Feb-26 (al ' + cutFeb + ', d.h. ' + MAR_BIZ_AR + ')</span><span class="port-value" style="color:' + agColors[ag] + '">' + fmtN(p.feb_mtd) + ' cuentas</span></div>' +
-      '<div class="port-row"><span class="port-label">MTD Mar-26 (al ' + marCut + ', d.h. ' + MAR_BIZ_AR + ')</span><span class="port-value" style="color:' + agColors[ag] + '">' + fmtN(p.mar) + ' cuentas</span></div>' +
+
+      '<div class="port-row"><span class="port-label">Mes Cerrado Feb-26</span><span class="port-value" style="color:' + agColors[ag] + '">' + fmtN(p.feb.total) + ' cuentas</span></div>' +
+      '<div style="margin:4px 0 10px 0;padding:8px;background:#f9f9f9;border-radius:6px">' + prodRows(p.feb) + '</div>' +
+
+      '<div class="port-row"><span class="port-label">MTD Feb-26 (al ' + cutFeb + ', d.h. ' + MAR_BIZ_AR + ')</span><span class="port-value" style="color:' + agColors[ag] + '">' + fmtN(p.feb_mtd.total) + ' cuentas</span></div>' +
+      '<div style="margin:4px 0 10px 0;padding:8px;background:#f9f9f9;border-radius:6px">' + prodRows(p.feb_mtd) + '</div>' +
+
+      '<div class="port-row"><span class="port-label">MTD Mar-26 (al ' + marCut + ', d.h. ' + MAR_BIZ_AR + ')</span><span class="port-value" style="color:' + agColors[ag] + '">' + fmtN(p.mar.total) + ' cuentas</span></div>' +
+      '<div style="margin:4px 0 10px 0;padding:8px;background:#f9f9f9;border-radius:6px">' + prodRows(p.mar) + '</div>' +
+
       '<div class="port-row"><span class="port-label">Variación MTD (Feb â†’ Mar)</span><span class="port-delta ' + deltaClass + '">' + deltaSign + fmtN(delta) + ' (' + deltaSign + deltaPct + '%)</span></div>' +
       '</div>';
   });
