@@ -1581,7 +1581,7 @@ function updateBizInfoBar() {
   document.getElementById('biz-info-bar').innerHTML =
     '<b>Comparaci&#xF3;n MTD (d&#xED;as h&#xE1;biles al ' + fmtDate(LATEST_MAR) + '):</b><br>' +
     '&nbsp;&nbsp;&#x2022; D&#xED;as h&#xE1;biles en Mar-26 del 01/03 al ' + fmtDate(LATEST_MAR) + ': <b>' + MAR_BIZ_AR + '</b> (AR) / <b>' + MAR_BIZ_CL + '</b> (CL)<br>' +
-    '&nbsp;&nbsp;&#x2022; Equivalente en Feb-26: hasta el <b>' + fmtDate(FEB_CUTOFF_AR) + '</b> (AR) / <b>' + fmtDate(FEB_CUTOFF_CL) + '</b> (CL)<br>' +
+    '&nbsp;&nbsp;&#x2022; Equivalente en Feb-26: hasta el <b>' + fmtDate(FEB_CUTOFF_AR) + '</b> (' + MAR_BIZ_AR + ' d.h. AR) / hasta el <b>' + fmtDate(FEB_CUTOFF_CL) + '</b> (' + MAR_BIZ_CL + ' d.h. CL)<br>' +
     '&nbsp;&nbsp;&#x2022; Feriados AR excluidos en feb-mar: ' + (holAR || 'ninguno') + '<br>' +
     '&nbsp;&nbsp;&#x2022; Feriados CL excluidos en feb-mar: ' + (holCL || 'ninguno');
   document.getElementById('lbl-feb-biz').textContent = '(d.h.' + MAR_BIZ_AR + ')';
