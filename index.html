@@ -198,8 +198,48 @@ const PORTFOLIO = {
 
 // â”€â”€ Feriados nacionales Feb y Mar 2026 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const HOLIDAYS = {
-  ar: new Set(['2026-02-16','2026-02-17','2026-03-24']), // Carnaval; Día de la Memoria
-  cl: new Set([])  // sin feriados en feb/mar 2026
+  // Fuente: https://www.argentina.gob.ar/jefatura/feriados-nacionales-2026
+  // Incluye inamovibles, trasladables y no laborables (fines turísticos)
+  ar: new Set([
+    '2026-01-01', // Año Nuevo
+    '2026-02-16', // Carnaval
+    '2026-02-17', // Carnaval
+    '2026-03-23', // No laborable turístico (puente)
+    '2026-03-24', // Día de la Memoria por la Verdad y la Justicia
+    '2026-04-02', // Veteranos de Malvinas / Jueves Santo
+    '2026-04-03', // Viernes Santo
+    '2026-05-01', // Día del Trabajador
+    '2026-05-25', // Revolución de Mayo
+    '2026-06-15', // Güemes
+    '2026-06-20', // Belgrano
+    '2026-07-09', // Día de la Independencia
+    '2026-07-10', // No laborable turístico (puente)
+    '2026-08-17', // San Martín
+    '2026-10-12', // Día del Respeto a la Diversidad Cultural
+    '2026-11-23', // Día de la Soberanía Nacional
+    '2026-12-07', // No laborable turístico (puente)
+    '2026-12-08', // Inmaculada Concepción de María
+    '2026-12-25'  // Navidad
+  ]),
+  // Fuente: feriados.cl — feriados nacionales Chile 2026
+  cl: new Set([
+    '2026-01-01', // Año Nuevo
+    '2026-04-03', // Viernes Santo
+    '2026-04-04', // Sábado Santo
+    '2026-05-01', // Día Nacional del Trabajo
+    '2026-05-21', // Glorias Navales
+    '2026-06-20', // Día Nacional de los Pueblos Indígenas
+    '2026-06-29', // San Pedro y San Pablo
+    '2026-07-16', // Virgen del Carmen
+    '2026-08-15', // Asunción de la Virgen
+    '2026-09-18', // Independencia Nacional
+    '2026-09-19', // Glorias del Ejército
+    '2026-10-12', // Encuentro de Dos Mundos
+    '2026-10-31', // Día de las Iglesias Evangélicas y Protestantes
+    '2026-11-01', // Todos los Santos
+    '2026-12-08', // Inmaculada Concepción
+    '2026-12-25'  // Navidad
+  ])
 };
 
 // â”€â”€ Datos diarios (fuente: LK_COL_REP_DAILY_AGG_PROD) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
