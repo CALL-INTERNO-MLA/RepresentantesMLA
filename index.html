@@ -242,6 +242,9 @@ const HOLIDAYS = {
   ])
 };
 
+// CL excluye sus propios feriados nacionales + todos los feriados de AR (calendario corporativo)
+HOLIDAYS.cl = new Set([...HOLIDAYS.cl, ...HOLIDAYS.ar]);
+
 // â”€â”€ Datos diarios (fuente: LK_COL_REP_DAILY_AGG_PROD) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const DAILY_DATA = [
   {d:'2026-02-02',ag:'ar',rep:'aistrak',lc:178659.28,pp:1,ppk:1,gest:47},
