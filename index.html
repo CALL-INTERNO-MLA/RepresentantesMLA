@@ -206,18 +206,18 @@ const PROD_RECOVERY = {
   cl: { feb: {point:{usd:7.87,lc:6790},con:{usd:284798.92,lc:245445518},tarjeta_credito:{usd:0,lc:0},parce:{usd:12136.44,lc:10459667},mer:{usd:40356.37,lc:34742394},refi:{usd:0,lc:0}}, mar: {point:{usd:0,lc:0},con:{usd:135556.24,lc:121353219},tarjeta_credito:{usd:0,lc:0},parce:{usd:10436.78,lc:9315981},mer:{usd:39038.71,lc:35137838},refi:{usd:0,lc:0}} }
 };
 
-// â”€â”€ Cartera (fuente: LK_COL_PORTFOLIO, COL_LAST_CALL_CENTER_ASSIGNED) â”€â”€â”€â”€â”€â”€â”€
-// feb = mes cerrado · feb_mtd = hasta 11/02 (d.h.8) · mar = MTD hasta 11/03 (d.h.8)
+// â”€â”€ Cartera (fuente: LK_COL_PORTFOLIO + LK_COL_PORTFOLIO_PROD, snapshot diario) â”€â”€
+// feb = mes cerrado (28/02) · feb_mtd = al 19/02 (d.h.12) · mar = MTD al 17/03 (d.h.12)
 const PORTFOLIO = {
   ar: {
     feb:     { total:72802, con:23161, point:21076, ccard:20353, parce:5617, mer:2126, otros:469 },
-    feb_mtd: { total:39259, con:12535, point:13290, ccard:7825,  parce:3956, mer:1398, otros:255 },
-    mar:     { total:42260, con:14129, point:16109, ccard:5837,  parce:4372, mer:1532, otros:281 }
+    feb_mtd: { total:53902, con:18476, point:17058, ccard:11345, parce:4950, mer:1745, otros:328 },
+    mar:     { total:51404, con:18115, point:18088, ccard:7745,  parce:5132, mer:1834, otros:490 }
   },
   cl: {
     feb:     { total:16977, con:16080, point:4,  ccard:0, parce:509, mer:380, otros:4  },
-    feb_mtd: { total:11321, con:10582, point:3,  ccard:0, parce:380, mer:356, otros:0  },
-    mar:     { total:10061, con:9292,  point:3,  ccard:0, parce:395, mer:363, otros:8  }
+    feb_mtd: { total:16908, con:16067, point:4,  ccard:0, parce:469, mer:366, otros:2  },
+    mar:     { total:14026, con:13144, point:3,  ccard:0, parce:493, mer:375, otros:11 }
   }
 };
 
