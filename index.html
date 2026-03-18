@@ -150,7 +150,7 @@
       <span class="badge badge-all" id="prod-rec-badge">Ambas agencias</span>
     </div>
     <div id="prod-rec-body" class="prod-rec-grid"></div>
-    <p class="note">Fuente: LK_COL_REP_DAILY_AGG_PROD · COL_PP_AMT_PAID + COL_AGR_CRD_AMT_PAID + COL_AGR_CCARD_AMT_PAID</p>
+    <p class="note">Fuente: meli-bi-data.WHOWNER.LK_COL_SKYNET_RECOVERY_DATA · COL_LAST_CALL_CENTER_ASSIGNED · Feb-26 y Mar-26 MTD (dato mensual, no filtra por días hábiles)</p>
   </div>
 
   <div class="section" id="chart-section">
@@ -199,6 +199,12 @@
 <script>
 // â”€â”€ Exchange rates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const RATES = { ar: 1408.3889, cl: 862.3355 }; // feb-26 promedio (proxy mar-26)
+
+// â”€â”€ Recupero por producto (fuente: LK_COL_SKYNET_RECOVERY_DATA) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const PROD_RECOVERY = {
+  ar: { feb: {point:{usd:4234877.44,lc:5897447307.92},con:{usd:1795691.68,lc:2508406467.68},tarjeta_credito:{usd:2892376.77,lc:4031552934.88},parce:{usd:221615.34,lc:310086443.7},mer:{usd:830101.86,lc:1155358410.48},refi:{usd:41285.08,lc:57469229.98}}, mar: {point:{usd:2584371.82,lc:3617189596.95},con:{usd:1139791.82,lc:1597209081.87},tarjeta_credito:{usd:1010698.63,lc:1416429756.99},parce:{usd:122177,lc:171362535.94},mer:{usd:426621.39,lc:597533362.92},refi:{usd:28673.99,lc:40129671.31}} },
+  cl: { feb: {point:{usd:7.87,lc:6790},con:{usd:284798.92,lc:245445518},tarjeta_credito:{usd:0,lc:0},parce:{usd:12136.44,lc:10459667},mer:{usd:40356.37,lc:34742394},refi:{usd:0,lc:0}}, mar: {point:{usd:0,lc:0},con:{usd:135556.24,lc:121353219},tarjeta_credito:{usd:0,lc:0},parce:{usd:10436.78,lc:9315981},mer:{usd:39038.71,lc:35137838},refi:{usd:0,lc:0}} }
+};
 
 // â”€â”€ Cartera (fuente: LK_COL_PORTFOLIO, COL_LAST_CALL_CENTER_ASSIGNED) â”€â”€â”€â”€â”€â”€â”€
 // feb = mes cerrado · feb_mtd = hasta 11/02 (d.h.8) · mar = MTD hasta 11/03 (d.h.8)
@@ -1758,40 +1764,41 @@ function updateBizInfoBar() {
   document.getElementById('header-date').textContent = 'Datos al ' + fmtDate(LATEST_MAR);
 }
 
-// â”€â”€ Render recupero por producto â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â”€â”€ Render recupero por producto (fuente: PROD_RECOVERY / SKYNET) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderProdRec() {
-  const filteredRows = filterRows(currentPeriod, currentAgency);
-  const agencies = currentAgency === 'all' ? ['ar', 'cl'] : [currentAgency];
-  const agColors = { ar: '#1565c0', cl: '#00695c' };
-  const agLabels = { ar: 'GDM_AR', cl: 'GDM_CL' };
+  const agencies  = currentAgency === 'all' ? ['ar', 'cl'] : [currentAgency];
+  const agColors  = { ar: '#1565c0', cl: '#00695c' };
+  const agLabels  = { ar: 'GDM_AR', cl: 'GDM_CL' };
+  const mkey      = currentPeriod === 'mar_mtd' ? 'mar' : 'feb';
 
   const PROD_DEFS = [
-    { key: 'recpp',  label: 'Planes de Pago',     color: '#3949ab' },
-    { key: 'reccrd', label: 'Acuerdos de Crédito', color: '#6a1b9a' },
-    { key: 'reccc',  label: 'Tarjeta de Crédito',  color: '#c62828' }
+    { key: 'point',           label: 'Point',            color: '#6a1b9a' },
+    { key: 'con',             label: 'Consumer',         color: '#1565c0' },
+    { key: 'tarjeta_credito', label: 'Tarjeta Crédito',  color: '#c62828' },
+    { key: 'mer',             label: 'Merchant',         color: '#2e7d32' },
+    { key: 'parce',           label: 'Parcelamento',     color: '#e65100' },
+    { key: 'refi',            label: 'Refinanciación',   color: '#777'    }
   ];
 
   let html = '';
   agencies.forEach(ag => {
-    const agRows = filteredRows.filter(r => r.ag === ag);
-    const totals = { recpp: 0, reccrd: 0, reccc: 0 };
-    for (const r of agRows) { totals.recpp += r.recpp; totals.reccrd += r.reccrd; totals.reccc += r.reccc; }
-    const totalLC = totals.recpp + totals.reccrd + totals.reccc;
-    const rate = RATES[ag];
-    const totalUSD = totalLC / rate;
+    const pData  = PROD_RECOVERY[ag][mkey];
+    const totalUSD = PROD_DEFS.reduce((s, p) => s + (pData[p.key] ? pData[p.key].usd : 0), 0);
+    const totalLC  = PROD_DEFS.reduce((s, p) => s + (pData[p.key] ? pData[p.key].lc  : 0), 0);
 
     html += '<div class="prod-rec-card">' +
-      '<div class="prod-rec-card-title" style="color:' + agColors[ag] + '">' + agLabels[ag] + ' — Total: $' + totalUSD.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:0}) + ' USD</div>';
+      '<div class="prod-rec-card-title" style="color:' + agColors[ag] + '">' + agLabels[ag] +
+      ' — Total: $' + Math.round(totalUSD).toLocaleString('es-AR') + ' USD</div>';
 
     PROD_DEFS.forEach(p => {
-      const lc = totals[p.key];
-      const usd = lc / rate;
-      const pctVal = totalLC > 0 ? (lc / totalLC * 100).toFixed(1) : '0.0';
-      const barW = totalLC > 0 ? Math.round(lc / totalLC * 100) : 0;
+      if (!pData[p.key] || pData[p.key].usd === 0) return;
+      const usd    = pData[p.key].usd;
+      const pctVal = totalUSD > 0 ? (usd / totalUSD * 100).toFixed(1) : '0.0';
+      const barW   = totalUSD > 0 ? Math.round(usd / totalUSD * 100) : 0;
       html += '<div class="prod-rec-row">' +
         '<div class="prod-rec-label-row">' +
           '<span class="prod-rec-label" style="color:' + p.color + '">' + p.label + '</span>' +
-          '<span class="prod-rec-vals">$' + usd.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:0}) + ' USD &nbsp;·&nbsp; ' + pctVal + '%</span>' +
+          '<span class="prod-rec-vals">$' + Math.round(usd).toLocaleString('es-AR') + ' USD &nbsp;·&nbsp; ' + pctVal + '%</span>' +
         '</div>' +
         '<div class="prod-rec-bar-bg"><div class="prod-rec-bar-fill" style="width:' + barW + '%;background:' + p.color + '"></div></div>' +
         '</div>';
@@ -1801,9 +1808,9 @@ function renderProdRec() {
 
   document.getElementById('prod-rec-body').innerHTML = html;
   const badgeClass = currentAgency === 'all' ? 'badge-all' : 'badge-' + currentAgency;
-  const agLabel = currentAgency === 'all' ? 'Ambas agencias' : currentAgency === 'ar' ? 'GDM_AR' : 'GDM_CL';
+  const agLabel    = currentAgency === 'all' ? 'Ambas agencias' : currentAgency === 'ar' ? 'GDM_AR' : 'GDM_CL';
   const el = document.getElementById('prod-rec-badge');
-  el.className = 'badge ' + badgeClass;
+  el.className  = 'badge ' + badgeClass;
   el.textContent = agLabel;
 }
 
