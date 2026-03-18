@@ -141,7 +141,7 @@
       <span class="badge badge-all" id="port-badge">Ambas agencias</span>
     </div>
     <div id="portfolio-body" style="padding:16px 20px"></div>
-    <p class="note">Fuente: meli-bi-data.WHOWNER.LK_COL_PORTFOLIO · COL_LAST_CALL_CENTER_ASSIGNED</p>
+    <p class="note">Fuente: meli-bi-data.WHOWNER.LK_COL_PORTFOLIO_PROD · COL_LAST_ASSIGNED_CRITERIA_DESC</p>
   </div>
 
   <!-- Distribución recupero por producto -->
@@ -207,36 +207,37 @@ const PROD_RECOVERY = {
   cl: { ene: {point:{usd:27.1,lc:23639},con:{usd:253407.14,lc:227599775},tarjeta_credito:{usd:0,lc:0},parce:{usd:10051.53,lc:9011231},mer:{usd:10836.48,lc:9445442},refi:{usd:0,lc:0}}, feb: {point:{usd:7.87,lc:6790},con:{usd:284798.92,lc:245445518},tarjeta_credito:{usd:0,lc:0},parce:{usd:12136.44,lc:10459667},mer:{usd:40356.37,lc:34742394},refi:{usd:0,lc:0}}, mar: {point:{usd:0,lc:0},con:{usd:135556.24,lc:121353219},tarjeta_credito:{usd:0,lc:0},parce:{usd:10436.78,lc:9315981},mer:{usd:39038.71,lc:35137838},refi:{usd:0,lc:0}} }
 };
 
-// â”€â”€ Cartera (fuente: LK_COL_PORTFOLIO + LK_COL_PORTFOLIO_PROD, snapshot diario) â”€â”€
+// â”€â”€ Cartera (fuente: LK_COL_PORTFOLIO_PROD, COL_LAST_ASSIGNED_CRITERIA_DESC, misma metodología que Looker Studio) â”€â”€
 // feb = mes cerrado (28/02) · feb_mtd = al 19/02 (d.h.12) · mar = MTD al 17/03 (d.h.12) · ene = mes cerrado (31/01)
+// credits: desglose por producto de la campaña asignada · mixto: total del segmento blend (sin desglose por producto)
 const PORTFOLIO = {
   ar: {
     ene:     { total:62283,
-               credits:{ total:53913, con:14377, point:19690, ccard:12723, parce:4951, mer:1721, otros:451 },
-               mixto:  { total:8370,  con:6832,  point:869,   ccard:66,    parce:197,  mer:402,  otros:4   } },
+               credits:{ total:53913, con:9849,  point:22301, ccard:14607, parce:5526, mer:1595, otros:35  },
+               mixto:  { total:8370  } },
     feb:     { total:72802,
-               credits:{ total:63749, con:15720, point:20212, ccard:20249, parce:5459, mer:1645, otros:464 },
-               mixto:  { total:9053,  con:7441,  point:864,   ccard:104,   parce:158,  mer:481,  otros:5   } },
+               credits:{ total:63749, con:10684, point:22773, ccard:23295, parce:5417, mer:1524, otros:56  },
+               mixto:  { total:9053  } },
     feb_mtd: { total:53902,
-               credits:{ total:46231, con:12213, point:16316, ccard:11264, parce:4795, mer:1320, otros:323 },
-               mixto:  { total:7671,  con:6263,  point:742,   ccard:81,    parce:155,  mer:425,  otros:5   } },
+               credits:{ total:46231, con:8089,  point:18923, ccard:13124, parce:4753, mer:1291, otros:51  },
+               mixto:  { total:7671  } },
     mar:     { total:51404,
-               credits:{ total:43155, con:11377, point:17284, ccard:7570,  parce:5012, mer:1429, otros:483 },
-               mixto:  { total:8249,  con:6738,  point:804,   ccard:175,   parce:120,  mer:405,  otros:7   } }
+               credits:{ total:43155, con:7302,  point:18876, ccard:9458,  parce:5997, mer:1328, otros:194 },
+               mixto:  { total:8249  } }
   },
   cl: {
     ene:     { total:14653,
-               credits:{ total:14279, con:13715, point:4,  ccard:0, parce:521, mer:32,  otros:7  },
-               mixto:  { total:374,   con:59,    point:1,  ccard:0, parce:1,   mer:313, otros:0  } },
+               credits:{ total:14279, con:13704, point:0, ccard:0, parce:575, mer:0, otros:0 },
+               mixto:  { total:374   } },
     feb:     { total:16977,
-               credits:{ total:16524, con:15991, point:3,  ccard:0, parce:504, mer:22,  otros:4  },
-               mixto:  { total:453,   con:89,    point:1,  ccard:0, parce:5,   mer:358, otros:0  } },
+               credits:{ total:16524, con:16053, point:0, ccard:0, parce:471, mer:0, otros:0 },
+               mixto:  { total:453   } },
     feb_mtd: { total:16908,
-               credits:{ total:16469, con:15978, point:3,  ccard:0, parce:464, mer:22,  otros:2  },
-               mixto:  { total:439,   con:89,    point:1,  ccard:0, parce:5,   mer:344, otros:0  } },
+               credits:{ total:16469, con:16040, point:0, ccard:0, parce:429, mer:0, otros:0 },
+               mixto:  { total:439   } },
     mar:     { total:14026,
-               credits:{ total:13549, con:13032, point:1,  ccard:0, parce:489, mer:16,  otros:11 },
-               mixto:  { total:477,   con:112,   point:2,  ccard:0, parce:4,   mer:359, otros:0  } }
+               credits:{ total:13549, con:13078, point:0, ccard:0, parce:471, mer:0, otros:0 },
+               mixto:  { total:477   } }
   }
 };
 
