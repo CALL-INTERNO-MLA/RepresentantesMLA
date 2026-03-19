@@ -157,11 +157,11 @@
   <!-- Distribución recupero telefónico por producto -->
   <div class="section" id="tel-prod-rec-section">
     <div class="section-header">
-      <span class="section-title">Recupero Telefónico — Distribución por Producto</span>
+      <span class="section-title">Recupero Acuerdos/Promesas — Estimación por Producto</span>
       <span class="badge badge-all" id="tel-prod-rec-badge">Ambas agencias</span>
     </div>
     <div id="tel-prod-rec-body" class="prod-rec-grid"></div>
-    <p class="note">Fuente: SKYNET (LK_COL_SKYNET_RECOVERY_DATA) · Total pagado por clientes gestionados por los 32 reps (incluye pagos que exceden el acuerdo/promesa) · Mayor que "Recupero Acuerdos/Promesas" de los KPIs · Dato mensual</p>
+    <p class="note">~OP = estimación OPERATION por producto: distribución SKYNET escalada al total OPERATION · No existe tabla con desagregación de OPERATION por producto — se usa distribución de cuentas gestionadas (SKYNET) como proxy · Dato mensual</p>
   </div>
 
   <div class="section" id="chart-section">
@@ -1615,21 +1615,29 @@ function renderTelProdRec() {
     const totalRec = PROD_DEFS.reduce((s, p) => s + (pData[p.key] ? pData[p.key].usd : 0), 0);
     const totSky   = PROD_DEFS.reduce((s, p) => s + (PROD_RECOVERY[ag][mkey][p.key] ? PROD_RECOVERY[ag][mkey][p.key].usd : 0), 0);
     const telPct   = totSky > 0 ? (totalRec / totSky * 100).toFixed(1) : '0.0';
+    // OPERATION total para esta agencia/período (para escalar la distribución SKYNET)
+    const opTotal  = getTotals(aggregate(filterRows(currentPeriod, ag))).usd;
+    const scale    = totalRec > 0 ? opTotal / totalRec : 0;
 
     html += '<div class="prod-rec-card">' +
       '<div class="prod-rec-card-title" style="color:' + agColors[ag] + '">' + agLabels[ag] +
-      ' — Total: $' + Math.round(totalRec).toLocaleString('es-AR') + ' USD' +
-      ' <span style="font-weight:400;color:#888;font-size:10px">(' + telPct + '% del recupero total agencia)</span></div>';
+      ' — ~OPERATION: <strong>$' + Math.round(opTotal).toLocaleString('es-AR') + ' USD</strong>' +
+      ' <span style="font-weight:400;color:#888;font-size:10px">(SKYNET tel: $' + Math.round(totalRec).toLocaleString('es-AR') + ' · ' + telPct + '% total agencia)</span></div>';
 
     PROD_DEFS.forEach(p => {
       if (!pData[p.key] || pData[p.key].usd === 0) return;
       const usd    = pData[p.key].usd;
+      const opEst  = Math.round(usd * scale);
       const pctVal = totalRec > 0 ? (usd / totalRec * 100).toFixed(1) : '0.0';
       const barW   = totalRec > 0 ? Math.round(usd / totalRec * 100) : 0;
       html += '<div class="prod-rec-row">' +
         '<div class="prod-rec-label-row">' +
           '<span class="prod-rec-label" style="color:' + p.color + '">' + p.label + '</span>' +
-          '<span class="prod-rec-vals">$' + Math.round(usd).toLocaleString('es-AR') + ' USD &nbsp;·&nbsp; ' + pctVal + '%</span>' +
+          '<span class="prod-rec-vals">' +
+            '~OP: <strong>$' + opEst.toLocaleString('es-AR') + ' USD</strong>' +
+            ' <span style="color:#aaa;font-size:10px">(SKY: $' + Math.round(usd).toLocaleString('es-AR') + ')</span>' +
+            ' &nbsp;·&nbsp; ' + pctVal + '%' +
+          '</span>' +
         '</div>' +
         '<div class="prod-rec-bar-bg"><div class="prod-rec-bar-fill" style="width:' + barW + '%;background:' + p.color + '"></div></div>' +
         '</div>';
