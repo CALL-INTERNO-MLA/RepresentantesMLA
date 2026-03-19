@@ -183,6 +183,32 @@
     </div>
     <div class="comp-legend" id="comp-legend"></div>
   </div>
+  <!-- Detalle por Team Leader -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Productividad por Team Leader</span>
+      <span class="badge" id="tl-badge">Ambas agencias</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Team Leader</th>
+          <th class="num">Reps Activos</th>
+          <th class="num">Recupero (USD)</th>
+          <th class="num">Rec. AR (ARS)</th>
+          <th class="num">Rec. CL (CLP)</th>
+          <th class="num">Promesas Tel.</th>
+          <th class="num">Promesas Cumpl.</th>
+          <th class="num">% Cumpl.</th>
+          <th class="num">Gestiones</th>
+        </tr>
+      </thead>
+      <tbody id="tl-table-body"></tbody>
+    </table>
+    <p class="note" id="tl-table-note"></p>
+  </div>
+
+  <!-- Detalle por Representante -->
   <div class="section">
     <div class="section-header">
       <span class="section-title">Detalle por Representante</span>
@@ -2611,6 +2637,107 @@ function renderTable(rows) {
   document.getElementById('table-note').textContent = 'Período: ' + getPeriodLabel() + ' · TC: ARS ' + RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' + RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. feb-26 promedio)';
 }
 
+// â”€â”€ Team Leader map â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const TL_MAP = {
+  'eitaliano':    'KARINELLY SALAS',
+  'mcabreraroja': 'KARINELLY SALAS',
+  'aciabattini':  'KARINELLY SALAS',
+  'orisilva':     'KARINELLY SALAS',
+  'ahanuch':      'KARINELLY SALAS',
+  'msanchezspur': 'KARINELLY SALAS',
+  'iaubert':      'KARINELLY SALAS',
+  'joseemanueso': 'KARINELLY SALAS',
+  'lcapalbo':     'KARINELLY SALAS',
+  'imir':         'KARINELLY SALAS',
+  'mciechanowic': 'KARINELLY SALAS',
+  'mmenschik':    'KARINELLY SALAS',
+  'aleduarte':    'KARINELLY SALAS',
+  'dagimenez':    'KARINELLY SALAS',
+  'mgarrigue':    'KARINELLY SALAS',
+  'fssen':        'KARINELLY SALAS',
+  'maaltamirano': 'KARINELLY SALAS',
+  'cincata':      'JULIETA VACCHETTO',
+  'bipereira':    'JULIETA VACCHETTO',
+  'luctorres':    'JULIETA VACCHETTO',
+  'minnamoratto': 'JULIETA VACCHETTO',
+  'aistrak':      'JULIETA VACCHETTO',
+  'aldvaldez':    'JULIETA VACCHETTO',
+  'mcabana':      'JULIETA VACCHETTO',
+  'jobarreiro':   'JULIETA VACCHETTO',
+  'tomlohrmann':  'JULIETA VACCHETTO',
+  'ftochecabani': 'JULIETA VACCHETTO',
+  'jmarchetti':   'JULIETA VACCHETTO',
+  'jdroubi':      'JULIETA VACCHETTO',
+  'lcostanzi':    'JULIETA VACCHETTO',
+  'fkiefer':      'JULIETA VACCHETTO',
+  'camilac':      'JULIETA VACCHETTO'
+};
+const TL_ORDER = ['KARINELLY SALAS', 'JULIETA VACCHETTO'];
+
+// â”€â”€ Render tabla por Team Leader â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function renderTLTable(rows) {
+  const totals = {};
+  TL_ORDER.forEach(tl => {
+    totals[tl] = { usd:0, lcAr:0, lcCl:0, pp:0, ppk:0, gest:0, reps:new Set() };
+  });
+
+  rows.forEach(r => {
+    const tl = TL_MAP[r.rep];
+    if (!tl) return;
+    const t = totals[tl];
+    t.usd  += r.usd;
+    t.pp   += r.pp;
+    t.ppk  += r.ppk;
+    t.gest += r.gest;
+    t.reps.add(r.rep);
+    if (r.agency === 'ar') t.lcAr += r.lc;
+    else                   t.lcCl += r.lc;
+  });
+
+  let html = '';
+  let gUsd=0, gLcAr=0, gLcCl=0, gPp=0, gPpk=0, gGest=0, gReps=new Set();
+  TL_ORDER.forEach(tl => {
+    const t = totals[tl];
+    const lcArStr = t.lcAr > 0 ? t.lcAr.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—';
+    const lcClStr = t.lcCl > 0 ? t.lcCl.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—';
+    html += '<tr>' +
+      '<td style="font-weight:600">' + tl + '</td>' +
+      '<td class="num">' + t.reps.size + '</td>' +
+      '<td class="num">' + fmt(t.usd) + '</td>' +
+      '<td class="num">' + lcArStr + '</td>' +
+      '<td class="num">' + lcClStr + '</td>' +
+      '<td class="num">' + fmtN(t.pp) + '</td>' +
+      '<td class="num">' + fmtN(t.ppk) + '</td>' +
+      '<td class="num">' + pct(t.ppk, t.pp) + '</td>' +
+      '<td class="num">' + fmtN(t.gest) + '</td>' +
+      '</tr>';
+    gUsd+=t.usd; gLcAr+=t.lcAr; gLcCl+=t.lcCl; gPp+=t.pp; gPpk+=t.ppk; gGest+=t.gest;
+    t.reps.forEach(r => gReps.add(r));
+  });
+
+  const gLcArStr = gLcAr > 0 ? gLcAr.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—';
+  const gLcClStr = gLcCl > 0 ? gLcCl.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—';
+  html += '<tr class="total-row">' +
+    '<td>TOTAL GDM</td>' +
+    '<td class="num">' + gReps.size + '</td>' +
+    '<td class="num">' + fmt(gUsd) + '</td>' +
+    '<td class="num">' + gLcArStr + '</td>' +
+    '<td class="num">' + gLcClStr + '</td>' +
+    '<td class="num">' + fmtN(gPp) + '</td>' +
+    '<td class="num">' + fmtN(gPpk) + '</td>' +
+    '<td class="num">' + pct(gPpk, gPp) + '</td>' +
+    '<td class="num">' + fmtN(gGest) + '</td>' +
+    '</tr>';
+
+  document.getElementById('tl-table-body').innerHTML = html;
+  const badgeClass = currentAgency === 'all' ? 'badge-all' : 'badge-' + currentAgency;
+  const agLabel    = currentAgency === 'all' ? 'Ambas agencias' : currentAgency === 'ar' ? 'GDM_AR' : 'GDM_CL';
+  const el = document.getElementById('tl-badge');
+  el.className  = 'badge ' + badgeClass;
+  el.textContent = agLabel;
+  document.getElementById('tl-table-note').textContent = 'Período: ' + getPeriodLabel() + ' · TC: ARS ' + RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' + RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. feb-26 promedio)';
+}
+
 // â”€â”€ Labels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function getPeriodLabel() {
   if (currentPeriod === 'ene_closed') return 'Mes Cerrado Ene-26';
@@ -2771,6 +2898,7 @@ function render() {
   renderTelProdRec();
   renderChart(rows);
   renderCompChart();
+  renderTLTable(rows);
   renderTable(rows);
   updateBadges();
 }
