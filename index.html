@@ -222,7 +222,8 @@
           <th>Representante</th>
           <th id="th-agencia">Agencia</th>
           <th class="num">Recupero (USD)</th>
-          <th class="num" id="th-lc">Recupero (LC)</th>
+          <th class="num">Rec. AR (ARS)</th>
+          <th class="num">Rec. CL (CLP)</th>
           <th class="num">Promesas Tel.</th>
           <th class="num">Promesas Cumpl.</th>
           <th class="num">% Cumpl.</th>
@@ -249,7 +250,7 @@ const PROD_RECOVERY = {
 
 // â”€â”€ Recupero telefónico por producto (acuerdos/promesas de los 32 representantes) â”€â”€
 const TEL_PROD_RECOVERY = {
-  ar: { ene: {point:{usd:615520.46,lc:893239673.29},con:{usd:182727.22,lc:266559675.12},tarjeta_credito:{usd:188520.26,lc:273648494.24},parce:{usd:43241.22,lc:63086190.14},mer:{usd:97340.29,lc:141469226.61},refi:{usd:2889.69,lc:4139585.11}}, feb: {point:{usd:531210.61,lc:737443022.04},con:{usd:172817.39,lc:240746931.61},tarjeta_credito:{usd:298221.54,lc:415247921.98},parce:{usd:43704.32,lc:61041225.88},mer:{usd:162515.36,lc:224753364.91},refi:{usd:7989.63,lc:11154444.81}}, mar: {point:{usd:372570.22,lc:521829508.29},con:{usd:106707.35,lc:149377032.76},tarjeta_credito:{usd:129580.9,lc:181949098.22},parce:{usd:21242.94,lc:29802146.5},mer:{usd:62049.81,lc:86922816.3},refi:{usd:10075.54,lc:14075028.68}} },
+  ar: { ene: {point:{usd:615520.46,lc:893239673.29},con:{usd:182727.22,lc:266559675.12},tarjeta_credito:{usd:188520.26,lc:273648494.24},parce:{usd:43241.22,lc:63086190.14},mer:{usd:97340.29,lc:141469226.61},refi:{usd:2889.69,lc:4139585.11}}, feb: {point:{usd:531210.61,lc:737443022.04},con:{usd:172817.39,lc:240746931.61},tarjeta_credito:{usd:298221.54,lc:415247921.98},parce:{usd:43704.32,lc:61041225.88},mer:{usd:162515.36,lc:224753364.91},refi:{usd:7989.63,lc:11154444.81}}, mar: {point:{usd:383948.97,lc:537697576.93},con:{usd:113793.72,lc:159262698.99},tarjeta_credito:{usd:131091.87,lc:184070490.95},parce:{usd:21512.84,lc:30178932.79},mer:{usd:62403.06,lc:87415463.07},refi:{usd:10145.82,lc:14173027.79}} },
   cl: { ene: {point:{usd:0,lc:0},con:{usd:15174.79,lc:13658577},tarjeta_credito:{usd:0,lc:0},parce:{usd:225.59,lc:204072},mer:{usd:201.12,lc:175115},refi:{usd:0,lc:0}}, feb: {point:{usd:0,lc:0},con:{usd:8078.14,lc:6961451},tarjeta_credito:{usd:0,lc:0},parce:{usd:118.42,lc:102392},mer:{usd:0,lc:0},refi:{usd:0,lc:0}}, mar: {point:{usd:0,lc:0},con:{usd:1267.69,lc:1142814},tarjeta_credito:{usd:0,lc:0},parce:{usd:126.06,lc:112784},mer:{usd:0,lc:0},refi:{usd:0,lc:0}} }
 };
 
@@ -378,26 +379,26 @@ const MONTHLY_DATA = [
   {m:202602,ag:'ar',rep:'mmenschik',lc:49577334,pp:146,ppk:83,gest:1154,cd:307},
   {m:202602,ag:'ar',rep:'msanchezspur',lc:40977508.05,pp:232,ppk:105,gest:1912,cd:462},
   {m:202602,ag:'ar',rep:'tomlohrmann',lc:46181571.55,pp:340,ppk:167,gest:2667,cd:641},
-  {m:202603,ag:'ar',rep:'aciabattini',lc:20453358.02,pp:121,ppk:62,gest:824,cd:262},
-  {m:202603,ag:'ar',rep:'aistrak',lc:45049386.28,pp:323,ppk:130,gest:1544,cd:539},
-  {m:202603,ag:'ar',rep:'bipereira',lc:32851986.97,pp:179,ppk:86,gest:1375,cd:367},
-  {m:202603,ag:'ar',rep:'camilac',lc:29077251.61,pp:203,ppk:87,gest:1487,cd:398},
-  {m:202603,ag:'ar',rep:'cincata',lc:41106527.52,pp:227,ppk:119,gest:1572,cd:416},
-  {m:202603,ag:'ar',rep:'dagimenez',lc:45557296.63,pp:206,ppk:80,gest:923,cd:334},
-  {m:202603,ag:'ar',rep:'fkiefer',lc:43510982.13,pp:195,ppk:76,gest:987,cd:381},
-  {m:202603,ag:'ar',rep:'ftochecabani',lc:16680330.92,pp:172,ppk:72,gest:1707,cd:315},
-  {m:202603,ag:'ar',rep:'imir',lc:33798419.96,pp:166,ppk:67,gest:691,cd:275},
-  {m:202603,ag:'ar',rep:'jdroubi',lc:23977177.54,pp:145,ppk:64,gest:1271,cd:323},
-  {m:202603,ag:'ar',rep:'jmarchetti',lc:39500635.39,pp:299,ppk:145,gest:1650,cd:558},
-  {m:202603,ag:'ar',rep:'jobarreiro',lc:36757355.44,pp:296,ppk:124,gest:1426,cd:484},
-  {m:202603,ag:'ar',rep:'luctorres',lc:25708235.5,pp:289,ppk:108,gest:1702,cd:504},
-  {m:202603,ag:'ar',rep:'maaltamirano',lc:25844453.61,pp:171,ppk:58,gest:992,cd:322},
-  {m:202603,ag:'ar',rep:'mcabana',lc:17227587.61,pp:130,ppk:52,gest:904,cd:191},
-  {m:202603,ag:'ar',rep:'mciechanowic',lc:37007961.48,pp:207,ppk:81,gest:1342,cd:414},
-  {m:202603,ag:'ar',rep:'mgarrigue',lc:17182016.1,pp:111,ppk:39,gest:888,cd:219},
-  {m:202603,ag:'ar',rep:'mmenschik',lc:51859483.08,pp:215,ppk:109,gest:1437,cd:470},
-  {m:202603,ag:'ar',rep:'msanchezspur',lc:39467691.56,pp:261,ppk:109,gest:1353,cd:446},
-  {m:202603,ag:'ar',rep:'tomlohrmann',lc:46075200.35,pp:267,ppk:121,gest:1474,cd:471},
+  {m:202603,ag:'ar',rep:'aciabattini',lc:22246253.4,pp:131,ppk:70,gest:951,cd:293},
+  {m:202603,ag:'ar',rep:'aistrak',lc:46301924.74,pp:349,ppk:139,gest:1677,cd:583},
+  {m:202603,ag:'ar',rep:'bipereira',lc:33778435.81,pp:193,ppk:93,gest:1505,cd:396},
+  {m:202603,ag:'ar',rep:'camilac',lc:29827384.41,pp:217,ppk:92,gest:1623,cd:432},
+  {m:202603,ag:'ar',rep:'cincata',lc:41721356.38,pp:237,ppk:122,gest:1722,cd:450},
+  {m:202603,ag:'ar',rep:'dagimenez',lc:46714808.25,pp:224,ppk:85,gest:988,cd:364},
+  {m:202603,ag:'ar',rep:'fkiefer',lc:43878456.73,pp:208,ppk:78,gest:1097,cd:412},
+  {m:202603,ag:'ar',rep:'ftochecabani',lc:17105030.82,pp:181,ppk:76,gest:1847,cd:337},
+  {m:202603,ag:'ar',rep:'imir',lc:35458575.5,pp:187,ppk:75,gest:786,cd:306},
+  {m:202603,ag:'ar',rep:'jdroubi',lc:24054845.18,pp:145,ppk:64,gest:1271,cd:323},
+  {m:202603,ag:'ar',rep:'jmarchetti',lc:39844434.11,pp:320,ppk:148,gest:1783,cd:595},
+  {m:202603,ag:'ar',rep:'jobarreiro',lc:37638995.68,pp:318,ppk:131,gest:1547,cd:519},
+  {m:202603,ag:'ar',rep:'luctorres',lc:26903294.92,pp:318,ppk:118,gest:1850,cd:554},
+  {m:202603,ag:'ar',rep:'maaltamirano',lc:29957026.79,pp:185,ppk:66,gest:1105,cd:355},
+  {m:202603,ag:'ar',rep:'mcabana',lc:18057191.33,pp:142,ppk:58,gest:1018,cd:210},
+  {m:202603,ag:'ar',rep:'mciechanowic',lc:38985919.08,pp:229,ppk:89,gest:1504,cd:453},
+  {m:202603,ag:'ar',rep:'mgarrigue',lc:19725863.24,pp:120,ppk:45,gest:990,cd:237},
+  {m:202603,ag:'ar',rep:'mmenschik',lc:54137883.62,pp:235,ppk:117,gest:1597,cd:513},
+  {m:202603,ag:'ar',rep:'msanchezspur',lc:40808419.76,pp:274,ppk:114,gest:1426,cd:463},
+  {m:202603,ag:'ar',rep:'tomlohrmann',lc:47771155.53,pp:283,ppk:127,gest:1596,cd:496},
 ];
 
 // â”€â”€ Fecha de corte MTD Marzo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -645,23 +646,30 @@ function renderCompChart() {
 function renderTable(rows) {
   const showAgency = currentAgency === 'all';
   document.getElementById('th-agencia').style.display = showAgency ? '' : 'none';
-  const lcH = document.getElementById('th-lc');
-  lcH.textContent = currentAgency === 'ar' ? 'Recupero (ARS)' : currentAgency === 'cl' ? 'Recupero (CLP)' : 'Recupero (LC)';
   const t = getTotals(rows);
+
+  let tLcAr = 0, tLcCl = 0;
+  rows.forEach(r => { if (r.agency === 'ar') tLcAr += r.lc; else tLcCl += r.lc; });
 
   let html = rows.map(r => {
     const agBadge = showAgency ? '<td><span class="agency-pill agency-' + r.agency + '">' + (r.agency==='ar'?'GDM_AR':'GDM_CL') + '</span></td>' : '';
-    const cur = r.agency === 'ar' ? 'ARS' : 'CLP';
-    const lcTag = showAgency && r.lc > 0 ? '<span style="font-size:10px;color:#999;margin-left:3px">' + cur + '</span>' : '';
-    const lcVal = r.lc === 0 ? '—' : r.lc.toLocaleString('es-AR', {minimumFractionDigits:0,maximumFractionDigits:0}) + (r.lc > 0 ? lcTag : '');
-    return '<tr><td>' + r.rep + '</td>' + agBadge + '<td class="num">' + fmt(r.usd) + '</td><td class="num">' + lcVal + '</td><td class="num">' + fmtN(r.pp) + '</td><td class="num">' + fmtN(r.ppk) + '</td><td class="num">' + pct(r.ppk,r.pp) + '</td><td class="num">' + fmtN(r.gest) + '</td><td class="num">' + fmtN(r.cd) + '</td><td class="num">' + pct(r.pp,r.cd) + '</td></tr>';
+    const lcArStr = r.agency === 'ar' && r.lc > 0 ? r.lc.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—';
+    const lcClStr = r.agency === 'cl' && r.lc > 0 ? r.lc.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—';
+    return '<tr><td>' + r.rep + '</td>' + agBadge +
+      '<td class="num">' + fmt(r.usd) + '</td>' +
+      '<td class="num">' + lcArStr + '</td>' +
+      '<td class="num">' + lcClStr + '</td>' +
+      '<td class="num">' + fmtN(r.pp) + '</td><td class="num">' + fmtN(r.ppk) + '</td><td class="num">' + pct(r.ppk,r.pp) + '</td><td class="num">' + fmtN(r.gest) + '</td><td class="num">' + fmtN(r.cd) + '</td><td class="num">' + pct(r.pp,r.cd) + '</td></tr>';
   }).join('');
 
   const totalAgCell = showAgency ? '<td></td>' : '';
-  const totalLcCell = currentAgency !== 'all'
-    ? '<td class="num">' + fmtLC(t.lc, currentAgency==='ar'?'ARS':'CLP') + '</td>'
-    : '<td class="num" style="font-size:11px;color:#888">ver por agencia</td>';
-  html += '<tr class="total-row"><td>TOTAL</td>' + totalAgCell + '<td class="num">' + fmt(t.usd) + '</td>' + totalLcCell + '<td class="num">' + fmtN(t.pp) + '</td><td class="num">' + fmtN(t.ppk) + '</td><td class="num">' + pct(t.ppk,t.pp) + '</td><td class="num">' + fmtN(t.gest) + '</td><td class="num">' + fmtN(t.cd) + '</td><td class="num">' + pct(t.pp,t.cd) + '</td></tr>';
+  const tLcArStr = tLcAr > 0 ? tLcAr.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—';
+  const tLcClStr = tLcCl > 0 ? tLcCl.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—';
+  html += '<tr class="total-row"><td>TOTAL</td>' + totalAgCell +
+    '<td class="num">' + fmt(t.usd) + '</td>' +
+    '<td class="num">' + tLcArStr + '</td>' +
+    '<td class="num">' + tLcClStr + '</td>' +
+    '<td class="num">' + fmtN(t.pp) + '</td><td class="num">' + fmtN(t.ppk) + '</td><td class="num">' + pct(t.ppk,t.pp) + '</td><td class="num">' + fmtN(t.gest) + '</td><td class="num">' + fmtN(t.cd) + '</td><td class="num">' + pct(t.pp,t.cd) + '</td></tr>';
   document.getElementById('table-body').innerHTML = html;
   document.getElementById('table-note').textContent = 'Período: ' + getPeriodLabel() + ' · TC: ARS ' + RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' + RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. feb-26 promedio)';
 }
