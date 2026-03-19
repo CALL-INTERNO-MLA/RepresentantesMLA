@@ -151,7 +151,7 @@
       <span class="badge badge-all" id="prod-rec-badge">Ambas agencias</span>
     </div>
     <div id="prod-rec-body" class="prod-rec-grid"></div>
-    <p class="note">Fuente: LK_COL_SKYNET_RECOVERY_DATA · Recupero total de la agencia (todos los canales) · Dato mensual</p>
+    <p class="note">Fuente: SKYNET (LK_COL_SKYNET_RECOVERY_DATA) · Recupero total de la agencia — todos los canales, todos los clientes · Dato mensual</p>
   </div>
 
   <!-- Distribución recupero telefónico por producto -->
@@ -161,7 +161,7 @@
       <span class="badge badge-all" id="tel-prod-rec-badge">Ambas agencias</span>
     </div>
     <div id="tel-prod-rec-body" class="prod-rec-grid"></div>
-    <p class="note">Fuente: LK_COL_SKYNET_RECOVERY_DATA · Solo cuentas con acuerdo o promesa gestionada por los 32 representantes · Dato mensual</p>
+    <p class="note">Fuente: SKYNET (LK_COL_SKYNET_RECOVERY_DATA) · Total pagado por clientes gestionados por los 32 reps (incluye pagos que exceden el acuerdo/promesa) · Mayor que "Recupero Acuerdos/Promesas" de los KPIs · Dato mensual</p>
   </div>
 
   <div class="section" id="chart-section">
@@ -244,14 +244,14 @@ const RATES = { ar: 1408.3889, cl: 862.3355 }; // feb-26 promedio (proxy mar-26)
 
 // â”€â”€ Recupero total por producto (fuente: LK_COL_SKYNET_RECOVERY_DATA) â”€â”€â”€â”€â”€â”€â”€
 const PROD_RECOVERY = {
-  ar: { ene: {point:{usd:4132176.67,lc:6001417384.00},con:{usd:8846152.99,lc:12874991557.83},tarjeta_credito:{usd:1539148.05,lc:2239212148.57},parce:{usd:228250.43,lc:332810487.37},mer:{usd:650723.03,lc:946317085.54},refi:{usd:18256.91,lc:26321824.87}}, feb: {point:{usd:4268704.30,lc:5944735754.63},con:{usd:9571513.38,lc:13345315564.63},tarjeta_credito:{usd:2902739.47,lc:4045965788.22},parce:{usd:221615.34,lc:310086443.7},mer:{usd:854911.13,lc:1189826451.98},refi:{usd:41285.08,lc:57469229.98}}, mar: {point:{usd:2602190.53,lc:3642139446.44},con:{usd:5541032.61,lc:7757258047.90},tarjeta_credito:{usd:1012874.71,lc:1419490596.90},parce:{usd:122177,lc:171362535.94},mer:{usd:441276.77,lc:618077339.41},refi:{usd:28673.99,lc:40129671.31}} },
-  cl: { ene: {point:{usd:27.1,lc:23639},con:{usd:253407.14,lc:227599775},tarjeta_credito:{usd:0,lc:0},parce:{usd:10051.53,lc:9011231},mer:{usd:10836.48,lc:9445442},refi:{usd:0,lc:0}}, feb: {point:{usd:7.87,lc:6790},con:{usd:284798.92,lc:245445518},tarjeta_credito:{usd:0,lc:0},parce:{usd:12136.44,lc:10459667},mer:{usd:40356.37,lc:34742394},refi:{usd:0,lc:0}}, mar: {point:{usd:0,lc:0},con:{usd:135556.24,lc:121353219},tarjeta_credito:{usd:0,lc:0},parce:{usd:10436.78,lc:9315981},mer:{usd:39038.71,lc:35137838},refi:{usd:0,lc:0}} }
+  ar: { ene: {point:{usd:4132176.67,lc:6001417384.00},con:{usd:8846152.99,lc:12874991557.83},tarjeta_credito:{usd:1539148.05,lc:2239212148.57},parce:{usd:228250.43,lc:332810487.37},mer:{usd:650723.03,lc:946317085.54},refi:{usd:18256.91,lc:26321824.87}}, feb: {point:{usd:4268704.30,lc:5944735754.63},con:{usd:9571513.38,lc:13345315564.63},tarjeta_credito:{usd:2902739.47,lc:4045965788.22},parce:{usd:221615.34,lc:310086443.7},mer:{usd:854911.13,lc:1189826451.98},refi:{usd:41285.08,lc:57469229.98}}, mar: {point:{usd:2728694.19,lc:3824762658.37},con:{usd:5910004.01,lc:8281327696.63},tarjeta_credito:{usd:1048812.86,lc:1469835121.22},parce:{usd:132628.24,lc:186005490.99},mer:{usd:474491.81,lc:665096624.90},refi:{usd:31206.52,lc:43742162.16}} },
+  cl: { ene: {point:{usd:27.1,lc:23639},con:{usd:253407.14,lc:227599775},tarjeta_credito:{usd:0,lc:0},parce:{usd:10051.53,lc:9011231},mer:{usd:10836.48,lc:9445442},refi:{usd:0,lc:0}}, feb: {point:{usd:7.87,lc:6790},con:{usd:284798.92,lc:245445518},tarjeta_credito:{usd:0,lc:0},parce:{usd:12136.44,lc:10459667},mer:{usd:40356.37,lc:34742394},refi:{usd:0,lc:0}}, mar: {point:{usd:0,lc:0},con:{usd:145394.18,lc:130446452},tarjeta_credito:{usd:0,lc:0},parce:{usd:10912.72,lc:9751214},mer:{usd:42070.69,lc:38265415},refi:{usd:0,lc:0}} }
 };
 
 // â”€â”€ Recupero telefónico por producto (acuerdos/promesas de los 32 representantes) â”€â”€
 const TEL_PROD_RECOVERY = {
-  ar: { ene: {point:{usd:615520.46,lc:893239673.29},con:{usd:182727.22,lc:266559675.12},tarjeta_credito:{usd:188520.26,lc:273648494.24},parce:{usd:43241.22,lc:63086190.14},mer:{usd:97340.29,lc:141469226.61},refi:{usd:2889.69,lc:4139585.11}}, feb: {point:{usd:531210.61,lc:737443022.04},con:{usd:172817.39,lc:240746931.61},tarjeta_credito:{usd:298221.54,lc:415247921.98},parce:{usd:43704.32,lc:61041225.88},mer:{usd:162515.36,lc:224753364.91},refi:{usd:7989.63,lc:11154444.81}}, mar: {point:{usd:386543.96,lc:541316293.21},con:{usd:113793.72,lc:159262698.99},tarjeta_credito:{usd:131091.87,lc:184070490.95},parce:{usd:21512.84,lc:30178932.79},mer:{usd:62438.92,lc:87465463.07},refi:{usd:10145.82,lc:14173027.79}} },
-  cl: { ene: {point:{usd:0,lc:0},con:{usd:15174.79,lc:13658577},tarjeta_credito:{usd:0,lc:0},parce:{usd:225.59,lc:204072},mer:{usd:201.12,lc:175115},refi:{usd:0,lc:0}}, feb: {point:{usd:0,lc:0},con:{usd:8078.14,lc:6961451},tarjeta_credito:{usd:0,lc:0},parce:{usd:118.42,lc:102392},mer:{usd:0,lc:0},refi:{usd:0,lc:0}}, mar: {point:{usd:0,lc:0},con:{usd:1267.69,lc:1142814},tarjeta_credito:{usd:0,lc:0},parce:{usd:126.06,lc:112784},mer:{usd:0,lc:0},refi:{usd:0,lc:0}} }
+  ar: { ene: {point:{usd:615520.46,lc:893239673.29},con:{usd:182727.22,lc:266559675.12},tarjeta_credito:{usd:188520.26,lc:273648494.24},parce:{usd:43241.22,lc:63086190.14},mer:{usd:97340.29,lc:141469226.61},refi:{usd:2889.69,lc:4139585.11}}, feb: {point:{usd:531210.61,lc:737443022.04},con:{usd:172817.39,lc:240746931.61},tarjeta_credito:{usd:298221.54,lc:415247921.98},parce:{usd:43704.32,lc:61041225.88},mer:{usd:162515.36,lc:224753364.91},refi:{usd:7989.63,lc:11154444.81}}, mar: {point:{usd:399478.92,lc:560256710.9},con:{usd:118434.14,lc:165942601.8},tarjeta_credito:{usd:138687.2,lc:194692035.9},parce:{usd:24248.98,lc:34014050.35},mer:{usd:70531.5,lc:98870368.41},refi:{usd:10306.92,lc:14418811.93}} },
+  cl: { ene: {point:{usd:0,lc:0},con:{usd:15174.79,lc:13658577},tarjeta_credito:{usd:0,lc:0},parce:{usd:225.59,lc:204072},mer:{usd:201.12,lc:175115},refi:{usd:0,lc:0}}, feb: {point:{usd:0,lc:0},con:{usd:8078.14,lc:6961451},tarjeta_credito:{usd:0,lc:0},parce:{usd:118.42,lc:102392},mer:{usd:0,lc:0},refi:{usd:0,lc:0}}, mar: {point:{usd:0,lc:0},con:{usd:1557.53,lc:1409608},tarjeta_credito:{usd:0,lc:0},parce:{usd:125.33,lc:112784},mer:{usd:0,lc:0},refi:{usd:0,lc:0}} }
 };
 
 // â”€â”€ Cartera (fuente: LK_COL_PORTFOLIO_PROD, COL_LAST_ASSIGNED_CRITERIA_DESC, misma metodología que Looker Studio) â”€â”€
@@ -1214,14 +1214,14 @@ function renderKPIs(rows) {
   if (currentAgency === 'ar') lcSub = '<div class="kpi-sub" style="font-size:12px;color:#888;margin-top:4px">' + fmtLC(t.lc, 'ARS') + '</div>';
   else if (currentAgency === 'cl') lcSub = '<div class="kpi-sub" style="font-size:12px;color:#888;margin-top:4px">' + fmtLC(t.lc, 'CLP') + '</div>';
 
-  let html = '<div class="kpi"><div class="kpi-label">Recupero Total USD</div><div class="kpi-value">' + fmt(t.usd) + '</div><div class="kpi-sub">' + periodLabel + '</div>' + lcSub + '</div>' +
+  let html = '<div class="kpi"><div class="kpi-label">Recupero Acuerdos/Promesas (USD)</div><div class="kpi-value">' + fmt(t.usd) + '</div><div class="kpi-sub">' + periodLabel + '</div><div class="kpi-sub" style="font-size:10px;color:#bbb;margin-top:2px">Fuente: OPERATION · acuerdos y promesas pagados</div>' + lcSub + '</div>' +
     '<div class="kpi green"><div class="kpi-label">Promesas Cumplidas</div><div class="kpi-value">' + fmtN(t.ppk) + '</div><div class="kpi-sub">de ' + fmtN(t.pp) + ' · ' + pct(t.ppk, t.pp) + '</div></div>' +
     '<div class="kpi orange"><div class="kpi-label">Gestiones Telefónicas</div><div class="kpi-value">' + fmtN(t.gest) + '</div><div class="kpi-sub">' + periodLabel + '</div></div>';
 
   if (currentAgency === 'all') {
     const portTotal = PORTFOLIO.ar[portKey].total + PORTFOLIO.cl[portKey].total;
-    html += '<div class="kpi"><div class="kpi-label">GDM_AR — Recupero USD</div><div class="kpi-value" style="color:#1565c0">' + fmt(tAr.usd) + '</div><div class="kpi-sub">' + ((tAr.usd/t.usd)*100).toFixed(1) + '% del recupero GDM</div><div class="kpi-sub" style="font-size:12px;color:#888;margin-top:4px">' + fmtLC(tAr.lc,'ARS') + '</div></div>' +
-      '<div class="kpi teal"><div class="kpi-label">GDM_CL — Recupero USD</div><div class="kpi-value">' + fmt(tCl.usd) + '</div><div class="kpi-sub">' + ((tCl.usd/t.usd)*100).toFixed(1) + '% del recupero GDM</div><div class="kpi-sub" style="font-size:12px;color:#888;margin-top:4px">' + fmtLC(tCl.lc,'CLP') + '</div></div>' +
+    html += '<div class="kpi"><div class="kpi-label">GDM_AR — Recupero USD</div><div class="kpi-value" style="color:#1565c0">' + fmt(tAr.usd) + '</div><div class="kpi-sub">' + ((tAr.usd/t.usd)*100).toFixed(1) + '% del recupero GDM</div><div class="kpi-sub" style="font-size:12px;color:#888;margin-top:4px">' + fmtLC(tAr.lc,'ARS') + '</div><div class="kpi-sub" style="font-size:10px;color:#bbb;margin-top:2px">Fuente: OPERATION</div></div>' +
+      '<div class="kpi teal"><div class="kpi-label">GDM_CL — Recupero USD</div><div class="kpi-value">' + fmt(tCl.usd) + '</div><div class="kpi-sub">' + ((tCl.usd/t.usd)*100).toFixed(1) + '% del recupero GDM</div><div class="kpi-sub" style="font-size:12px;color:#888;margin-top:4px">' + fmtLC(tCl.lc,'CLP') + '</div><div class="kpi-sub" style="font-size:10px;color:#bbb;margin-top:2px">Fuente: tabla diaria</div></div>' +
       '<div class="kpi" style="border-left-color:#5e35b1"><div class="kpi-label">Cuentas en Cartera</div><div class="kpi-value" style="color:#4527a0">' + fmtN(portTotal) + '</div><div class="kpi-sub"><span style="color:#1565c0">AR ' + fmtN(PORTFOLIO.ar[portKey].total) + '</span> · <span style="color:#00695c">CL ' + fmtN(PORTFOLIO.cl[portKey].total) + '</span></div><div class="kpi-sub" style="font-size:11px;color:#aaa;margin-top:3px">Fuente: LK_COL_PORTFOLIO</div></div>';
   } else {
     const portCount = PORTFOLIO[currentAgency][portKey].total;
@@ -1386,7 +1386,7 @@ function renderTable(rows) {
     '<td class="num">' + tLcClStr + '</td>' +
     '<td class="num">' + fmtN(t.pp) + '</td><td class="num">' + fmtN(t.ppk) + '</td><td class="num">' + pct(t.ppk,t.pp) + '</td><td class="num">' + fmtN(t.gest) + '</td><td class="num">' + fmtN(t.cd) + '</td><td class="num">' + pct(t.pp,t.cd) + '</td></tr>';
   document.getElementById('table-body').innerHTML = html;
-  document.getElementById('table-note').textContent = 'Período: ' + getPeriodLabel() + ' · TC: ARS ' + RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' + RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. feb-26 promedio)';
+  document.getElementById('table-note').textContent = 'Recupero: OPERATION (acuerdos/promesas pagados) · Período: ' + getPeriodLabel() + ' · TC: ARS ' + RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' + RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. feb-26 promedio)';
 }
 
 // â”€â”€ Team Leader map â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1492,7 +1492,7 @@ function renderTLTable(rows) {
   const el = document.getElementById('tl-badge');
   el.className  = 'badge ' + badgeClass;
   el.textContent = agLabel;
-  document.getElementById('tl-table-note').textContent = 'Período: ' + getPeriodLabel() + ' · TC: ARS ' + RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' + RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. feb-26 promedio)';
+  document.getElementById('tl-table-note').textContent = 'Recupero: OPERATION (acuerdos/promesas pagados) · Período: ' + getPeriodLabel() + ' · TC: ARS ' + RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' + RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. feb-26 promedio)';
 }
 
 // â”€â”€ Labels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
