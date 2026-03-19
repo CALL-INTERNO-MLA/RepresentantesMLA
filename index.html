@@ -144,14 +144,24 @@
     <p class="note">Fuente: meli-bi-data.WHOWNER.LK_COL_PORTFOLIO_PROD · COL_LAST_ASSIGNED_CRITERIA_DESC</p>
   </div>
 
-  <!-- Distribución recupero por producto -->
+  <!-- Distribución recupero por producto (total agencia) -->
   <div class="section" id="prod-rec-section">
     <div class="section-header">
-      <span class="section-title">Recupero — Distribución por Producto</span>
+      <span class="section-title">Recupero Total — Distribución por Producto</span>
       <span class="badge badge-all" id="prod-rec-badge">Ambas agencias</span>
     </div>
     <div id="prod-rec-body" class="prod-rec-grid"></div>
-    <p class="note">Fuente: meli-bi-data.WHOWNER.LK_COL_SKYNET_RECOVERY_DATA · COL_LAST_CALL_CENTER_ASSIGNED · Feb-26 y Mar-26 MTD (dato mensual, no filtra por días hábiles)</p>
+    <p class="note">Fuente: LK_COL_SKYNET_RECOVERY_DATA · Recupero total de la agencia (todos los canales) · Dato mensual</p>
+  </div>
+
+  <!-- Distribución recupero telefónico por producto -->
+  <div class="section" id="tel-prod-rec-section">
+    <div class="section-header">
+      <span class="section-title">Recupero Telefónico — Distribución por Producto</span>
+      <span class="badge badge-all" id="tel-prod-rec-badge">Ambas agencias</span>
+    </div>
+    <div id="tel-prod-rec-body" class="prod-rec-grid"></div>
+    <p class="note">Fuente: LK_COL_SKYNET_RECOVERY_DATA · Solo cuentas con acuerdo o promesa gestionada por los 32 representantes · Dato mensual</p>
   </div>
 
   <div class="section" id="chart-section">
@@ -201,10 +211,16 @@
 // â”€â”€ Exchange rates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const RATES = { ar: 1408.3889, cl: 862.3355 }; // feb-26 promedio (proxy mar-26)
 
-// â”€â”€ Recupero por producto (fuente: LK_COL_SKYNET_RECOVERY_DATA) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â”€â”€ Recupero total por producto (fuente: LK_COL_SKYNET_RECOVERY_DATA) â”€â”€â”€â”€â”€â”€â”€
 const PROD_RECOVERY = {
   ar: { ene: {point:{usd:4132176.67,lc:6001417384.00},con:{usd:8846152.99,lc:12874991557.83},tarjeta_credito:{usd:1539148.05,lc:2239212148.57},parce:{usd:228250.43,lc:332810487.37},mer:{usd:650723.03,lc:946317085.54},refi:{usd:18256.91,lc:26321824.87}}, feb: {point:{usd:4268704.30,lc:5944735754.63},con:{usd:9571513.38,lc:13345315564.63},tarjeta_credito:{usd:2902739.47,lc:4045965788.22},parce:{usd:221615.34,lc:310086443.7},mer:{usd:854911.13,lc:1189826451.98},refi:{usd:41285.08,lc:57469229.98}}, mar: {point:{usd:2602190.53,lc:3642139446.44},con:{usd:5541032.61,lc:7757258047.90},tarjeta_credito:{usd:1012874.71,lc:1419490596.90},parce:{usd:122177,lc:171362535.94},mer:{usd:441276.77,lc:618077339.41},refi:{usd:28673.99,lc:40129671.31}} },
   cl: { ene: {point:{usd:27.1,lc:23639},con:{usd:253407.14,lc:227599775},tarjeta_credito:{usd:0,lc:0},parce:{usd:10051.53,lc:9011231},mer:{usd:10836.48,lc:9445442},refi:{usd:0,lc:0}}, feb: {point:{usd:7.87,lc:6790},con:{usd:284798.92,lc:245445518},tarjeta_credito:{usd:0,lc:0},parce:{usd:12136.44,lc:10459667},mer:{usd:40356.37,lc:34742394},refi:{usd:0,lc:0}}, mar: {point:{usd:0,lc:0},con:{usd:135556.24,lc:121353219},tarjeta_credito:{usd:0,lc:0},parce:{usd:10436.78,lc:9315981},mer:{usd:39038.71,lc:35137838},refi:{usd:0,lc:0}} }
+};
+
+// â”€â”€ Recupero telefónico por producto (acuerdos/promesas de los 32 representantes) â”€â”€
+const TEL_PROD_RECOVERY = {
+  ar: { ene: {point:{usd:615520.46,lc:893239673.29},con:{usd:182727.22,lc:266559675.12},tarjeta_credito:{usd:188520.26,lc:273648494.24},parce:{usd:43241.22,lc:63086190.14},mer:{usd:97340.29,lc:141469226.61},refi:{usd:2889.69,lc:4139585.11}}, feb: {point:{usd:531210.61,lc:737443022.04},con:{usd:172817.39,lc:240746931.61},tarjeta_credito:{usd:298221.54,lc:415247921.98},parce:{usd:43704.32,lc:61041225.88},mer:{usd:162515.36,lc:224753364.91},refi:{usd:7989.63,lc:11154444.81}}, mar: {point:{usd:372570.22,lc:521829508.29},con:{usd:106707.35,lc:149377032.76},tarjeta_credito:{usd:129580.9,lc:181949098.22},parce:{usd:21242.94,lc:29802146.5},mer:{usd:62049.81,lc:86922816.3},refi:{usd:10075.54,lc:14075028.68}} },
+  cl: { ene: {point:{usd:0,lc:0},con:{usd:15174.79,lc:13658577},tarjeta_credito:{usd:0,lc:0},parce:{usd:225.59,lc:204072},mer:{usd:201.12,lc:175115},refi:{usd:0,lc:0}}, feb: {point:{usd:0,lc:0},con:{usd:8078.14,lc:6961451},tarjeta_credito:{usd:0,lc:0},parce:{usd:118.42,lc:102392},mer:{usd:0,lc:0},refi:{usd:0,lc:0}}, mar: {point:{usd:0,lc:0},con:{usd:1267.69,lc:1142814},tarjeta_credito:{usd:0,lc:0},parce:{usd:126.06,lc:112784},mer:{usd:0,lc:0},refi:{usd:0,lc:0}} }
 };
 
 // â”€â”€ Cartera (fuente: LK_COL_PORTFOLIO_PROD, COL_LAST_ASSIGNED_CRITERIA_DESC, misma metodología que Looker Studio) â”€â”€
@@ -2694,12 +2710,65 @@ function renderProdRec() {
   el.textContent = agLabel;
 }
 
+// â”€â”€ Render recupero telefónico por producto (TEL_PROD_RECOVERY) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function renderTelProdRec() {
+  const agencies  = currentAgency === 'all' ? ['ar', 'cl'] : [currentAgency];
+  const agColors  = { ar: '#1565c0', cl: '#00695c' };
+  const agLabels  = { ar: 'GDM_AR', cl: 'GDM_CL' };
+  const mkey      = currentPeriod === 'mar_mtd' ? 'mar' : currentPeriod === 'ene_closed' ? 'ene' : 'feb';
+
+  const PROD_DEFS = [
+    { key: 'point',           label: 'Point',            color: '#6a1b9a' },
+    { key: 'con',             label: 'Consumer',         color: '#1565c0' },
+    { key: 'tarjeta_credito', label: 'Tarjeta Crédito',  color: '#c62828' },
+    { key: 'mer',             label: 'Merchant',         color: '#2e7d32' },
+    { key: 'parce',           label: 'Parcelamento',     color: '#e65100' },
+    { key: 'refi',            label: 'Refinanciación',   color: '#777'    }
+  ];
+
+  let html = '';
+  agencies.forEach(ag => {
+    const pData    = TEL_PROD_RECOVERY[ag][mkey];
+    const totalRec = PROD_DEFS.reduce((s, p) => s + (pData[p.key] ? pData[p.key].usd : 0), 0);
+    const totSky   = PROD_DEFS.reduce((s, p) => s + (PROD_RECOVERY[ag][mkey][p.key] ? PROD_RECOVERY[ag][mkey][p.key].usd : 0), 0);
+    const telPct   = totSky > 0 ? (totalRec / totSky * 100).toFixed(1) : '0.0';
+
+    html += '<div class="prod-rec-card">' +
+      '<div class="prod-rec-card-title" style="color:' + agColors[ag] + '">' + agLabels[ag] +
+      ' — Total: $' + Math.round(totalRec).toLocaleString('es-AR') + ' USD' +
+      ' <span style="font-weight:400;color:#888;font-size:10px">(' + telPct + '% del recupero total agencia)</span></div>';
+
+    PROD_DEFS.forEach(p => {
+      if (!pData[p.key] || pData[p.key].usd === 0) return;
+      const usd    = pData[p.key].usd;
+      const pctVal = totalRec > 0 ? (usd / totalRec * 100).toFixed(1) : '0.0';
+      const barW   = totalRec > 0 ? Math.round(usd / totalRec * 100) : 0;
+      html += '<div class="prod-rec-row">' +
+        '<div class="prod-rec-label-row">' +
+          '<span class="prod-rec-label" style="color:' + p.color + '">' + p.label + '</span>' +
+          '<span class="prod-rec-vals">$' + Math.round(usd).toLocaleString('es-AR') + ' USD &nbsp;·&nbsp; ' + pctVal + '%</span>' +
+        '</div>' +
+        '<div class="prod-rec-bar-bg"><div class="prod-rec-bar-fill" style="width:' + barW + '%;background:' + p.color + '"></div></div>' +
+        '</div>';
+    });
+    html += '</div>';
+  });
+
+  document.getElementById('tel-prod-rec-body').innerHTML = html;
+  const badgeClass = currentAgency === 'all' ? 'badge-all' : 'badge-' + currentAgency;
+  const agLabel    = currentAgency === 'all' ? 'Ambas agencias' : currentAgency === 'ar' ? 'GDM_AR' : 'GDM_CL';
+  const el = document.getElementById('tel-prod-rec-badge');
+  el.className  = 'badge ' + badgeClass;
+  el.textContent = agLabel;
+}
+
 // â”€â”€ Render â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function render() {
   const rows = getRows();
   renderKPIs(rows);
   renderPortfolio();
   renderProdRec();
+  renderTelProdRec();
   renderChart(rows);
   renderCompChart();
   renderTable(rows);
