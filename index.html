@@ -175,7 +175,7 @@
   </div>
   <div class="section">
     <div class="section-header">
-      <span class="section-title" id="comp-title">Comparativo Feb-26 vs Mar-26 MTD — Recupero USD por Representante</span>
+      <span class="section-title" id="comp-title">Comparativo MTD homogéneo — Recupero USD por Representante</span>
       <span class="badge" id="comp-badge">Ambas agencias</span>
     </div>
     <div class="comp-chart-wrap">
@@ -250,7 +250,7 @@ const PROD_RECOVERY = {
 
 // â”€â”€ Recupero telefónico por producto (acuerdos/promesas de los 32 representantes) â”€â”€
 const TEL_PROD_RECOVERY = {
-  ar: { ene: {point:{usd:615520.46,lc:893239673.29},con:{usd:182727.22,lc:266559675.12},tarjeta_credito:{usd:188520.26,lc:273648494.24},parce:{usd:43241.22,lc:63086190.14},mer:{usd:97340.29,lc:141469226.61},refi:{usd:2889.69,lc:4139585.11}}, feb: {point:{usd:531210.61,lc:737443022.04},con:{usd:172817.39,lc:240746931.61},tarjeta_credito:{usd:298221.54,lc:415247921.98},parce:{usd:43704.32,lc:61041225.88},mer:{usd:162515.36,lc:224753364.91},refi:{usd:7989.63,lc:11154444.81}}, mar: {point:{usd:383948.97,lc:537697576.93},con:{usd:113793.72,lc:159262698.99},tarjeta_credito:{usd:131091.87,lc:184070490.95},parce:{usd:21512.84,lc:30178932.79},mer:{usd:62403.06,lc:87415463.07},refi:{usd:10145.82,lc:14173027.79}} },
+  ar: { ene: {point:{usd:615520.46,lc:893239673.29},con:{usd:182727.22,lc:266559675.12},tarjeta_credito:{usd:188520.26,lc:273648494.24},parce:{usd:43241.22,lc:63086190.14},mer:{usd:97340.29,lc:141469226.61},refi:{usd:2889.69,lc:4139585.11}}, feb: {point:{usd:531210.61,lc:737443022.04},con:{usd:172817.39,lc:240746931.61},tarjeta_credito:{usd:298221.54,lc:415247921.98},parce:{usd:43704.32,lc:61041225.88},mer:{usd:162515.36,lc:224753364.91},refi:{usd:7989.63,lc:11154444.81}}, mar: {point:{usd:386543.96,lc:541316293.21},con:{usd:113793.72,lc:159262698.99},tarjeta_credito:{usd:131091.87,lc:184070490.95},parce:{usd:21512.84,lc:30178932.79},mer:{usd:62438.92,lc:87465463.07},refi:{usd:10145.82,lc:14173027.79}} },
   cl: { ene: {point:{usd:0,lc:0},con:{usd:15174.79,lc:13658577},tarjeta_credito:{usd:0,lc:0},parce:{usd:225.59,lc:204072},mer:{usd:201.12,lc:175115},refi:{usd:0,lc:0}}, feb: {point:{usd:0,lc:0},con:{usd:8078.14,lc:6961451},tarjeta_credito:{usd:0,lc:0},parce:{usd:118.42,lc:102392},mer:{usd:0,lc:0},refi:{usd:0,lc:0}}, mar: {point:{usd:0,lc:0},con:{usd:1267.69,lc:1142814},tarjeta_credito:{usd:0,lc:0},parce:{usd:126.06,lc:112784},mer:{usd:0,lc:0},refi:{usd:0,lc:0}} }
 };
 
@@ -337,9 +337,9 @@ const HOLIDAYS = {
 // CL excluye sus propios feriados nacionales + todos los feriados de AR (calendario corporativo)
 HOLIDAYS.cl = new Set([...HOLIDAYS.cl, ...HOLIDAYS.ar]);
 
-// â”€â”€ Datos mensuales (fuente: SBOX_COLLECTIONSDA.OPERATION_PRODUCTIVITY_RV_REP) â”€â”€
+// â”€â”€ Datos AR mensuales (fuente: SBOX_COLLECTIONSDA.OPERATION_PRODUCTIVITY_RV_REP) â”€â”€
 // Metodología igual a Looker Studio: métricas atribuidas al mes de la promesa/pago
-const MONTHLY_DATA = [
+const MONTHLY_DATA_AR = [
   {m:202601,ag:'ar',rep:'ahanuch',lc:59591569.56,pp:320,ppk:170,gest:2596,cd:714},
   {m:202601,ag:'ar',rep:'aistrak',lc:36045847.24,pp:262,ppk:122,gest:2068,cd:585},
   {m:202601,ag:'ar',rep:'bipereira',lc:31148575.72,pp:241,ppk:127,gest:3083,cd:576},
@@ -401,8 +401,710 @@ const MONTHLY_DATA = [
   {m:202603,ag:'ar',rep:'tomlohrmann',lc:47771155.53,pp:283,ppk:127,gest:1596,cd:496},
 ];
 
-// â”€â”€ Fecha de corte MTD Marzo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const LATEST_MAR = '2026-03-19';
+// â”€â”€ Datos CL diarios (fuente: WHOWNER.LK_COL_REP_DAILY_AGG_PROD, gdm_cl_call_center) â”€â”€
+const DAILY_DATA_CL = [
+  {d:'2026-01-02',ag:'cl',rep:'ahanuch',lc:0,pp:0,ppk:0,gest:14,cd:1},
+  {d:'2026-01-02',ag:'cl',rep:'aistrak',lc:7420,pp:1,ppk:1,gest:14,cd:2},
+  {d:'2026-01-02',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:19,cd:0},
+  {d:'2026-01-02',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:25,cd:2},
+  {d:'2026-01-02',ag:'cl',rep:'cincata',lc:54727,pp:3,ppk:1,gest:19,cd:5},
+  {d:'2026-01-02',ag:'cl',rep:'dagimenez',lc:0,pp:0,ppk:0,gest:14,cd:3},
+  {d:'2026-01-02',ag:'cl',rep:'ftochecabani',lc:0,pp:0,ppk:0,gest:18,cd:1},
+  {d:'2026-01-02',ag:'cl',rep:'imir',lc:0,pp:0,ppk:0,gest:14,cd:3},
+  {d:'2026-01-02',ag:'cl',rep:'jobarreiro',lc:0,pp:0,ppk:0,gest:23,cd:1},
+  {d:'2026-01-02',ag:'cl',rep:'mgarrigue',lc:0,pp:0,ppk:0,gest:27,cd:3},
+  {d:'2026-01-02',ag:'cl',rep:'mmenschik',lc:0,pp:0,ppk:0,gest:21,cd:2},
+  {d:'2026-01-02',ag:'cl',rep:'tomlohrmann',lc:0,pp:0,ppk:0,gest:19,cd:0},
+  {d:'2026-01-03',ag:'cl',rep:'aistrak',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-01-03',ag:'cl',rep:'dagimenez',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-03',ag:'cl',rep:'imir',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-03',ag:'cl',rep:'mmenschik',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-04',ag:'cl',rep:'dagimenez',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-05',ag:'cl',rep:'ahanuch',lc:0,pp:0,ppk:0,gest:44,cd:1},
+  {d:'2026-01-05',ag:'cl',rep:'bipereira',lc:49118,pp:2,ppk:2,gest:32,cd:2},
+  {d:'2026-01-05',ag:'cl',rep:'camilac',lc:0,pp:1,ppk:0,gest:86,cd:4},
+  {d:'2026-01-05',ag:'cl',rep:'cincata',lc:120071,pp:2,ppk:2,gest:90,cd:6},
+  {d:'2026-01-05',ag:'cl',rep:'dagimenez',lc:30890,pp:1,ppk:1,gest:42,cd:3},
+  {d:'2026-01-05',ag:'cl',rep:'fkiefer',lc:0,pp:0,ppk:0,gest:30,cd:3},
+  {d:'2026-01-05',ag:'cl',rep:'ftochecabani',lc:66614,pp:1,ppk:1,gest:82,cd:3},
+  {d:'2026-01-05',ag:'cl',rep:'iaubert',lc:0,pp:0,ppk:0,gest:32,cd:0},
+  {d:'2026-01-05',ag:'cl',rep:'imir',lc:19574,pp:1,ppk:1,gest:12,cd:4},
+  {d:'2026-01-05',ag:'cl',rep:'jmarchetti',lc:4763,pp:1,ppk:1,gest:90,cd:4},
+  {d:'2026-01-05',ag:'cl',rep:'jobarreiro',lc:0,pp:0,ppk:0,gest:83,cd:3},
+  {d:'2026-01-05',ag:'cl',rep:'maaltamirano',lc:0,pp:1,ppk:0,gest:58,cd:1},
+  {d:'2026-01-05',ag:'cl',rep:'mciechanowic',lc:0,pp:1,ppk:0,gest:39,cd:1},
+  {d:'2026-01-05',ag:'cl',rep:'mgarrigue',lc:0,pp:0,ppk:0,gest:51,cd:2},
+  {d:'2026-01-05',ag:'cl',rep:'mmenschik',lc:0,pp:0,ppk:0,gest:38,cd:0},
+  {d:'2026-01-05',ag:'cl',rep:'tomlohrmann',lc:0,pp:0,ppk:0,gest:84,cd:5},
+  {d:'2026-01-06',ag:'cl',rep:'ahanuch',lc:0,pp:0,ppk:0,gest:18,cd:2},
+  {d:'2026-01-06',ag:'cl',rep:'bipereira',lc:30599,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-06',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:9,cd:1},
+  {d:'2026-01-06',ag:'cl',rep:'cincata',lc:41405,pp:1,ppk:1,gest:17,cd:2},
+  {d:'2026-01-06',ag:'cl',rep:'dagimenez',lc:0,pp:1,ppk:0,gest:9,cd:1},
+  {d:'2026-01-06',ag:'cl',rep:'fkiefer',lc:0,pp:0,ppk:0,gest:18,cd:0},
+  {d:'2026-01-06',ag:'cl',rep:'ftochecabani',lc:0,pp:0,ppk:0,gest:15,cd:1},
+  {d:'2026-01-06',ag:'cl',rep:'iaubert',lc:0,pp:0,ppk:0,gest:16,cd:0},
+  {d:'2026-01-06',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:17,cd:4},
+  {d:'2026-01-06',ag:'cl',rep:'jobarreiro',lc:0,pp:0,ppk:0,gest:9,cd:0},
+  {d:'2026-01-06',ag:'cl',rep:'maaltamirano',lc:10702,pp:2,ppk:2,gest:13,cd:2},
+  {d:'2026-01-06',ag:'cl',rep:'mciechanowic',lc:0,pp:2,ppk:0,gest:19,cd:3},
+  {d:'2026-01-06',ag:'cl',rep:'mgarrigue',lc:0,pp:0,ppk:0,gest:21,cd:0},
+  {d:'2026-01-06',ag:'cl',rep:'mmenschik',lc:0,pp:0,ppk:0,gest:15,cd:0},
+  {d:'2026-01-06',ag:'cl',rep:'tomlohrmann',lc:15005,pp:1,ppk:1,gest:19,cd:2},
+  {d:'2026-01-07',ag:'cl',rep:'ahanuch',lc:0,pp:0,ppk:0,gest:9,cd:0},
+  {d:'2026-01-07',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:11,cd:1},
+  {d:'2026-01-07',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:1,cd:1},
+  {d:'2026-01-07',ag:'cl',rep:'cincata',lc:0,pp:0,ppk:0,gest:8,cd:1},
+  {d:'2026-01-07',ag:'cl',rep:'dagimenez',lc:32867,pp:1,ppk:1,gest:7,cd:2},
+  {d:'2026-01-07',ag:'cl',rep:'fkiefer',lc:51839,pp:1,ppk:1,gest:8,cd:3},
+  {d:'2026-01-07',ag:'cl',rep:'ftochecabani',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-01-07',ag:'cl',rep:'iaubert',lc:0,pp:0,ppk:0,gest:9,cd:0},
+  {d:'2026-01-07',ag:'cl',rep:'jmarchetti',lc:0,pp:0,ppk:0,gest:4,cd:0},
+  {d:'2026-01-07',ag:'cl',rep:'jobarreiro',lc:200983,pp:1,ppk:1,gest:11,cd:1},
+  {d:'2026-01-07',ag:'cl',rep:'maaltamirano',lc:24234,pp:1,ppk:1,gest:6,cd:1},
+  {d:'2026-01-07',ag:'cl',rep:'mciechanowic',lc:158284,pp:2,ppk:1,gest:8,cd:4},
+  {d:'2026-01-07',ag:'cl',rep:'mgarrigue',lc:0,pp:1,ppk:0,gest:10,cd:1},
+  {d:'2026-01-07',ag:'cl',rep:'mmenschik',lc:0,pp:0,ppk:0,gest:6,cd:1},
+  {d:'2026-01-07',ag:'cl',rep:'msanchezspur',lc:0,pp:0,ppk:0,gest:7,cd:1},
+  {d:'2026-01-07',ag:'cl',rep:'tomlohrmann',lc:0,pp:0,ppk:0,gest:10,cd:0},
+  {d:'2026-01-08',ag:'cl',rep:'ahanuch',lc:60440,pp:3,ppk:3,gest:39,cd:8},
+  {d:'2026-01-08',ag:'cl',rep:'bipereira',lc:18783,pp:1,ppk:1,gest:64,cd:5},
+  {d:'2026-01-08',ag:'cl',rep:'camilac',lc:73217,pp:2,ppk:2,gest:78,cd:3},
+  {d:'2026-01-08',ag:'cl',rep:'cincata',lc:127912,pp:7,ppk:5,gest:74,cd:11},
+  {d:'2026-01-08',ag:'cl',rep:'dagimenez',lc:22669,pp:3,ppk:2,gest:39,cd:3},
+  {d:'2026-01-08',ag:'cl',rep:'fkiefer',lc:0,pp:0,ppk:0,gest:29,cd:3},
+  {d:'2026-01-08',ag:'cl',rep:'ftochecabani',lc:0,pp:0,ppk:0,gest:74,cd:5},
+  {d:'2026-01-08',ag:'cl',rep:'iaubert',lc:1840,pp:1,ppk:1,gest:28,cd:3},
+  {d:'2026-01-08',ag:'cl',rep:'jmarchetti',lc:116977,pp:4,ppk:3,gest:88,cd:11},
+  {d:'2026-01-08',ag:'cl',rep:'jobarreiro',lc:47801,pp:3,ppk:2,gest:74,cd:13},
+  {d:'2026-01-08',ag:'cl',rep:'maaltamirano',lc:0,pp:0,ppk:0,gest:45,cd:5},
+  {d:'2026-01-08',ag:'cl',rep:'mciechanowic',lc:12504,pp:2,ppk:1,gest:53,cd:5},
+  {d:'2026-01-08',ag:'cl',rep:'mgarrigue',lc:61362,pp:3,ppk:3,gest:49,cd:5},
+  {d:'2026-01-08',ag:'cl',rep:'mmenschik',lc:117842,pp:4,ppk:3,gest:35,cd:6},
+  {d:'2026-01-08',ag:'cl',rep:'msanchezspur',lc:131000,pp:3,ppk:3,gest:34,cd:7},
+  {d:'2026-01-08',ag:'cl',rep:'tomlohrmann',lc:0,pp:0,ppk:0,gest:82,cd:7},
+  {d:'2026-01-09',ag:'cl',rep:'ahanuch',lc:0,pp:0,ppk:0,gest:12,cd:3},
+  {d:'2026-01-09',ag:'cl',rep:'bipereira',lc:104992,pp:3,ppk:3,gest:28,cd:5},
+  {d:'2026-01-09',ag:'cl',rep:'camilac',lc:12220,pp:1,ppk:1,gest:8,cd:1},
+  {d:'2026-01-09',ag:'cl',rep:'cincata',lc:30480,pp:3,ppk:1,gest:21,cd:4},
+  {d:'2026-01-09',ag:'cl',rep:'dagimenez',lc:44251,pp:5,ppk:2,gest:19,cd:8},
+  {d:'2026-01-09',ag:'cl',rep:'fkiefer',lc:114475,pp:5,ppk:3,gest:12,cd:6},
+  {d:'2026-01-09',ag:'cl',rep:'ftochecabani',lc:0,pp:2,ppk:0,gest:22,cd:4},
+  {d:'2026-01-09',ag:'cl',rep:'iaubert',lc:141645,pp:3,ppk:3,gest:15,cd:4},
+  {d:'2026-01-09',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:20,cd:4},
+  {d:'2026-01-09',ag:'cl',rep:'jobarreiro',lc:0,pp:4,ppk:0,gest:28,cd:8},
+  {d:'2026-01-09',ag:'cl',rep:'maaltamirano',lc:0,pp:1,ppk:0,gest:13,cd:2},
+  {d:'2026-01-09',ag:'cl',rep:'mciechanowic',lc:0,pp:3,ppk:0,gest:23,cd:3},
+  {d:'2026-01-09',ag:'cl',rep:'mgarrigue',lc:0,pp:0,ppk:0,gest:16,cd:0},
+  {d:'2026-01-09',ag:'cl',rep:'mmenschik',lc:114570,pp:3,ppk:3,gest:9,cd:4},
+  {d:'2026-01-09',ag:'cl',rep:'msanchezspur',lc:0,pp:4,ppk:0,gest:19,cd:4},
+  {d:'2026-01-09',ag:'cl',rep:'tomlohrmann',lc:127888,pp:7,ppk:3,gest:39,cd:9},
+  {d:'2026-01-10',ag:'cl',rep:'ahanuch',lc:12724,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-10',ag:'cl',rep:'camilac',lc:29100,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-01-10',ag:'cl',rep:'cincata',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-01-10',ag:'cl',rep:'ftochecabani',lc:5700,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-01-10',ag:'cl',rep:'iaubert',lc:6127,pp:3,ppk:1,gest:3,cd:3},
+  {d:'2026-01-10',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-10',ag:'cl',rep:'jobarreiro',lc:30581,pp:3,ppk:1,gest:3,cd:3},
+  {d:'2026-01-10',ag:'cl',rep:'maaltamirano',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-10',ag:'cl',rep:'mciechanowic',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-10',ag:'cl',rep:'mgarrigue',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-10',ag:'cl',rep:'msanchezspur',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-01-11',ag:'cl',rep:'bipereira',lc:29749,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-11',ag:'cl',rep:'cincata',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-11',ag:'cl',rep:'jobarreiro',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-01-11',ag:'cl',rep:'tomlohrmann',lc:56435,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-12',ag:'cl',rep:'ahanuch',lc:0,pp:0,ppk:0,gest:29,cd:2},
+  {d:'2026-01-12',ag:'cl',rep:'aistrak',lc:15027,pp:2,ppk:1,gest:28,cd:3},
+  {d:'2026-01-12',ag:'cl',rep:'bipereira',lc:14458,pp:1,ppk:1,gest:43,cd:2},
+  {d:'2026-01-12',ag:'cl',rep:'camilac',lc:16063,pp:3,ppk:1,gest:49,cd:6},
+  {d:'2026-01-12',ag:'cl',rep:'cincata',lc:84109,pp:5,ppk:3,gest:73,cd:8},
+  {d:'2026-01-12',ag:'cl',rep:'dagimenez',lc:0,pp:1,ppk:0,gest:24,cd:2},
+  {d:'2026-01-12',ag:'cl',rep:'fkiefer',lc:5817,pp:2,ppk:1,gest:19,cd:3},
+  {d:'2026-01-12',ag:'cl',rep:'ftochecabani',lc:104365,pp:11,ppk:5,gest:115,cd:17},
+  {d:'2026-01-12',ag:'cl',rep:'iaubert',lc:80858,pp:8,ppk:4,gest:44,cd:9},
+  {d:'2026-01-12',ag:'cl',rep:'jmarchetti',lc:75728,pp:4,ppk:3,gest:94,cd:8},
+  {d:'2026-01-12',ag:'cl',rep:'jobarreiro',lc:31977,pp:2,ppk:1,gest:38,cd:7},
+  {d:'2026-01-12',ag:'cl',rep:'maaltamirano',lc:20265,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-12',ag:'cl',rep:'mciechanowic',lc:43378,pp:3,ppk:1,gest:39,cd:4},
+  {d:'2026-01-12',ag:'cl',rep:'mgarrigue',lc:48066,pp:3,ppk:2,gest:42,cd:5},
+  {d:'2026-01-12',ag:'cl',rep:'mmenschik',lc:56401,pp:1,ppk:1,gest:29,cd:1},
+  {d:'2026-01-12',ag:'cl',rep:'msanchezspur',lc:0,pp:1,ppk:0,gest:20,cd:3},
+  {d:'2026-01-12',ag:'cl',rep:'tomlohrmann',lc:0,pp:0,ppk:0,gest:79,cd:2},
+  {d:'2026-01-13',ag:'cl',rep:'aistrak',lc:0,pp:0,ppk:0,gest:1,cd:0},
+  {d:'2026-01-13',ag:'cl',rep:'bipereira',lc:13557,pp:2,ppk:1,gest:64,cd:3},
+  {d:'2026-01-13',ag:'cl',rep:'camilac',lc:7859,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-13',ag:'cl',rep:'cincata',lc:45261,pp:1,ppk:1,gest:55,cd:3},
+  {d:'2026-01-13',ag:'cl',rep:'dagimenez',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-01-13',ag:'cl',rep:'fkiefer',lc:0,pp:0,ppk:0,gest:81,cd:9},
+  {d:'2026-01-13',ag:'cl',rep:'ftochecabani',lc:38722,pp:3,ppk:1,gest:76,cd:7},
+  {d:'2026-01-13',ag:'cl',rep:'jdroubi',lc:0,pp:2,ppk:0,gest:45,cd:3},
+  {d:'2026-01-13',ag:'cl',rep:'jmarchetti',lc:37762,pp:3,ppk:2,gest:62,cd:10},
+  {d:'2026-01-13',ag:'cl',rep:'jobarreiro',lc:14809,pp:1,ppk:1,gest:74,cd:8},
+  {d:'2026-01-13',ag:'cl',rep:'mciechanowic',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-13',ag:'cl',rep:'mmenschik',lc:0,pp:0,ppk:0,gest:1,cd:0},
+  {d:'2026-01-13',ag:'cl',rep:'msanchezspur',lc:50326,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-13',ag:'cl',rep:'tomlohrmann',lc:39904,pp:3,ppk:2,gest:54,cd:6},
+  {d:'2026-01-14',ag:'cl',rep:'ahanuch',lc:0,pp:0,ppk:0,gest:52,cd:2},
+  {d:'2026-01-14',ag:'cl',rep:'aistrak',lc:0,pp:1,ppk:0,gest:20,cd:2},
+  {d:'2026-01-14',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:48,cd:5},
+  {d:'2026-01-14',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:19,cd:0},
+  {d:'2026-01-14',ag:'cl',rep:'cincata',lc:95152,pp:4,ppk:3,gest:42,cd:10},
+  {d:'2026-01-14',ag:'cl',rep:'dagimenez',lc:0,pp:2,ppk:0,gest:31,cd:4},
+  {d:'2026-01-14',ag:'cl',rep:'fkiefer',lc:0,pp:1,ppk:0,gest:20,cd:2},
+  {d:'2026-01-14',ag:'cl',rep:'ftochecabani',lc:0,pp:2,ppk:0,gest:50,cd:3},
+  {d:'2026-01-14',ag:'cl',rep:'iaubert',lc:0,pp:1,ppk:0,gest:30,cd:1},
+  {d:'2026-01-14',ag:'cl',rep:'jdroubi',lc:41872,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-14',ag:'cl',rep:'jmarchetti',lc:0,pp:0,ppk:0,gest:28,cd:2},
+  {d:'2026-01-14',ag:'cl',rep:'jobarreiro',lc:0,pp:3,ppk:0,gest:33,cd:4},
+  {d:'2026-01-14',ag:'cl',rep:'mciechanowic',lc:54694,pp:3,ppk:1,gest:42,cd:5},
+  {d:'2026-01-14',ag:'cl',rep:'mgarrigue',lc:51670,pp:1,ppk:1,gest:47,cd:6},
+  {d:'2026-01-14',ag:'cl',rep:'mmenschik',lc:23987,pp:1,ppk:1,gest:31,cd:1},
+  {d:'2026-01-14',ag:'cl',rep:'msanchezspur',lc:87053,pp:3,ppk:2,gest:41,cd:3},
+  {d:'2026-01-14',ag:'cl',rep:'tomlohrmann',lc:0,pp:0,ppk:0,gest:41,cd:2},
+  {d:'2026-01-15',ag:'cl',rep:'ahanuch',lc:36921,pp:2,ppk:2,gest:60,cd:6},
+  {d:'2026-01-15',ag:'cl',rep:'aistrak',lc:56956,pp:3,ppk:1,gest:38,cd:5},
+  {d:'2026-01-15',ag:'cl',rep:'bipereira',lc:21157,pp:4,ppk:1,gest:105,cd:10},
+  {d:'2026-01-15',ag:'cl',rep:'camilac',lc:19736,pp:3,ppk:2,gest:107,cd:9},
+  {d:'2026-01-15',ag:'cl',rep:'cincata',lc:54993,pp:4,ppk:3,gest:100,cd:11},
+  {d:'2026-01-15',ag:'cl',rep:'dagimenez',lc:38941,pp:4,ppk:1,gest:36,cd:6},
+  {d:'2026-01-15',ag:'cl',rep:'fkiefer',lc:19415,pp:3,ppk:1,gest:59,cd:12},
+  {d:'2026-01-15',ag:'cl',rep:'ftochecabani',lc:103556,pp:5,ppk:4,gest:66,cd:9},
+  {d:'2026-01-15',ag:'cl',rep:'iaubert',lc:36722,pp:3,ppk:1,gest:18,cd:5},
+  {d:'2026-01-15',ag:'cl',rep:'jdroubi',lc:0,pp:0,ppk:0,gest:26,cd:0},
+  {d:'2026-01-15',ag:'cl',rep:'jmarchetti',lc:150243,pp:5,ppk:4,gest:33,cd:5},
+  {d:'2026-01-15',ag:'cl',rep:'jobarreiro',lc:86579,pp:8,ppk:3,gest:112,cd:12},
+  {d:'2026-01-15',ag:'cl',rep:'maaltamirano',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-15',ag:'cl',rep:'mciechanowic',lc:5493,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-01-15',ag:'cl',rep:'mgarrigue',lc:0,pp:0,ppk:0,gest:17,cd:0},
+  {d:'2026-01-15',ag:'cl',rep:'mmenschik',lc:7319,pp:1,ppk:1,gest:35,cd:3},
+  {d:'2026-01-15',ag:'cl',rep:'msanchezspur',lc:28472,pp:4,ppk:1,gest:21,cd:6},
+  {d:'2026-01-15',ag:'cl',rep:'tomlohrmann',lc:60820,pp:6,ppk:3,gest:103,cd:13},
+  {d:'2026-01-16',ag:'cl',rep:'ahanuch',lc:32241,pp:6,ppk:2,gest:20,cd:7},
+  {d:'2026-01-16',ag:'cl',rep:'aistrak',lc:33589,pp:5,ppk:3,gest:30,cd:5},
+  {d:'2026-01-16',ag:'cl',rep:'bipereira',lc:76990,pp:4,ppk:3,gest:39,cd:6},
+  {d:'2026-01-16',ag:'cl',rep:'camilac',lc:0,pp:2,ppk:0,gest:23,cd:4},
+  {d:'2026-01-16',ag:'cl',rep:'cincata',lc:19594,pp:6,ppk:2,gest:38,cd:9},
+  {d:'2026-01-16',ag:'cl',rep:'dagimenez',lc:32197,pp:8,ppk:1,gest:34,cd:12},
+  {d:'2026-01-16',ag:'cl',rep:'fkiefer',lc:11386,pp:3,ppk:1,gest:23,cd:5},
+  {d:'2026-01-16',ag:'cl',rep:'ftochecabani',lc:94296,pp:8,ppk:4,gest:37,cd:11},
+  {d:'2026-01-16',ag:'cl',rep:'iaubert',lc:47112,pp:4,ppk:1,gest:27,cd:7},
+  {d:'2026-01-16',ag:'cl',rep:'jmarchetti',lc:0,pp:2,ppk:0,gest:35,cd:5},
+  {d:'2026-01-16',ag:'cl',rep:'jobarreiro',lc:167684,pp:7,ppk:4,gest:30,cd:11},
+  {d:'2026-01-16',ag:'cl',rep:'mciechanowic',lc:0,pp:3,ppk:0,gest:26,cd:6},
+  {d:'2026-01-16',ag:'cl',rep:'mgarrigue',lc:0,pp:0,ppk:0,gest:28,cd:2},
+  {d:'2026-01-16',ag:'cl',rep:'mmenschik',lc:0,pp:1,ppk:0,gest:28,cd:3},
+  {d:'2026-01-16',ag:'cl',rep:'msanchezspur',lc:0,pp:1,ppk:0,gest:18,cd:3},
+  {d:'2026-01-16',ag:'cl',rep:'tomlohrmann',lc:143231,pp:13,ppk:9,gest:36,cd:16},
+  {d:'2026-01-17',ag:'cl',rep:'ahanuch',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-17',ag:'cl',rep:'aistrak',lc:0,pp:4,ppk:0,gest:4,cd:4},
+  {d:'2026-01-17',ag:'cl',rep:'ftochecabani',lc:49579,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-17',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-17',ag:'cl',rep:'tomlohrmann',lc:25346,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-01-18',ag:'cl',rep:'aistrak',lc:19498,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-18',ag:'cl',rep:'camilac',lc:11555,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-18',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-18',ag:'cl',rep:'tomlohrmann',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-19',ag:'cl',rep:'ahanuch',lc:113428,pp:4,ppk:4,gest:134,cd:10},
+  {d:'2026-01-19',ag:'cl',rep:'aistrak',lc:42947,pp:3,ppk:2,gest:151,cd:5},
+  {d:'2026-01-19',ag:'cl',rep:'bipereira',lc:53279,pp:2,ppk:2,gest:176,cd:6},
+  {d:'2026-01-19',ag:'cl',rep:'camilac',lc:25532,pp:5,ppk:2,gest:74,cd:7},
+  {d:'2026-01-19',ag:'cl',rep:'cincata',lc:12506,pp:2,ppk:1,gest:121,cd:6},
+  {d:'2026-01-19',ag:'cl',rep:'dagimenez',lc:73381,pp:1,ppk:1,gest:122,cd:7},
+  {d:'2026-01-19',ag:'cl',rep:'fkiefer',lc:71552,pp:3,ppk:2,gest:64,cd:7},
+  {d:'2026-01-19',ag:'cl',rep:'ftochecabani',lc:15558,pp:2,ppk:1,gest:108,cd:6},
+  {d:'2026-01-19',ag:'cl',rep:'iaubert',lc:73794,pp:5,ppk:2,gest:79,cd:6},
+  {d:'2026-01-19',ag:'cl',rep:'imir',lc:0,pp:1,ppk:0,gest:61,cd:8},
+  {d:'2026-01-19',ag:'cl',rep:'jmarchetti',lc:0,pp:0,ppk:0,gest:93,cd:1},
+  {d:'2026-01-19',ag:'cl',rep:'jobarreiro',lc:154648,pp:7,ppk:5,gest:87,cd:12},
+  {d:'2026-01-19',ag:'cl',rep:'luctorres',lc:0,pp:0,ppk:0,gest:83,cd:3},
+  {d:'2026-01-19',ag:'cl',rep:'maaltamirano',lc:0,pp:1,ppk:0,gest:85,cd:3},
+  {d:'2026-01-19',ag:'cl',rep:'mciechanowic',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-19',ag:'cl',rep:'mgarrigue',lc:60682,pp:3,ppk:2,gest:77,cd:8},
+  {d:'2026-01-19',ag:'cl',rep:'mmenschik',lc:0,pp:2,ppk:0,gest:63,cd:5},
+  {d:'2026-01-19',ag:'cl',rep:'msanchezspur',lc:0,pp:2,ppk:0,gest:61,cd:5},
+  {d:'2026-01-19',ag:'cl',rep:'tomlohrmann',lc:0,pp:6,ppk:0,gest:86,cd:13},
+  {d:'2026-01-20',ag:'cl',rep:'ahanuch',lc:11677,pp:2,ppk:1,gest:33,cd:4},
+  {d:'2026-01-20',ag:'cl',rep:'aistrak',lc:0,pp:1,ppk:0,gest:26,cd:2},
+  {d:'2026-01-20',ag:'cl',rep:'bipereira',lc:9143,pp:1,ppk:1,gest:37,cd:3},
+  {d:'2026-01-20',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:34,cd:5},
+  {d:'2026-01-20',ag:'cl',rep:'cincata',lc:169848,pp:5,ppk:4,gest:57,cd:8},
+  {d:'2026-01-20',ag:'cl',rep:'dagimenez',lc:0,pp:0,ppk:0,gest:38,cd:3},
+  {d:'2026-01-20',ag:'cl',rep:'fkiefer',lc:7388,pp:1,ppk:1,gest:20,cd:2},
+  {d:'2026-01-20',ag:'cl',rep:'ftochecabani',lc:170925,pp:3,ppk:2,gest:30,cd:6},
+  {d:'2026-01-20',ag:'cl',rep:'iaubert',lc:21451,pp:4,ppk:1,gest:41,cd:7},
+  {d:'2026-01-20',ag:'cl',rep:'imir',lc:86597,pp:1,ppk:1,gest:15,cd:4},
+  {d:'2026-01-20',ag:'cl',rep:'jmarchetti',lc:33101,pp:1,ppk:1,gest:43,cd:5},
+  {d:'2026-01-20',ag:'cl',rep:'jobarreiro',lc:0,pp:0,ppk:0,gest:49,cd:6},
+  {d:'2026-01-20',ag:'cl',rep:'luctorres',lc:9851,pp:2,ppk:1,gest:48,cd:5},
+  {d:'2026-01-20',ag:'cl',rep:'maaltamirano',lc:10801,pp:2,ppk:1,gest:26,cd:3},
+  {d:'2026-01-20',ag:'cl',rep:'mciechanowic',lc:0,pp:0,ppk:0,gest:27,cd:4},
+  {d:'2026-01-20',ag:'cl',rep:'mgarrigue',lc:13228,pp:4,ppk:2,gest:48,cd:9},
+  {d:'2026-01-20',ag:'cl',rep:'mmenschik',lc:12738,pp:2,ppk:1,gest:19,cd:2},
+  {d:'2026-01-20',ag:'cl',rep:'msanchezspur',lc:52134,pp:2,ppk:2,gest:34,cd:4},
+  {d:'2026-01-20',ag:'cl',rep:'tomlohrmann',lc:84902,pp:4,ppk:3,gest:43,cd:6},
+  {d:'2026-01-21',ag:'cl',rep:'ahanuch',lc:145748,pp:2,ppk:2,gest:14,cd:4},
+  {d:'2026-01-21',ag:'cl',rep:'aistrak',lc:46666,pp:2,ppk:2,gest:15,cd:5},
+  {d:'2026-01-21',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:16,cd:2},
+  {d:'2026-01-21',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:12,cd:1},
+  {d:'2026-01-21',ag:'cl',rep:'cincata',lc:64602,pp:2,ppk:2,gest:16,cd:4},
+  {d:'2026-01-21',ag:'cl',rep:'dagimenez',lc:127065,pp:4,ppk:3,gest:7,cd:4},
+  {d:'2026-01-21',ag:'cl',rep:'fkiefer',lc:47889,pp:1,ppk:1,gest:8,cd:1},
+  {d:'2026-01-21',ag:'cl',rep:'ftochecabani',lc:12335,pp:1,ppk:1,gest:12,cd:3},
+  {d:'2026-01-21',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:13,cd:3},
+  {d:'2026-01-21',ag:'cl',rep:'jobarreiro',lc:0,pp:1,ppk:0,gest:19,cd:2},
+  {d:'2026-01-21',ag:'cl',rep:'luctorres',lc:0,pp:1,ppk:0,gest:18,cd:1},
+  {d:'2026-01-21',ag:'cl',rep:'mgarrigue',lc:0,pp:0,ppk:0,gest:15,cd:1},
+  {d:'2026-01-21',ag:'cl',rep:'tomlohrmann',lc:72946,pp:4,ppk:1,gest:18,cd:4},
+  {d:'2026-01-22',ag:'cl',rep:'ahanuch',lc:34379,pp:1,ppk:1,gest:28,cd:2},
+  {d:'2026-01-22',ag:'cl',rep:'camilac',lc:44585,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-22',ag:'cl',rep:'cincata',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-22',ag:'cl',rep:'dagimenez',lc:0,pp:4,ppk:0,gest:22,cd:5},
+  {d:'2026-01-22',ag:'cl',rep:'fkiefer',lc:0,pp:3,ppk:0,gest:3,cd:3},
+  {d:'2026-01-22',ag:'cl',rep:'ftochecabani',lc:17544,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-01-22',ag:'cl',rep:'iaubert',lc:0,pp:0,ppk:0,gest:7,cd:1},
+  {d:'2026-01-22',ag:'cl',rep:'imir',lc:0,pp:0,ppk:0,gest:21,cd:5},
+  {d:'2026-01-22',ag:'cl',rep:'jobarreiro',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-01-22',ag:'cl',rep:'maaltamirano',lc:0,pp:1,ppk:0,gest:20,cd:3},
+  {d:'2026-01-22',ag:'cl',rep:'mciechanowic',lc:15641,pp:1,ppk:1,gest:3,cd:1},
+  {d:'2026-01-22',ag:'cl',rep:'mgarrigue',lc:84479,pp:2,ppk:1,gest:25,cd:3},
+  {d:'2026-01-22',ag:'cl',rep:'mmenschik',lc:0,pp:0,ppk:0,gest:18,cd:1},
+  {d:'2026-01-22',ag:'cl',rep:'msanchezspur',lc:0,pp:0,ppk:0,gest:26,cd:1},
+  {d:'2026-01-22',ag:'cl',rep:'tomlohrmann',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-23',ag:'cl',rep:'ahanuch',lc:228386,pp:3,ppk:2,gest:3,cd:3},
+  {d:'2026-01-23',ag:'cl',rep:'aistrak',lc:18594,pp:3,ppk:1,gest:23,cd:5},
+  {d:'2026-01-23',ag:'cl',rep:'bipereira',lc:23661,pp:2,ppk:1,gest:27,cd:3},
+  {d:'2026-01-23',ag:'cl',rep:'camilac',lc:16941,pp:2,ppk:1,gest:25,cd:3},
+  {d:'2026-01-23',ag:'cl',rep:'cincata',lc:111121,pp:2,ppk:2,gest:24,cd:2},
+  {d:'2026-01-23',ag:'cl',rep:'dagimenez',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-01-23',ag:'cl',rep:'fkiefer',lc:0,pp:1,ppk:0,gest:17,cd:3},
+  {d:'2026-01-23',ag:'cl',rep:'ftochecabani',lc:0,pp:1,ppk:0,gest:18,cd:3},
+  {d:'2026-01-23',ag:'cl',rep:'iaubert',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-01-23',ag:'cl',rep:'imir',lc:11000,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-23',ag:'cl',rep:'jmarchetti',lc:27682,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-01-23',ag:'cl',rep:'jobarreiro',lc:0,pp:1,ppk:0,gest:18,cd:3},
+  {d:'2026-01-23',ag:'cl',rep:'luctorres',lc:0,pp:1,ppk:0,gest:23,cd:3},
+  {d:'2026-01-23',ag:'cl',rep:'maaltamirano',lc:253304.47,pp:3,ppk:2,gest:3,cd:3},
+  {d:'2026-01-23',ag:'cl',rep:'mmenschik',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-23',ag:'cl',rep:'msanchezspur',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-23',ag:'cl',rep:'tomlohrmann',lc:17427,pp:4,ppk:1,gest:21,cd:5},
+  {d:'2026-01-24',ag:'cl',rep:'aistrak',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-24',ag:'cl',rep:'cincata',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-24',ag:'cl',rep:'iaubert',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-25',ag:'cl',rep:'camilac',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-25',ag:'cl',rep:'dagimenez',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-25',ag:'cl',rep:'imir',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-26',ag:'cl',rep:'ahanuch',lc:0,pp:0,ppk:0,gest:99,cd:2},
+  {d:'2026-01-26',ag:'cl',rep:'aistrak',lc:31256,pp:4,ppk:2,gest:28,cd:4},
+  {d:'2026-01-26',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:138,cd:5},
+  {d:'2026-01-26',ag:'cl',rep:'camilac',lc:0,pp:1,ppk:0,gest:33,cd:2},
+  {d:'2026-01-26',ag:'cl',rep:'cincata',lc:41648,pp:2,ppk:1,gest:97,cd:4},
+  {d:'2026-01-26',ag:'cl',rep:'dagimenez',lc:23212,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-01-26',ag:'cl',rep:'fkiefer',lc:0,pp:2,ppk:0,gest:55,cd:3},
+  {d:'2026-01-26',ag:'cl',rep:'ftochecabani',lc:35922,pp:2,ppk:1,gest:132,cd:3},
+  {d:'2026-01-26',ag:'cl',rep:'imir',lc:0,pp:0,ppk:0,gest:8,cd:0},
+  {d:'2026-01-26',ag:'cl',rep:'jmarchetti',lc:0,pp:0,ppk:0,gest:121,cd:3},
+  {d:'2026-01-26',ag:'cl',rep:'jobarreiro',lc:114011,pp:2,ppk:2,gest:2,cd:2},
+  {d:'2026-01-26',ag:'cl',rep:'luctorres',lc:0,pp:0,ppk:0,gest:110,cd:6},
+  {d:'2026-01-26',ag:'cl',rep:'maaltamirano',lc:0,pp:1,ppk:0,gest:82,cd:3},
+  {d:'2026-01-26',ag:'cl',rep:'mgarrigue',lc:0,pp:0,ppk:0,gest:122,cd:1},
+  {d:'2026-01-26',ag:'cl',rep:'mmenschik',lc:0,pp:2,ppk:0,gest:53,cd:3},
+  {d:'2026-01-26',ag:'cl',rep:'msanchezspur',lc:0,pp:1,ppk:0,gest:59,cd:4},
+  {d:'2026-01-26',ag:'cl',rep:'tomlohrmann',lc:18354,pp:2,ppk:1,gest:106,cd:6},
+  {d:'2026-01-27',ag:'cl',rep:'ahanuch',lc:26574,pp:2,ppk:1,gest:21,cd:4},
+  {d:'2026-01-27',ag:'cl',rep:'aistrak',lc:0,pp:1,ppk:0,gest:24,cd:3},
+  {d:'2026-01-27',ag:'cl',rep:'bipereira',lc:0,pp:1,ppk:0,gest:36,cd:3},
+  {d:'2026-01-27',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:37,cd:0},
+  {d:'2026-01-27',ag:'cl',rep:'cincata',lc:0,pp:0,ppk:0,gest:29,cd:1},
+  {d:'2026-01-27',ag:'cl',rep:'dagimenez',lc:0,pp:1,ppk:0,gest:21,cd:3},
+  {d:'2026-01-27',ag:'cl',rep:'fkiefer',lc:0,pp:1,ppk:0,gest:31,cd:7},
+  {d:'2026-01-27',ag:'cl',rep:'ftochecabani',lc:0,pp:0,ppk:0,gest:29,cd:1},
+  {d:'2026-01-27',ag:'cl',rep:'iaubert',lc:0,pp:0,ppk:0,gest:15,cd:0},
+  {d:'2026-01-27',ag:'cl',rep:'imir',lc:54016,pp:1,ppk:1,gest:19,cd:2},
+  {d:'2026-01-27',ag:'cl',rep:'jmarchetti',lc:0,pp:0,ppk:0,gest:30,cd:1},
+  {d:'2026-01-27',ag:'cl',rep:'luctorres',lc:32689,pp:4,ppk:1,gest:67,cd:6},
+  {d:'2026-01-27',ag:'cl',rep:'maaltamirano',lc:0,pp:0,ppk:0,gest:15,cd:1},
+  {d:'2026-01-27',ag:'cl',rep:'mciechanowic',lc:0,pp:0,ppk:0,gest:27,cd:2},
+  {d:'2026-01-27',ag:'cl',rep:'mgarrigue',lc:0,pp:0,ppk:0,gest:21,cd:1},
+  {d:'2026-01-27',ag:'cl',rep:'mmenschik',lc:19294,pp:1,ppk:1,gest:21,cd:1},
+  {d:'2026-01-27',ag:'cl',rep:'msanchezspur',lc:18303,pp:1,ppk:1,gest:17,cd:1},
+  {d:'2026-01-27',ag:'cl',rep:'tomlohrmann',lc:0,pp:0,ppk:0,gest:29,cd:1},
+  {d:'2026-01-28',ag:'cl',rep:'ahanuch',lc:63484,pp:1,ppk:1,gest:21,cd:3},
+  {d:'2026-01-28',ag:'cl',rep:'aistrak',lc:0,pp:0,ppk:0,gest:1,cd:0},
+  {d:'2026-01-28',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:3,cd:0},
+  {d:'2026-01-28',ag:'cl',rep:'cincata',lc:0,pp:0,ppk:0,gest:2,cd:0},
+  {d:'2026-01-28',ag:'cl',rep:'dagimenez',lc:0,pp:1,ppk:0,gest:28,cd:2},
+  {d:'2026-01-28',ag:'cl',rep:'fkiefer',lc:15867,pp:1,ppk:1,gest:2,cd:2},
+  {d:'2026-01-28',ag:'cl',rep:'ftochecabani',lc:0,pp:1,ppk:0,gest:3,cd:1},
+  {d:'2026-01-28',ag:'cl',rep:'iaubert',lc:11757,pp:3,ppk:1,gest:25,cd:3},
+  {d:'2026-01-28',ag:'cl',rep:'imir',lc:0,pp:1,ppk:0,gest:31,cd:5},
+  {d:'2026-01-28',ag:'cl',rep:'maaltamirano',lc:0,pp:0,ppk:0,gest:26,cd:3},
+  {d:'2026-01-28',ag:'cl',rep:'mciechanowic',lc:0,pp:0,ppk:0,gest:25,cd:1},
+  {d:'2026-01-28',ag:'cl',rep:'mgarrigue',lc:9142,pp:1,ppk:1,gest:26,cd:3},
+  {d:'2026-01-28',ag:'cl',rep:'mmenschik',lc:0,pp:0,ppk:0,gest:15,cd:2},
+  {d:'2026-01-28',ag:'cl',rep:'msanchezspur',lc:0,pp:0,ppk:0,gest:26,cd:1},
+  {d:'2026-01-28',ag:'cl',rep:'tomlohrmann',lc:0,pp:2,ppk:0,gest:3,cd:2},
+  {d:'2026-01-29',ag:'cl',rep:'ahanuch',lc:0,pp:0,ppk:0,gest:7,cd:0},
+  {d:'2026-01-29',ag:'cl',rep:'aistrak',lc:0,pp:0,ppk:0,gest:6,cd:1},
+  {d:'2026-01-29',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:5,cd:1},
+  {d:'2026-01-29',ag:'cl',rep:'cincata',lc:20315,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-01-29',ag:'cl',rep:'dagimenez',lc:10975,pp:1,ppk:1,gest:13,cd:2},
+  {d:'2026-01-29',ag:'cl',rep:'fkiefer',lc:0,pp:0,ppk:0,gest:10,cd:1},
+  {d:'2026-01-29',ag:'cl',rep:'iaubert',lc:27625,pp:2,ppk:1,gest:19,cd:2},
+  {d:'2026-01-29',ag:'cl',rep:'imir',lc:0,pp:1,ppk:0,gest:4,cd:2},
+  {d:'2026-01-29',ag:'cl',rep:'luctorres',lc:0,pp:0,ppk:0,gest:6,cd:1},
+  {d:'2026-01-29',ag:'cl',rep:'maaltamirano',lc:25383,pp:2,ppk:1,gest:10,cd:3},
+  {d:'2026-01-29',ag:'cl',rep:'mciechanowic',lc:17556,pp:1,ppk:1,gest:10,cd:1},
+  {d:'2026-01-29',ag:'cl',rep:'mgarrigue',lc:45306,pp:3,ppk:1,gest:22,cd:5},
+  {d:'2026-01-29',ag:'cl',rep:'mmenschik',lc:0,pp:1,ppk:0,gest:8,cd:1},
+  {d:'2026-01-29',ag:'cl',rep:'msanchezspur',lc:90040,pp:1,ppk:1,gest:6,cd:1},
+  {d:'2026-01-30',ag:'cl',rep:'ahanuch',lc:60944,pp:1,ppk:1,gest:6,cd:1},
+  {d:'2026-01-30',ag:'cl',rep:'aistrak',lc:0,pp:0,ppk:0,gest:5,cd:0},
+  {d:'2026-01-30',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:8,cd:0},
+  {d:'2026-01-30',ag:'cl',rep:'camilac',lc:0,pp:1,ppk:0,gest:8,cd:1},
+  {d:'2026-01-30',ag:'cl',rep:'cincata',lc:44167,pp:2,ppk:2,gest:10,cd:4},
+  {d:'2026-01-30',ag:'cl',rep:'fkiefer',lc:0,pp:0,ppk:0,gest:4,cd:1},
+  {d:'2026-01-30',ag:'cl',rep:'ftochecabani',lc:0,pp:1,ppk:0,gest:9,cd:1},
+  {d:'2026-01-30',ag:'cl',rep:'iaubert',lc:13200,pp:1,ppk:1,gest:3,cd:2},
+  {d:'2026-01-30',ag:'cl',rep:'imir',lc:24594,pp:3,ppk:1,gest:9,cd:4},
+  {d:'2026-01-30',ag:'cl',rep:'jmarchetti',lc:13270,pp:2,ppk:1,gest:7,cd:2},
+  {d:'2026-01-30',ag:'cl',rep:'jobarreiro',lc:20000,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-30',ag:'cl',rep:'luctorres',lc:0,pp:1,ppk:0,gest:3,cd:1},
+  {d:'2026-01-30',ag:'cl',rep:'maaltamirano',lc:71026,pp:1,ppk:1,gest:10,cd:1},
+  {d:'2026-01-30',ag:'cl',rep:'mciechanowic',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-01-30',ag:'cl',rep:'mgarrigue',lc:0,pp:0,ppk:0,gest:5,cd:1},
+  {d:'2026-01-30',ag:'cl',rep:'mmenschik',lc:0,pp:2,ppk:0,gest:7,cd:4},
+  {d:'2026-01-30',ag:'cl',rep:'msanchezspur',lc:0,pp:1,ppk:0,gest:4,cd:2},
+  {d:'2026-01-30',ag:'cl',rep:'tomlohrmann',lc:20522,pp:1,ppk:1,gest:11,cd:2},
+  {d:'2026-01-31',ag:'cl',rep:'ahanuch',lc:21774,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-01-31',ag:'cl',rep:'aistrak',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-31',ag:'cl',rep:'cincata',lc:37384,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-01-31',ag:'cl',rep:'dagimenez',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-31',ag:'cl',rep:'iaubert',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-01-31',ag:'cl',rep:'imir',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-31',ag:'cl',rep:'luctorres',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-31',ag:'cl',rep:'msanchezspur',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-01-31',ag:'cl',rep:'tomlohrmann',lc:24559,pp:3,ppk:1,gest:3,cd:3},
+  {d:'2026-02-02',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:179,cd:4},
+  {d:'2026-02-02',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:56,cd:0},
+  {d:'2026-02-02',ag:'cl',rep:'cincata',lc:8542,pp:2,ppk:1,gest:62,cd:4},
+  {d:'2026-02-02',ag:'cl',rep:'ftochecabani',lc:78386,pp:2,ppk:2,gest:75,cd:2},
+  {d:'2026-02-02',ag:'cl',rep:'jmarchetti',lc:5489,pp:1,ppk:1,gest:53,cd:4},
+  {d:'2026-02-02',ag:'cl',rep:'jobarreiro',lc:0,pp:0,ppk:0,gest:50,cd:3},
+  {d:'2026-02-02',ag:'cl',rep:'luctorres',lc:0,pp:1,ppk:0,gest:45,cd:4},
+  {d:'2026-02-02',ag:'cl',rep:'maaltamirano',lc:0,pp:0,ppk:0,gest:121,cd:1},
+  {d:'2026-02-02',ag:'cl',rep:'mciechanowic',lc:19039.76,pp:4,ppk:2,gest:106,cd:6},
+  {d:'2026-02-02',ag:'cl',rep:'mmenschik',lc:0,pp:0,ppk:0,gest:116,cd:9},
+  {d:'2026-02-02',ag:'cl',rep:'msanchezspur',lc:0,pp:0,ppk:0,gest:121,cd:3},
+  {d:'2026-02-02',ag:'cl',rep:'tomlohrmann',lc:0,pp:0,ppk:0,gest:54,cd:1},
+  {d:'2026-02-03',ag:'cl',rep:'bipereira',lc:9111,pp:1,ppk:1,gest:42,cd:4},
+  {d:'2026-02-03',ag:'cl',rep:'cincata',lc:14192,pp:1,ppk:1,gest:52,cd:4},
+  {d:'2026-02-03',ag:'cl',rep:'ftochecabani',lc:0,pp:2,ppk:0,gest:36,cd:2},
+  {d:'2026-02-03',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:45,cd:7},
+  {d:'2026-02-03',ag:'cl',rep:'jobarreiro',lc:10000,pp:1,ppk:1,gest:42,cd:3},
+  {d:'2026-02-03',ag:'cl',rep:'luctorres',lc:0,pp:1,ppk:0,gest:43,cd:4},
+  {d:'2026-02-03',ag:'cl',rep:'maaltamirano',lc:45984,pp:2,ppk:1,gest:31,cd:2},
+  {d:'2026-02-03',ag:'cl',rep:'mciechanowic',lc:45610,pp:1,ppk:1,gest:31,cd:3},
+  {d:'2026-02-03',ag:'cl',rep:'mmenschik',lc:0,pp:0,ppk:0,gest:28,cd:4},
+  {d:'2026-02-03',ag:'cl',rep:'msanchezspur',lc:14748,pp:2,ppk:1,gest:21,cd:4},
+  {d:'2026-02-03',ag:'cl',rep:'tomlohrmann',lc:0,pp:0,ppk:0,gest:35,cd:1},
+  {d:'2026-02-04',ag:'cl',rep:'aciabattini',lc:0,pp:0,ppk:0,gest:12,cd:1},
+  {d:'2026-02-04',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:19,cd:0},
+  {d:'2026-02-04',ag:'cl',rep:'camilac',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-04',ag:'cl',rep:'cincata',lc:0,pp:0,ppk:0,gest:12,cd:3},
+  {d:'2026-02-04',ag:'cl',rep:'ftochecabani',lc:0,pp:1,ppk:0,gest:19,cd:1},
+  {d:'2026-02-04',ag:'cl',rep:'jmarchetti',lc:0,pp:0,ppk:0,gest:12,cd:0},
+  {d:'2026-02-04',ag:'cl',rep:'jobarreiro',lc:66268,pp:3,ppk:2,gest:20,cd:5},
+  {d:'2026-02-04',ag:'cl',rep:'luctorres',lc:8642,pp:1,ppk:1,gest:15,cd:2},
+  {d:'2026-02-04',ag:'cl',rep:'maaltamirano',lc:5775,pp:2,ppk:1,gest:14,cd:4},
+  {d:'2026-02-04',ag:'cl',rep:'mciechanowic',lc:0,pp:1,ppk:0,gest:14,cd:2},
+  {d:'2026-02-04',ag:'cl',rep:'mmenschik',lc:0,pp:0,ppk:0,gest:13,cd:2},
+  {d:'2026-02-04',ag:'cl',rep:'msanchezspur',lc:0,pp:0,ppk:0,gest:9,cd:1},
+  {d:'2026-02-04',ag:'cl',rep:'tomlohrmann',lc:0,pp:1,ppk:0,gest:19,cd:1},
+  {d:'2026-02-05',ag:'cl',rep:'camilac',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-05',ag:'cl',rep:'ftochecabani',lc:28018,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-05',ag:'cl',rep:'jmarchetti',lc:23127,pp:3,ppk:1,gest:3,cd:3},
+  {d:'2026-02-05',ag:'cl',rep:'jobarreiro',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-05',ag:'cl',rep:'maaltamirano',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-05',ag:'cl',rep:'mciechanowic',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-02-05',ag:'cl',rep:'msanchezspur',lc:38823,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-02-05',ag:'cl',rep:'tomlohrmann',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-06',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:5,cd:2},
+  {d:'2026-02-06',ag:'cl',rep:'cincata',lc:0,pp:1,ppk:0,gest:7,cd:3},
+  {d:'2026-02-06',ag:'cl',rep:'ftochecabani',lc:5012,pp:1,ppk:1,gest:10,cd:1},
+  {d:'2026-02-06',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:7,cd:1},
+  {d:'2026-02-06',ag:'cl',rep:'jobarreiro',lc:0,pp:0,ppk:0,gest:2,cd:0},
+  {d:'2026-02-06',ag:'cl',rep:'luctorres',lc:0,pp:0,ppk:0,gest:6,cd:0},
+  {d:'2026-02-06',ag:'cl',rep:'maaltamirano',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-06',ag:'cl',rep:'mciechanowic',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-02-06',ag:'cl',rep:'mmenschik',lc:43725,pp:1,ppk:1,gest:2,cd:2},
+  {d:'2026-02-06',ag:'cl',rep:'msanchezspur',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-06',ag:'cl',rep:'tomlohrmann',lc:11286,pp:3,ppk:1,gest:11,cd:3},
+  {d:'2026-02-07',ag:'cl',rep:'mmenschik',lc:13734,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-08',ag:'cl',rep:'bipereira',lc:64358,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-02-09',ag:'cl',rep:'aciabattini',lc:0,pp:0,ppk:0,gest:6,cd:0},
+  {d:'2026-02-09',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:61,cd:1},
+  {d:'2026-02-09',ag:'cl',rep:'camilac',lc:67365,pp:2,ppk:2,gest:48,cd:4},
+  {d:'2026-02-09',ag:'cl',rep:'ftochecabani',lc:0,pp:0,ppk:0,gest:67,cd:0},
+  {d:'2026-02-09',ag:'cl',rep:'jmarchetti',lc:110108,pp:3,ppk:3,gest:62,cd:6},
+  {d:'2026-02-09',ag:'cl',rep:'jobarreiro',lc:0,pp:0,ppk:0,gest:56,cd:2},
+  {d:'2026-02-09',ag:'cl',rep:'luctorres',lc:0,pp:1,ppk:0,gest:48,cd:5},
+  {d:'2026-02-09',ag:'cl',rep:'maaltamirano',lc:21396,pp:1,ppk:1,gest:13,cd:1},
+  {d:'2026-02-09',ag:'cl',rep:'mciechanowic',lc:48111,pp:1,ppk:1,gest:10,cd:1},
+  {d:'2026-02-09',ag:'cl',rep:'msanchezspur',lc:12401,pp:1,ppk:1,gest:7,cd:3},
+  {d:'2026-02-09',ag:'cl',rep:'tomlohrmann',lc:10200,pp:3,ppk:1,gest:53,cd:6},
+  {d:'2026-02-10',ag:'cl',rep:'aciabattini',lc:0,pp:0,ppk:0,gest:14,cd:0},
+  {d:'2026-02-10',ag:'cl',rep:'bipereira',lc:23238,pp:1,ppk:1,gest:52,cd:4},
+  {d:'2026-02-10',ag:'cl',rep:'camilac',lc:12600,pp:2,ppk:0,gest:21,cd:2},
+  {d:'2026-02-10',ag:'cl',rep:'ftochecabani',lc:0,pp:0,ppk:0,gest:35,cd:0},
+  {d:'2026-02-10',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:31,cd:4},
+  {d:'2026-02-10',ag:'cl',rep:'jobarreiro',lc:0,pp:2,ppk:0,gest:41,cd:2},
+  {d:'2026-02-10',ag:'cl',rep:'luctorres',lc:61085,pp:3,ppk:2,gest:47,cd:5},
+  {d:'2026-02-10',ag:'cl',rep:'maaltamirano',lc:28763,pp:2,ppk:2,gest:16,cd:3},
+  {d:'2026-02-10',ag:'cl',rep:'mciechanowic',lc:0,pp:0,ppk:0,gest:16,cd:0},
+  {d:'2026-02-10',ag:'cl',rep:'mmenschik',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-10',ag:'cl',rep:'msanchezspur',lc:0,pp:1,ppk:0,gest:8,cd:1},
+  {d:'2026-02-10',ag:'cl',rep:'tomlohrmann',lc:20733,pp:2,ppk:1,gest:47,cd:4},
+  {d:'2026-02-11',ag:'cl',rep:'aciabattini',lc:0,pp:0,ppk:0,gest:22,cd:2},
+  {d:'2026-02-11',ag:'cl',rep:'bipereira',lc:28162,pp:2,ppk:1,gest:64,cd:3},
+  {d:'2026-02-11',ag:'cl',rep:'camilac',lc:13614,pp:1,ppk:1,gest:72,cd:4},
+  {d:'2026-02-11',ag:'cl',rep:'ftochecabani',lc:40183,pp:3,ppk:3,gest:97,cd:4},
+  {d:'2026-02-11',ag:'cl',rep:'jmarchetti',lc:23967,pp:3,ppk:2,gest:74,cd:5},
+  {d:'2026-02-11',ag:'cl',rep:'jobarreiro',lc:5721,pp:4,ppk:1,gest:63,cd:6},
+  {d:'2026-02-11',ag:'cl',rep:'luctorres',lc:0,pp:0,ppk:0,gest:86,cd:2},
+  {d:'2026-02-11',ag:'cl',rep:'maaltamirano',lc:25723,pp:1,ppk:1,gest:41,cd:5},
+  {d:'2026-02-11',ag:'cl',rep:'mciechanowic',lc:15918,pp:2,ppk:1,gest:53,cd:3},
+  {d:'2026-02-11',ag:'cl',rep:'msanchezspur',lc:3849,pp:2,ppk:1,gest:87,cd:5},
+  {d:'2026-02-11',ag:'cl',rep:'tomlohrmann',lc:34394,pp:1,ppk:1,gest:88,cd:3},
+  {d:'2026-02-12',ag:'cl',rep:'aciabattini',lc:0,pp:1,ppk:0,gest:2,cd:1},
+  {d:'2026-02-12',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:44,cd:4},
+  {d:'2026-02-12',ag:'cl',rep:'camilac',lc:0,pp:1,ppk:0,gest:15,cd:1},
+  {d:'2026-02-12',ag:'cl',rep:'ftochecabani',lc:0,pp:0,ppk:0,gest:35,cd:0},
+  {d:'2026-02-12',ag:'cl',rep:'jmarchetti',lc:34745,pp:3,ppk:2,gest:26,cd:3},
+  {d:'2026-02-12',ag:'cl',rep:'jobarreiro',lc:36088,pp:1,ppk:1,gest:22,cd:5},
+  {d:'2026-02-12',ag:'cl',rep:'luctorres',lc:34305,pp:3,ppk:3,gest:45,cd:4},
+  {d:'2026-02-12',ag:'cl',rep:'maaltamirano',lc:25002,pp:0,ppk:0,gest:1,cd:1},
+  {d:'2026-02-12',ag:'cl',rep:'msanchezspur',lc:0,pp:0,ppk:0,gest:28,cd:3},
+  {d:'2026-02-12',ag:'cl',rep:'tomlohrmann',lc:0,pp:1,ppk:0,gest:37,cd:4},
+  {d:'2026-02-13',ag:'cl',rep:'aciabattini',lc:0,pp:0,ppk:0,gest:33,cd:5},
+  {d:'2026-02-13',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:29,cd:1},
+  {d:'2026-02-13',ag:'cl',rep:'ftochecabani',lc:0,pp:1,ppk:0,gest:93,cd:3},
+  {d:'2026-02-13',ag:'cl',rep:'jmarchetti',lc:74491,pp:6,ppk:4,gest:89,cd:9},
+  {d:'2026-02-13',ag:'cl',rep:'jobarreiro',lc:0,pp:2,ppk:0,gest:64,cd:6},
+  {d:'2026-02-13',ag:'cl',rep:'mciechanowic',lc:39296,pp:4,ppk:3,gest:42,cd:5},
+  {d:'2026-02-13',ag:'cl',rep:'msanchezspur',lc:69571,pp:3,ppk:2,gest:48,cd:10},
+  {d:'2026-02-13',ag:'cl',rep:'tomlohrmann',lc:40757,pp:4,ppk:2,gest:99,cd:6},
+  {d:'2026-02-14',ag:'cl',rep:'jmarchetti',lc:16734,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-02-14',ag:'cl',rep:'jobarreiro',lc:22569,pp:3,ppk:2,gest:3,cd:3},
+  {d:'2026-02-14',ag:'cl',rep:'mciechanowic',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-14',ag:'cl',rep:'msanchezspur',lc:0,pp:3,ppk:0,gest:3,cd:3},
+  {d:'2026-02-14',ag:'cl',rep:'tomlohrmann',lc:23122,pp:2,ppk:2,gest:2,cd:2},
+  {d:'2026-02-15',ag:'cl',rep:'jmarchetti',lc:19312,pp:2,ppk:2,gest:2,cd:2},
+  {d:'2026-02-15',ag:'cl',rep:'jobarreiro',lc:30409,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-15',ag:'cl',rep:'mciechanowic',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-15',ag:'cl',rep:'tomlohrmann',lc:62917,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-02-16',ag:'cl',rep:'camilac',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-16',ag:'cl',rep:'jmarchetti',lc:10073,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-16',ag:'cl',rep:'jobarreiro',lc:5986,pp:3,ppk:1,gest:3,cd:3},
+  {d:'2026-02-16',ag:'cl',rep:'mciechanowic',lc:200262,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-16',ag:'cl',rep:'msanchezspur',lc:30736,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-16',ag:'cl',rep:'tomlohrmann',lc:9979,pp:3,ppk:1,gest:3,cd:3},
+  {d:'2026-02-17',ag:'cl',rep:'jmarchetti',lc:24903,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-17',ag:'cl',rep:'tomlohrmann',lc:19322,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-18',ag:'cl',rep:'aciabattini',lc:0,pp:0,ppk:0,gest:15,cd:1},
+  {d:'2026-02-18',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:1,cd:1},
+  {d:'2026-02-18',ag:'cl',rep:'camilac',lc:7962,pp:2,ppk:1,gest:46,cd:4},
+  {d:'2026-02-18',ag:'cl',rep:'cincata',lc:0,pp:1,ppk:0,gest:62,cd:3},
+  {d:'2026-02-18',ag:'cl',rep:'fkiefer',lc:0,pp:0,ppk:0,gest:52,cd:4},
+  {d:'2026-02-18',ag:'cl',rep:'jmarchetti',lc:64675,pp:3,ppk:3,gest:50,cd:5},
+  {d:'2026-02-18',ag:'cl',rep:'jobarreiro',lc:116475,pp:5,ppk:3,gest:69,cd:8},
+  {d:'2026-02-18',ag:'cl',rep:'maaltamirano',lc:22864,pp:2,ppk:1,gest:22,cd:2},
+  {d:'2026-02-18',ag:'cl',rep:'mciechanowic',lc:61348,pp:1,ppk:1,gest:33,cd:4},
+  {d:'2026-02-18',ag:'cl',rep:'msanchezspur',lc:0,pp:0,ppk:0,gest:28,cd:0},
+  {d:'2026-02-18',ag:'cl',rep:'tomlohrmann',lc:7628,pp:1,ppk:1,gest:68,cd:2},
+  {d:'2026-02-19',ag:'cl',rep:'aciabattini',lc:11558,pp:1,ppk:1,gest:45,cd:5},
+  {d:'2026-02-19',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:49,cd:0},
+  {d:'2026-02-19',ag:'cl',rep:'cincata',lc:48833,pp:1,ppk:1,gest:67,cd:2},
+  {d:'2026-02-19',ag:'cl',rep:'fkiefer',lc:13816,pp:3,ppk:1,gest:38,cd:6},
+  {d:'2026-02-19',ag:'cl',rep:'jmarchetti',lc:14459,pp:2,ppk:1,gest:53,cd:5},
+  {d:'2026-02-19',ag:'cl',rep:'jobarreiro',lc:19470,pp:1,ppk:1,gest:65,cd:4},
+  {d:'2026-02-19',ag:'cl',rep:'maaltamirano',lc:0,pp:0,ppk:0,gest:44,cd:1},
+  {d:'2026-02-19',ag:'cl',rep:'mciechanowic',lc:0,pp:2,ppk:0,gest:44,cd:2},
+  {d:'2026-02-19',ag:'cl',rep:'msanchezspur',lc:41987,pp:1,ppk:1,gest:40,cd:3},
+  {d:'2026-02-19',ag:'cl',rep:'tomlohrmann',lc:0,pp:2,ppk:0,gest:43,cd:5},
+  {d:'2026-02-20',ag:'cl',rep:'aciabattini',lc:161177,pp:2,ppk:2,gest:59,cd:5},
+  {d:'2026-02-20',ag:'cl',rep:'camilac',lc:28166,pp:2,ppk:1,gest:52,cd:4},
+  {d:'2026-02-20',ag:'cl',rep:'cincata',lc:70892,pp:5,ppk:5,gest:57,cd:8},
+  {d:'2026-02-20',ag:'cl',rep:'fkiefer',lc:87162,pp:7,ppk:1,gest:63,cd:15},
+  {d:'2026-02-20',ag:'cl',rep:'jmarchetti',lc:162874,pp:5,ppk:3,gest:55,cd:8},
+  {d:'2026-02-20',ag:'cl',rep:'jobarreiro',lc:0,pp:1,ppk:0,gest:48,cd:3},
+  {d:'2026-02-20',ag:'cl',rep:'maaltamirano',lc:28824,pp:1,ppk:1,gest:67,cd:7},
+  {d:'2026-02-20',ag:'cl',rep:'mciechanowic',lc:12578,pp:2,ppk:1,gest:78,cd:5},
+  {d:'2026-02-20',ag:'cl',rep:'msanchezspur',lc:12000,pp:3,ppk:0,gest:90,cd:8},
+  {d:'2026-02-20',ag:'cl',rep:'tomlohrmann',lc:147112,pp:5,ppk:2,gest:62,cd:5},
+  {d:'2026-02-21',ag:'cl',rep:'cincata',lc:10000,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-02-21',ag:'cl',rep:'fkiefer',lc:75915,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-21',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-21',ag:'cl',rep:'maaltamirano',lc:30678,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-21',ag:'cl',rep:'mciechanowic',lc:0,pp:3,ppk:0,gest:3,cd:3},
+  {d:'2026-02-21',ag:'cl',rep:'tomlohrmann',lc:52944,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-22',ag:'cl',rep:'camilac',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-23',ag:'cl',rep:'aciabattini',lc:55266,pp:1,ppk:1,gest:48,cd:3},
+  {d:'2026-02-23',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:130,cd:1},
+  {d:'2026-02-23',ag:'cl',rep:'camilac',lc:58413,pp:2,ppk:1,gest:86,cd:3},
+  {d:'2026-02-23',ag:'cl',rep:'cincata',lc:31140,pp:5,ppk:3,gest:110,cd:7},
+  {d:'2026-02-23',ag:'cl',rep:'fkiefer',lc:96094,pp:3,ppk:2,gest:52,cd:7},
+  {d:'2026-02-23',ag:'cl',rep:'jmarchetti',lc:58757,pp:1,ppk:1,gest:74,cd:4},
+  {d:'2026-02-23',ag:'cl',rep:'jobarreiro',lc:3237,pp:2,ppk:1,gest:77,cd:2},
+  {d:'2026-02-23',ag:'cl',rep:'luctorres',lc:0,pp:1,ppk:0,gest:76,cd:3},
+  {d:'2026-02-23',ag:'cl',rep:'maaltamirano',lc:17017,pp:1,ppk:1,gest:31,cd:1},
+  {d:'2026-02-23',ag:'cl',rep:'mciechanowic',lc:0,pp:0,ppk:0,gest:41,cd:0},
+  {d:'2026-02-23',ag:'cl',rep:'mmenschik',lc:0,pp:0,ppk:0,gest:67,cd:2},
+  {d:'2026-02-23',ag:'cl',rep:'msanchezspur',lc:0,pp:2,ppk:0,gest:51,cd:2},
+  {d:'2026-02-23',ag:'cl',rep:'tomlohrmann',lc:68100,pp:4,ppk:3,gest:93,cd:5},
+  {d:'2026-02-24',ag:'cl',rep:'aciabattini',lc:37518,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-24',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:54,cd:0},
+  {d:'2026-02-24',ag:'cl',rep:'camilac',lc:12228,pp:1,ppk:1,gest:38,cd:3},
+  {d:'2026-02-24',ag:'cl',rep:'cincata',lc:32883,pp:2,ppk:1,gest:46,cd:3},
+  {d:'2026-02-24',ag:'cl',rep:'fkiefer',lc:7619,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-02-24',ag:'cl',rep:'jmarchetti',lc:0,pp:0,ppk:0,gest:27,cd:0},
+  {d:'2026-02-24',ag:'cl',rep:'jobarreiro',lc:22778,pp:2,ppk:1,gest:45,cd:2},
+  {d:'2026-02-24',ag:'cl',rep:'luctorres',lc:0,pp:1,ppk:0,gest:45,cd:1},
+  {d:'2026-02-24',ag:'cl',rep:'maaltamirano',lc:0,pp:1,ppk:0,gest:20,cd:1},
+  {d:'2026-02-24',ag:'cl',rep:'mciechanowic',lc:0,pp:1,ppk:0,gest:36,cd:1},
+  {d:'2026-02-24',ag:'cl',rep:'mmenschik',lc:56159,pp:2,ppk:1,gest:39,cd:2},
+  {d:'2026-02-24',ag:'cl',rep:'msanchezspur',lc:0,pp:0,ppk:0,gest:36,cd:2},
+  {d:'2026-02-24',ag:'cl',rep:'tomlohrmann',lc:38537,pp:2,ppk:1,gest:46,cd:3},
+  {d:'2026-02-25',ag:'cl',rep:'bipereira',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-25',ag:'cl',rep:'cincata',lc:0,pp:3,ppk:0,gest:3,cd:3},
+  {d:'2026-02-25',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-25',ag:'cl',rep:'jobarreiro',lc:32853,pp:4,ppk:2,gest:4,cd:4},
+  {d:'2026-02-25',ag:'cl',rep:'maaltamirano',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-25',ag:'cl',rep:'mciechanowic',lc:58073,pp:3,ppk:2,gest:3,cd:3},
+  {d:'2026-02-25',ag:'cl',rep:'mmenschik',lc:22778,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-25',ag:'cl',rep:'msanchezspur',lc:27056,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-25',ag:'cl',rep:'tomlohrmann',lc:6000,pp:3,ppk:0,gest:3,cd:3},
+  {d:'2026-02-26',ag:'cl',rep:'aistrak',lc:0,pp:0,ppk:0,gest:2,cd:0},
+  {d:'2026-02-26',ag:'cl',rep:'bipereira',lc:220591.52,pp:2,ppk:1,gest:32,cd:4},
+  {d:'2026-02-26',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:9,cd:0},
+  {d:'2026-02-26',ag:'cl',rep:'cincata',lc:0,pp:1,ppk:0,gest:40,cd:2},
+  {d:'2026-02-26',ag:'cl',rep:'dagimenez',lc:0,pp:0,ppk:0,gest:12,cd:1},
+  {d:'2026-02-26',ag:'cl',rep:'imir',lc:0,pp:0,ppk:0,gest:15,cd:1},
+  {d:'2026-02-26',ag:'cl',rep:'jdroubi',lc:0,pp:1,ppk:0,gest:7,cd:3},
+  {d:'2026-02-26',ag:'cl',rep:'jmarchetti',lc:23000,pp:2,ppk:1,gest:29,cd:4},
+  {d:'2026-02-26',ag:'cl',rep:'jobarreiro',lc:0,pp:0,ppk:0,gest:26,cd:0},
+  {d:'2026-02-26',ag:'cl',rep:'luctorres',lc:0,pp:0,ppk:0,gest:21,cd:1},
+  {d:'2026-02-26',ag:'cl',rep:'maaltamirano',lc:30000,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-26',ag:'cl',rep:'mgarrigue',lc:0,pp:0,ppk:0,gest:21,cd:1},
+  {d:'2026-02-26',ag:'cl',rep:'tomlohrmann',lc:0,pp:0,ppk:0,gest:35,cd:0},
+  {d:'2026-02-27',ag:'cl',rep:'aciabattini',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-27',ag:'cl',rep:'camilac',lc:79737,pp:4,ppk:3,gest:44,cd:5},
+  {d:'2026-02-27',ag:'cl',rep:'cincata',lc:8000,pp:3,ppk:0,gest:3,cd:3},
+  {d:'2026-02-27',ag:'cl',rep:'fkiefer',lc:0,pp:1,ppk:0,gest:31,cd:5},
+  {d:'2026-02-27',ag:'cl',rep:'ftochecabani',lc:352236.38,pp:0,ppk:0,gest:2,cd:2},
+  {d:'2026-02-27',ag:'cl',rep:'jmarchetti',lc:40574,pp:3,ppk:1,gest:7,cd:3},
+  {d:'2026-02-27',ag:'cl',rep:'jobarreiro',lc:72891,pp:2,ppk:2,gest:2,cd:2},
+  {d:'2026-02-27',ag:'cl',rep:'luctorres',lc:36532,pp:5,ppk:2,gest:53,cd:7},
+  {d:'2026-02-27',ag:'cl',rep:'maaltamirano',lc:19485,pp:3,ppk:1,gest:45,cd:6},
+  {d:'2026-02-27',ag:'cl',rep:'mciechanowic',lc:22000,pp:1,ppk:0,gest:49,cd:4},
+  {d:'2026-02-27',ag:'cl',rep:'mgarrigue',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-27',ag:'cl',rep:'mmenschik',lc:0,pp:0,ppk:0,gest:29,cd:2},
+  {d:'2026-02-27',ag:'cl',rep:'msanchezspur',lc:109376,pp:3,ppk:2,gest:41,cd:5},
+  {d:'2026-02-27',ag:'cl',rep:'tomlohrmann',lc:3000,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-02-28',ag:'cl',rep:'cincata',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-28',ag:'cl',rep:'fkiefer',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-02-28',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-28',ag:'cl',rep:'mciechanowic',lc:17580,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-02-28',ag:'cl',rep:'mmenschik',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-02-28',ag:'cl',rep:'msanchezspur',lc:29418,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-02-28',ag:'cl',rep:'tomlohrmann',lc:45352,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-03-02',ag:'cl',rep:'aldvaldez',lc:0,pp:1,ppk:0,gest:36,cd:1},
+  {d:'2026-03-02',ag:'cl',rep:'joseemanueso',lc:0,pp:0,ppk:0,gest:20,cd:0},
+  {d:'2026-03-02',ag:'cl',rep:'lcostanzi',lc:0,pp:0,ppk:0,gest:10,cd:0},
+  {d:'2026-03-02',ag:'cl',rep:'mcabana',lc:0,pp:0,ppk:0,gest:12,cd:2},
+  {d:'2026-03-02',ag:'cl',rep:'minnamoratto',lc:0,pp:0,ppk:0,gest:36,cd:3},
+  {d:'2026-03-03',ag:'cl',rep:'joseemanueso',lc:0,pp:0,ppk:0,gest:9,cd:0},
+  {d:'2026-03-03',ag:'cl',rep:'lcostanzi',lc:0,pp:0,ppk:0,gest:1,cd:0},
+  {d:'2026-03-03',ag:'cl',rep:'mcabana',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-03-03',ag:'cl',rep:'mcabreraroja',lc:0,pp:0,ppk:0,gest:16,cd:1},
+  {d:'2026-03-03',ag:'cl',rep:'minnamoratto',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-03-04',ag:'cl',rep:'aldvaldez',lc:0,pp:0,ppk:0,gest:32,cd:0},
+  {d:'2026-03-04',ag:'cl',rep:'joseemanueso',lc:0,pp:0,ppk:0,gest:48,cd:0},
+  {d:'2026-03-04',ag:'cl',rep:'lcostanzi',lc:0,pp:0,ppk:0,gest:30,cd:1},
+  {d:'2026-03-04',ag:'cl',rep:'mcabana',lc:0,pp:0,ppk:0,gest:27,cd:1},
+  {d:'2026-03-04',ag:'cl',rep:'mcabreraroja',lc:17120,pp:1,ppk:1,gest:23,cd:2},
+  {d:'2026-03-04',ag:'cl',rep:'minnamoratto',lc:0,pp:1,ppk:0,gest:54,cd:7},
+  {d:'2026-03-05',ag:'cl',rep:'aldvaldez',lc:0,pp:2,ppk:0,gest:46,cd:2},
+  {d:'2026-03-05',ag:'cl',rep:'joseemanueso',lc:0,pp:0,ppk:0,gest:40,cd:0},
+  {d:'2026-03-05',ag:'cl',rep:'lcostanzi',lc:0,pp:0,ppk:0,gest:21,cd:0},
+  {d:'2026-03-05',ag:'cl',rep:'mcabana',lc:49191,pp:3,ppk:1,gest:42,cd:3},
+  {d:'2026-03-05',ag:'cl',rep:'mcabreraroja',lc:0,pp:1,ppk:0,gest:13,cd:1},
+  {d:'2026-03-05',ag:'cl',rep:'minnamoratto',lc:5000,pp:1,ppk:1,gest:61,cd:5},
+  {d:'2026-03-06',ag:'cl',rep:'aldvaldez',lc:5000,pp:1,ppk:1,gest:25,cd:1},
+  {d:'2026-03-06',ag:'cl',rep:'joseemanueso',lc:0,pp:0,ppk:0,gest:35,cd:1},
+  {d:'2026-03-06',ag:'cl',rep:'lcostanzi',lc:0,pp:0,ppk:0,gest:25,cd:0},
+  {d:'2026-03-06',ag:'cl',rep:'mcabana',lc:19297,pp:2,ppk:1,gest:24,cd:2},
+  {d:'2026-03-06',ag:'cl',rep:'mcabreraroja',lc:0,pp:2,ppk:0,gest:25,cd:3},
+  {d:'2026-03-06',ag:'cl',rep:'minnamoratto',lc:238697.13,pp:3,ppk:0,gest:29,cd:5},
+  {d:'2026-03-07',ag:'cl',rep:'joseemanueso',lc:5650,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-03-07',ag:'cl',rep:'mcabreraroja',lc:7884,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-03-07',ag:'cl',rep:'minnamoratto',lc:164099.98,pp:3,ppk:1,gest:3,cd:3},
+  {d:'2026-03-09',ag:'cl',rep:'aldvaldez',lc:50000,pp:2,ppk:1,gest:58,cd:5},
+  {d:'2026-03-09',ag:'cl',rep:'joseemanueso',lc:0,pp:1,ppk:0,gest:59,cd:2},
+  {d:'2026-03-09',ag:'cl',rep:'mcabana',lc:0,pp:1,ppk:0,gest:41,cd:1},
+  {d:'2026-03-09',ag:'cl',rep:'mcabreraroja',lc:0,pp:0,ppk:0,gest:20,cd:1},
+  {d:'2026-03-09',ag:'cl',rep:'minnamoratto',lc:24562,pp:2,ppk:1,gest:46,cd:7},
+  {d:'2026-03-10',ag:'cl',rep:'aldvaldez',lc:0,pp:0,ppk:0,gest:40,cd:1},
+  {d:'2026-03-10',ag:'cl',rep:'lcostanzi',lc:0,pp:0,ppk:0,gest:28,cd:0},
+  {d:'2026-03-10',ag:'cl',rep:'mcabana',lc:0,pp:1,ppk:0,gest:31,cd:2},
+  {d:'2026-03-10',ag:'cl',rep:'mcabreraroja',lc:10356,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-03-10',ag:'cl',rep:'minnamoratto',lc:14302,pp:4,ppk:1,gest:55,cd:4},
+  {d:'2026-03-11',ag:'cl',rep:'aldvaldez',lc:0,pp:0,ppk:0,gest:60,cd:2},
+  {d:'2026-03-11',ag:'cl',rep:'joseemanueso',lc:100000,pp:1,ppk:1,gest:7,cd:1},
+  {d:'2026-03-11',ag:'cl',rep:'lcostanzi',lc:0,pp:0,ppk:0,gest:5,cd:0},
+  {d:'2026-03-11',ag:'cl',rep:'mcabana',lc:48569,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-03-11',ag:'cl',rep:'mcabreraroja',lc:32582,pp:2,ppk:2,gest:5,cd:3},
+  {d:'2026-03-11',ag:'cl',rep:'minnamoratto',lc:336450.53,pp:1,ppk:1,gest:11,cd:1},
+  {d:'2026-03-12',ag:'cl',rep:'aldvaldez',lc:0,pp:0,ppk:0,gest:92,cd:3},
+  {d:'2026-03-12',ag:'cl',rep:'lcostanzi',lc:0,pp:0,ppk:0,gest:7,cd:0},
+  {d:'2026-03-12',ag:'cl',rep:'mcabana',lc:226902,pp:3,ppk:2,gest:126,cd:7},
+  {d:'2026-03-12',ag:'cl',rep:'mcabreraroja',lc:29435,pp:2,ppk:1,gest:9,cd:4},
+  {d:'2026-03-12',ag:'cl',rep:'minnamoratto',lc:0,pp:1,ppk:0,gest:18,cd:1},
+  {d:'2026-03-13',ag:'cl',rep:'aldvaldez',lc:42283,pp:4,ppk:1,gest:159,cd:9},
+  {d:'2026-03-13',ag:'cl',rep:'joseemanueso',lc:0,pp:0,ppk:0,gest:19,cd:1},
+  {d:'2026-03-13',ag:'cl',rep:'lcostanzi',lc:0,pp:0,ppk:0,gest:32,cd:0},
+  {d:'2026-03-13',ag:'cl',rep:'mcabana',lc:0,pp:5,ppk:0,gest:150,cd:12},
+  {d:'2026-03-13',ag:'cl',rep:'mcabreraroja',lc:0,pp:0,ppk:0,gest:35,cd:2},
+  {d:'2026-03-13',ag:'cl',rep:'minnamoratto',lc:10000,pp:4,ppk:1,gest:37,cd:5},
+  {d:'2026-03-14',ag:'cl',rep:'aldvaldez',lc:56059,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-03-14',ag:'cl',rep:'mcabana',lc:6858,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-03-14',ag:'cl',rep:'mcabreraroja',lc:39153,pp:3,ppk:2,gest:3,cd:3},
+  {d:'2026-03-14',ag:'cl',rep:'minnamoratto',lc:0,pp:2,ppk:0,gest:2,cd:2},
+  {d:'2026-03-15',ag:'cl',rep:'mcabana',lc:48872,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-03-15',ag:'cl',rep:'minnamoratto',lc:34556,pp:1,ppk:1,gest:1,cd:1},
+  {d:'2026-03-16',ag:'cl',rep:'aldvaldez',lc:0,pp:2,ppk:0,gest:145,cd:2},
+  {d:'2026-03-16',ag:'cl',rep:'joseemanueso',lc:0,pp:0,ppk:0,gest:26,cd:0},
+  {d:'2026-03-16',ag:'cl',rep:'lcostanzi',lc:0,pp:0,ppk:0,gest:43,cd:0},
+  {d:'2026-03-16',ag:'cl',rep:'mcabana',lc:57998,pp:6,ppk:4,gest:131,cd:13},
+  {d:'2026-03-16',ag:'cl',rep:'mcabreraroja',lc:0,pp:2,ppk:0,gest:23,cd:6},
+  {d:'2026-03-16',ag:'cl',rep:'minnamoratto',lc:46169,pp:2,ppk:2,gest:8,cd:2},
+  {d:'2026-03-17',ag:'cl',rep:'aldvaldez',lc:40050,pp:1,ppk:1,gest:27,cd:1},
+  {d:'2026-03-17',ag:'cl',rep:'joseemanueso',lc:0,pp:0,ppk:0,gest:4,cd:0},
+  {d:'2026-03-17',ag:'cl',rep:'lcostanzi',lc:82630.17,pp:0,ppk:0,gest:10,cd:1},
+  {d:'2026-03-17',ag:'cl',rep:'mcabana',lc:16116,pp:4,ppk:1,gest:38,cd:4},
+  {d:'2026-03-17',ag:'cl',rep:'mcabreraroja',lc:0,pp:0,ppk:0,gest:13,cd:1},
+  {d:'2026-03-17',ag:'cl',rep:'minnamoratto',lc:0,pp:0,ppk:0,gest:29,cd:1},
+  {d:'2026-03-18',ag:'cl',rep:'aldvaldez',lc:0,pp:0,ppk:0,gest:129,cd:0},
+  {d:'2026-03-18',ag:'cl',rep:'joseemanueso',lc:66931,pp:1,ppk:1,gest:48,cd:1},
+  {d:'2026-03-18',ag:'cl',rep:'lcostanzi',lc:0,pp:0,ppk:0,gest:40,cd:0},
+  {d:'2026-03-18',ag:'cl',rep:'mcabana',lc:51426,pp:7,ppk:1,gest:108,cd:13},
+  {d:'2026-03-18',ag:'cl',rep:'mcabreraroja',lc:0,pp:0,ppk:0,gest:11,cd:2},
+  {d:'2026-03-18',ag:'cl',rep:'minnamoratto',lc:273157.69,pp:1,ppk:1,gest:52,cd:7},
+];
+
+// â”€â”€ Fechas de corte (calculadas desde datos CL diarios) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const LATEST_MAR = '2026-03-18';
+const LATEST_FEB = '2026-02-28';
 
 // â”€â”€ Helpers de días hábiles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function isWeekend(ds) { const dw = new Date(ds + 'T12:00:00').getDay(); return dw === 0 || dw === 6; }
@@ -430,11 +1132,11 @@ function bizDayCutoff(country, year, month, targetN) {
   return lastBiz;
 }
 
-// â”€â”€ Calcular períodos MTD (para referencia en portfolio y biz-info bar) â”€â”€â”€â”€â”€â”€
+// â”€â”€ Calcular períodos MTD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const MAR_BIZ_AR = countBizDays('ar', LATEST_MAR);
 const MAR_BIZ_CL = countBizDays('cl', LATEST_MAR);
-const FEB_CUTOFF_AR = bizDayCutoff('ar', 2026, 2, MAR_BIZ_AR) || '2026-02-28';
-const FEB_CUTOFF_CL = bizDayCutoff('cl', 2026, 2, MAR_BIZ_CL) || '2026-02-28';
+const FEB_CUTOFF_AR = bizDayCutoff('ar', 2026, 2, MAR_BIZ_AR) || LATEST_FEB;
+const FEB_CUTOFF_CL = bizDayCutoff('cl', 2026, 2, MAR_BIZ_CL) || LATEST_FEB;
 
 // â”€â”€ Formateo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function fmt(n)      { return n === 0 ? '—' : '$' + n.toLocaleString('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
@@ -465,16 +1167,28 @@ function aggregate(rows) {
   })).sort((a, b) => b.usd - a.usd);
 }
 
-// â”€â”€ Filtrar MONTHLY_DATA según período â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â”€â”€ Filtrar datos según período — AR mensual + CL diario â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function filterRows(period, agency) {
-  return MONTHLY_DATA.filter(r => {
-    if (agency !== 'all' && r.ag !== agency) return false;
+  const ar = (agency === 'all' || agency === 'ar') ? MONTHLY_DATA_AR.filter(r => {
     if (period === 'ene_closed') return r.m === 202601;
     if (period === 'feb_closed') return r.m === 202602;
-    if (period === 'feb_mtd')    return r.m === 202602; // dato mensual completo
+    if (period === 'feb_mtd')    return r.m === 202602;
     if (period === 'mar_mtd')    return r.m === 202603;
     return false;
-  });
+  }) : [];
+
+  const cl = (agency === 'all' || agency === 'cl') ? DAILY_DATA_CL.filter(r => {
+    if (period === 'ene_closed') return r.d.startsWith('2026-01');
+    if (period === 'feb_closed') return r.d.startsWith('2026-02');
+    if (period === 'feb_mtd') {
+      if (!r.d.startsWith('2026-02')) return false;
+      return r.d <= FEB_CUTOFF_CL;
+    }
+    if (period === 'mar_mtd') return r.d.startsWith('2026-03') && r.d <= LATEST_MAR;
+    return false;
+  }) : [];
+
+  return [...ar, ...cl];
 }
 
 function getRows() { return aggregate(filterRows(currentPeriod, currentAgency)); }
@@ -597,17 +1311,17 @@ function renderChart(rows) {
   }).join('');
 }
 
-// â”€â”€ Render comparativo Feb-26 Cerrado vs Mar-26 MTD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â”€â”€ Render comparativo MTD homogéneo (CL: mismos d.h. que Mar; AR: mes completo vs MTD) â”€â”€
 function renderCompChart() {
   if (currentPeriod === 'ene_closed') {
-    document.getElementById('comp-chart').innerHTML = '<p style="color:#aaa;padding:20px">No disponible para enero — el comparativo muestra Feb-26 (cerrado) vs Mar-26 (MTD).</p>';
+    document.getElementById('comp-chart').innerHTML = '<p style="color:#aaa;padding:20px">No disponible para mes cerrado — el comparativo MTD requiere un mes de referencia anterior (Feb vs Mar).</p>';
     document.getElementById('comp-legend').innerHTML = '';
     return;
   }
   const agencies = currentAgency === 'all' ? ['ar','cl'] : [currentAgency];
   const repMap = {};
   agencies.forEach(ag => {
-    aggregate(filterRows('feb_closed', ag)).forEach(r => {
+    aggregate(filterRows('feb_mtd', ag)).forEach(r => {
       const k = r.rep + '__' + ag;
       if (!repMap[k]) repMap[k] = { rep: r.rep, agency: ag, feb: 0, mar: 0 };
       repMap[k].feb += r.usd;
@@ -634,10 +1348,11 @@ function renderCompChart() {
     return '<div class="comp-row"><div class="comp-rep" title="' + r.rep + '">' + r.rep + agTag + '</div><div class="comp-bars"><div class="comp-bar-row"><div class="comp-bar ' + fc + '" style="width:' + wF + 'px"></div><span class="comp-val">' + (r.feb > 0 ? '$'+(r.feb/1000).toFixed(1)+'k' : '—') + '</span></div><div class="comp-bar-row"><div class="comp-bar ' + mc + '" style="width:' + wM + 'px"></div><span class="comp-val">' + (r.mar > 0 ? '$'+(r.mar/1000).toFixed(1)+'k' : '—') + '</span></div></div></div>';
   }).join('') : '<p style="color:#aaa;padding:20px">Sin datos</p>';
 
-  let legend = '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#3949ab"></div>Feb-26 (mes cerrado)</div>' +
-               '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#90caf9"></div>Mar-26 MTD (hasta ' + fmtDate(LATEST_MAR) + ', d.h. ' + MAR_BIZ_AR + ' AR / ' + MAR_BIZ_CL + ' CL)</div>';
+  const bizLabel = 'día hábil ' + MAR_BIZ_AR + ' (AR) / ' + MAR_BIZ_CL + ' (CL)';
+  let legend = '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#3949ab"></div>MTD Feb-26 AR (mes completo) · CL hasta ' + fmtDate(FEB_CUTOFF_CL) + ' (' + MAR_BIZ_CL + ' d.h.)</div>' +
+               '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#90caf9"></div>MTD Mar-26 — hasta ' + fmtDate(LATEST_MAR) + ' (' + bizLabel + ')</div>';
   if (currentAgency === 'all' || currentAgency === 'cl') {
-    legend += '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#00695c"></div>Feb-26 GDM_CL</div><div class="comp-legend-item"><div class="comp-legend-box" style="background:#80cbc4"></div>Mar-26 MTD GDM_CL</div>';
+    legend += '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#00695c"></div>Feb-26 GDM_CL</div><div class="comp-legend-item"><div class="comp-legend-box" style="background:#80cbc4"></div>Mar-26 GDM_CL</div>';
   }
   document.getElementById('comp-legend').innerHTML = legend;
 }
@@ -784,7 +1499,7 @@ function renderTLTable(rows) {
 function getPeriodLabel() {
   if (currentPeriod === 'ene_closed') return 'Mes Cerrado Ene-26';
   if (currentPeriod === 'feb_closed') return 'Mes Cerrado Feb-26';
-  if (currentPeriod === 'feb_mtd')    return 'Mes Cerrado Feb-26';
+  if (currentPeriod === 'feb_mtd')   return 'MTD Feb-26 — CL hasta ' + fmtDate(FEB_CUTOFF_CL) + ' (' + MAR_BIZ_CL + ' d.h.) · AR mes completo';
   return 'MTD Mar-26 — hasta ' + fmtDate(LATEST_MAR) + ' (d.h. ' + MAR_BIZ_AR + ' AR / ' + MAR_BIZ_CL + ' CL)';
 }
 
@@ -795,23 +1510,35 @@ function updateBadges() {
   document.getElementById('table-badge').textContent = agLabel;
   document.getElementById('comp-badge').textContent = agLabel;
   document.getElementById('chart-title').textContent = 'Top Recupero — ' + perLabel + ' (USD)';
-  document.getElementById('comp-title').textContent = 'Comparativo Feb-26 vs Mar-26 MTD — Recupero USD por Representante';
   const bc = currentAgency === 'all' ? 'badge-all' : 'badge-' + currentAgency;
   ['chart-badge','table-badge','comp-badge'].forEach(id => document.getElementById(id).className = 'badge ' + bc);
 }
 
 function updateBizInfoBar() {
-  const bizLabel = MAR_BIZ_AR + ' d.h. AR / ' + MAR_BIZ_CL + ' d.h. CL';
-  const periodLabels = {
-    ene_closed: 'Mes Cerrado Ene-26 — 01/01/2026 al 31/01/2026',
-    feb_closed: 'Mes Cerrado Feb-26 — 01/02/2026 al 28/02/2026',
-    feb_mtd:    'Mes Cerrado Feb-26 — 01/02/2026 al 28/02/2026',
-    mar_mtd:    'MTD Mar-26 — 01/03/2026 al ' + fmtDate(LATEST_MAR) + ' (' + bizLabel + ')'
-  };
+  if (currentPeriod === 'ene_closed') {
+    document.getElementById('biz-info-bar').innerHTML = '<b>Mes Cerrado Ene-26</b> — Datos del 01/01/2026 al 31/01/2026. No aplica comparativo MTD.';
+    document.getElementById('lbl-feb-biz').textContent = '(d.h.' + MAR_BIZ_AR + ')';
+    document.getElementById('lbl-mar-biz').textContent = '(d.h.' + MAR_BIZ_AR + ')';
+    document.getElementById('header-date').textContent = 'Datos al ' + fmtDate(LATEST_MAR);
+    return;
+  }
+  const range = d => d >= '2026-02-01' && d <= '2026-03-31';
+  const holAR_dates = [...HOLIDAYS.ar].filter(range).sort();
+  const clOwn = new Set(['2026-01-01','2026-04-03','2026-04-04','2026-05-01','2026-05-21','2026-06-20','2026-06-29','2026-07-16','2026-08-15','2026-09-18','2026-09-19','2026-10-12','2026-10-31','2026-11-01','2026-12-08','2026-12-25']);
+  const holAR = holAR_dates.map(fmtDate).join(', ');
+  const holCL = [...HOLIDAYS.cl].filter(range).sort().map(d =>
+    clOwn.has(d)
+      ? '<span style="color:#00695c;font-weight:600">' + fmtDate(d) + '</span>'
+      : '<span style="color:#1565c0;font-weight:600">' + fmtDate(d) + '</span>'
+  ).join(', ');
+  const legend = '&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#00695c">&#x2588;</span> feriado CL &nbsp;<span style="color:#1565c0">&#x2588;</span> feriado AR';
   document.getElementById('biz-info-bar').innerHTML =
-    '<b>Fuente: OPERATION_PRODUCTIVITY_RV_REP</b> — Metodolog&#xED;a Looker Studio: m&#xE9;tricas atribuidas al mes de la promesa/pago (no al mes de la acci&#xF3;n). ' +
-    'Per&#xED;odo: ' + (periodLabels[currentPeriod] || '');
-  document.getElementById('lbl-feb-biz').textContent = '';
+    '<b>Comparaci&#xF3;n MTD (d&#xED;as h&#xE1;biles al ' + fmtDate(LATEST_MAR) + '):</b><br>' +
+    '&nbsp;&nbsp;&#x2022; D&#xED;as h&#xE1;biles en Mar-26 del 01/03 al ' + fmtDate(LATEST_MAR) + ': <b>' + MAR_BIZ_AR + '</b> (AR) / <b>' + MAR_BIZ_CL + '</b> (CL)<br>' +
+    '&nbsp;&nbsp;&#x2022; Equivalente en Feb-26 (CL): hasta el <b>' + fmtDate(FEB_CUTOFF_CL) + '</b> (' + MAR_BIZ_CL + ' d.h.) — AR muestra mes completo<br>' +
+    '&nbsp;&nbsp;&#x2022; Feriados AR excluidos en feb-mar: ' + (holAR || 'ninguno') + '<br>' +
+    '&nbsp;&nbsp;&#x2022; Feriados CL excluidos en feb-mar: ' + (holCL || 'ninguno') + (holCL ? '&nbsp;&nbsp;' + legend : '');
+  document.getElementById('lbl-feb-biz').textContent = '(d.h.' + MAR_BIZ_CL + ')';
   document.getElementById('lbl-mar-biz').textContent = '(d.h.' + MAR_BIZ_AR + ')';
   document.getElementById('header-date').textContent = 'Datos al ' + fmtDate(LATEST_MAR);
 }
