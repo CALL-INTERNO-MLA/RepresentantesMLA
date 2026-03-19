@@ -202,6 +202,7 @@
           <th class="num">% Cumpl.</th>
           <th class="num">Gestiones</th>
           <th class="num">Cont. Directos</th>
+          <th class="num">% PP/CD</th>
         </tr>
       </thead>
       <tbody id="tl-table-body"></tbody>
@@ -227,6 +228,7 @@
           <th class="num">% Cumpl.</th>
           <th class="num">Gestiones</th>
           <th class="num">Cont. Directos</th>
+          <th class="num">% PP/CD</th>
         </tr>
       </thead>
       <tbody id="table-body"></tbody>
@@ -2628,14 +2630,14 @@ function renderTable(rows) {
     const cur = r.agency === 'ar' ? 'ARS' : 'CLP';
     const lcTag = showAgency && r.lc > 0 ? '<span style="font-size:10px;color:#999;margin-left:3px">' + cur + '</span>' : '';
     const lcVal = r.lc === 0 ? '—' : r.lc.toLocaleString('es-AR', {minimumFractionDigits:0,maximumFractionDigits:0}) + (r.lc > 0 ? lcTag : '');
-    return '<tr><td>' + r.rep + '</td>' + agBadge + '<td class="num">' + fmt(r.usd) + '</td><td class="num">' + lcVal + '</td><td class="num">' + fmtN(r.pp) + '</td><td class="num">' + fmtN(r.ppk) + '</td><td class="num">' + pct(r.ppk,r.pp) + '</td><td class="num">' + fmtN(r.gest) + '</td><td class="num">' + fmtN(r.cd) + '</td></tr>';
+    return '<tr><td>' + r.rep + '</td>' + agBadge + '<td class="num">' + fmt(r.usd) + '</td><td class="num">' + lcVal + '</td><td class="num">' + fmtN(r.pp) + '</td><td class="num">' + fmtN(r.ppk) + '</td><td class="num">' + pct(r.ppk,r.pp) + '</td><td class="num">' + fmtN(r.gest) + '</td><td class="num">' + fmtN(r.cd) + '</td><td class="num">' + pct(r.pp,r.cd) + '</td></tr>';
   }).join('');
 
   const totalAgCell = showAgency ? '<td></td>' : '';
   const totalLcCell = currentAgency !== 'all'
     ? '<td class="num">' + fmtLC(t.lc, currentAgency==='ar'?'ARS':'CLP') + '</td>'
     : '<td class="num" style="font-size:11px;color:#888">ver por agencia</td>';
-  html += '<tr class="total-row"><td>TOTAL</td>' + totalAgCell + '<td class="num">' + fmt(t.usd) + '</td>' + totalLcCell + '<td class="num">' + fmtN(t.pp) + '</td><td class="num">' + fmtN(t.ppk) + '</td><td class="num">' + pct(t.ppk,t.pp) + '</td><td class="num">' + fmtN(t.gest) + '</td><td class="num">' + fmtN(t.cd) + '</td></tr>';
+  html += '<tr class="total-row"><td>TOTAL</td>' + totalAgCell + '<td class="num">' + fmt(t.usd) + '</td>' + totalLcCell + '<td class="num">' + fmtN(t.pp) + '</td><td class="num">' + fmtN(t.ppk) + '</td><td class="num">' + pct(t.ppk,t.pp) + '</td><td class="num">' + fmtN(t.gest) + '</td><td class="num">' + fmtN(t.cd) + '</td><td class="num">' + pct(t.pp,t.cd) + '</td></tr>';
   document.getElementById('table-body').innerHTML = html;
   document.getElementById('table-note').textContent = 'Período: ' + getPeriodLabel() + ' · TC: ARS ' + RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' + RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. feb-26 promedio)';
 }
@@ -2715,6 +2717,7 @@ function renderTLTable(rows) {
       '<td class="num">' + pct(t.ppk, t.pp) + '</td>' +
       '<td class="num">' + fmtN(t.gest) + '</td>' +
       '<td class="num">' + fmtN(t.cd) + '</td>' +
+      '<td class="num">' + pct(t.pp, t.cd) + '</td>' +
       '</tr>';
     gUsd+=t.usd; gLcAr+=t.lcAr; gLcCl+=t.lcCl; gPp+=t.pp; gPpk+=t.ppk; gGest+=t.gest; gCd+=t.cd;
     t.reps.forEach(r => gReps.add(r));
@@ -2733,6 +2736,7 @@ function renderTLTable(rows) {
     '<td class="num">' + pct(gPpk, gPp) + '</td>' +
     '<td class="num">' + fmtN(gGest) + '</td>' +
     '<td class="num">' + fmtN(gCd) + '</td>' +
+    '<td class="num">' + pct(gPp, gCd) + '</td>' +
     '</tr>';
 
   document.getElementById('tl-table-body').innerHTML = html;
