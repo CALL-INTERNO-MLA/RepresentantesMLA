@@ -66,10 +66,12 @@
   .comp-bars { flex: 1; display: flex; flex-direction: column; gap: 3px; }
   .comp-bar-row { display: flex; align-items: center; gap: 6px; }
   .comp-bar { height: 14px; border-radius: 3px; transition: width 0.4s; min-width: 2px; }
-  .comp-bar.feb { background: #3949ab; }
-  .comp-bar.mar { background: #90caf9; }
-  .comp-bar.feb-cl { background: #00695c; }
-  .comp-bar.mar-cl { background: #80cbc4; }
+  .comp-bar.ene-ar { background: #7986cb; }
+  .comp-bar.feb-ar { background: #3949ab; }
+  .comp-bar.mar-ar { background: #1a237e; }
+  .comp-bar.ene-cl { background: #80cbc4; }
+  .comp-bar.feb-cl { background: #00897b; }
+  .comp-bar.mar-cl { background: #00695c; }
   .comp-val { font-size: 10px; color: #666; white-space: nowrap; }
   .comp-legend { display: flex; gap: 20px; padding: 8px 20px 14px; flex-wrap: wrap; }
   .comp-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #666; }
@@ -121,10 +123,10 @@
   <div class="filter-group">
     <span class="filter-label">Período</span>
     <div class="btn-group">
-      <button class="btn" id="btn-ene_closed" onclick="setPeriod('ene_closed')">Mes Cerrado (Ene-26)</button>
-      <button class="btn" id="btn-feb_closed" onclick="setPeriod('feb_closed')">Mes Cerrado (Feb-26)</button>
-      <button class="btn" id="btn-feb_mtd" onclick="setPeriod('feb_mtd')">MTD Feb-26 <span id="lbl-feb-biz" style="opacity:0.8"></span></button>
-      <button class="btn active" id="btn-mar_mtd" onclick="setPeriod('mar_mtd')">MTD Mar-26 <span id="lbl-mar-biz" style="opacity:0.8"></span></button>
+      <button class="btn" id="btn-ene" onclick="setPeriod('ene')">Enero 2026</button>
+      <button class="btn" id="btn-feb" onclick="setPeriod('feb')">Febrero 2026</button>
+      <button class="btn active" id="btn-mar" onclick="setPeriod('mar')">Marzo 2026</button>
+      <button class="btn" id="btn-comp3m" onclick="setPeriod('comp3m')">Comparativo Ene–Mar</button>
     </div>
   </div>
 </div>
@@ -175,7 +177,7 @@
   </div>
   <div class="section">
     <div class="section-header">
-      <span class="section-title" id="comp-title">Comparativo MTD homogéneo — Recupero USD por Representante</span>
+      <span class="section-title" id="comp-title">Comparativo Ene–Feb–Mar 2026 — Recupero USD por Representante</span>
       <span class="badge" id="comp-badge">Ambas agencias</span>
     </div>
     <div class="comp-chart-wrap">
@@ -379,6 +381,27 @@ const MONTHLY_DATA_AR = [
   {m:202602,ag:'ar',rep:'mmenschik',lc:49577334,pp:146,ppk:83,gest:1154,cd:307},
   {m:202602,ag:'ar',rep:'msanchezspur',lc:40977508.05,pp:232,ppk:105,gest:1912,cd:462},
   {m:202602,ag:'ar',rep:'tomlohrmann',lc:46181571.55,pp:340,ppk:167,gest:2667,cd:641},
+  // Marzo 2026 — fuente: SBOX_COLLECTIONSDA.OPERATION_PRODUCTIVITY_RV_REP (mes cerrado 31/03)
+  {m:202603,ag:'ar',rep:'aciabattini',lc:22246253.4,pp:131,ppk:70,gest:951,cd:293},
+  {m:202603,ag:'ar',rep:'aistrak',lc:46301924.74,pp:349,ppk:139,gest:1677,cd:583},
+  {m:202603,ag:'ar',rep:'bipereira',lc:33778435.81,pp:193,ppk:93,gest:1505,cd:396},
+  {m:202603,ag:'ar',rep:'camilac',lc:29827384.41,pp:217,ppk:92,gest:1623,cd:432},
+  {m:202603,ag:'ar',rep:'cincata',lc:41721356.38,pp:237,ppk:122,gest:1722,cd:450},
+  {m:202603,ag:'ar',rep:'dagimenez',lc:46714808.25,pp:224,ppk:85,gest:988,cd:364},
+  {m:202603,ag:'ar',rep:'fkiefer',lc:43878456.73,pp:208,ppk:78,gest:1097,cd:412},
+  {m:202603,ag:'ar',rep:'ftochecabani',lc:17105030.82,pp:181,ppk:76,gest:1847,cd:337},
+  {m:202603,ag:'ar',rep:'imir',lc:35458575.5,pp:187,ppk:75,gest:786,cd:306},
+  {m:202603,ag:'ar',rep:'jdroubi',lc:24054845.18,pp:145,ppk:64,gest:1271,cd:323},
+  {m:202603,ag:'ar',rep:'jmarchetti',lc:39844434.11,pp:320,ppk:148,gest:1783,cd:595},
+  {m:202603,ag:'ar',rep:'jobarreiro',lc:37638995.68,pp:318,ppk:131,gest:1547,cd:519},
+  {m:202603,ag:'ar',rep:'luctorres',lc:26903294.92,pp:318,ppk:118,gest:1850,cd:554},
+  {m:202603,ag:'ar',rep:'maaltamirano',lc:29957026.79,pp:185,ppk:66,gest:1105,cd:355},
+  {m:202603,ag:'ar',rep:'mcabana',lc:18057191.33,pp:142,ppk:58,gest:1018,cd:210},
+  {m:202603,ag:'ar',rep:'mciechanowic',lc:38985919.08,pp:229,ppk:89,gest:1504,cd:453},
+  {m:202603,ag:'ar',rep:'mgarrigue',lc:19725863.24,pp:120,ppk:45,gest:990,cd:237},
+  {m:202603,ag:'ar',rep:'mmenschik',lc:54137883.62,pp:235,ppk:117,gest:1597,cd:513},
+  {m:202603,ag:'ar',rep:'msanchezspur',lc:40808419.76,pp:274,ppk:114,gest:1426,cd:463},
+  {m:202603,ag:'ar',rep:'tomlohrmann',lc:47771155.53,pp:283,ppk:127,gest:1596,cd:496},
 ];
 
 // â”€â”€ Datos CL diarios (fuente: WHOWNER.LK_COL_REP_DAILY_AGG_PROD, gdm_cl_call_center) â”€â”€
@@ -1304,41 +1327,7 @@ const DAILY_DATA_CL = [
   {d:'2026-04-13',ag:'cl',rep:'tomlohrmann',lc:2000,pp:1,ppk:1,gest:61,cd:3},
 ];
 
-// â”€â”€ Fechas de corte (calculadas desde datos CL diarios) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const LATEST_MAR = '2026-03-31';
-const LATEST_FEB = '2026-02-28';
-
-// â”€â”€ Helpers de días hábiles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-function isWeekend(ds) { const dw = new Date(ds + 'T12:00:00').getDay(); return dw === 0 || dw === 6; }
-function isBizDay(ds, country) { return !isWeekend(ds) && !HOLIDAYS[country].has(ds); }
-
-function countBizDays(country, upToDate) {
-  const [y, m] = upToDate.split('-');
-  let count = 0, cur = new Date(y + '-' + m + '-01T12:00:00');
-  const end = new Date(upToDate + 'T12:00:00');
-  while (cur <= end) {
-    if (isBizDay(cur.toISOString().slice(0, 10), country)) count++;
-    cur.setDate(cur.getDate() + 1);
-  }
-  return count;
-}
-
-function bizDayCutoff(country, year, month, targetN) {
-  const mm = String(month).padStart(2, '0');
-  let count = 0, lastBiz = null, cur = new Date(year + '-' + mm + '-01T12:00:00');
-  while (cur.getFullYear() === year && cur.getMonth() + 1 === month) {
-    const ds = cur.toISOString().slice(0, 10);
-    if (isBizDay(ds, country)) { count++; lastBiz = ds; if (count === targetN) return ds; }
-    cur.setDate(cur.getDate() + 1);
-  }
-  return lastBiz;
-}
-
-// â”€â”€ Calcular períodos MTD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const MAR_BIZ_AR = countBizDays('ar', LATEST_MAR);
-const MAR_BIZ_CL = countBizDays('cl', LATEST_MAR);
-const FEB_CUTOFF_AR = bizDayCutoff('ar', 2026, 2, MAR_BIZ_AR) || LATEST_FEB;
-const FEB_CUTOFF_CL = bizDayCutoff('cl', 2026, 2, MAR_BIZ_CL) || LATEST_FEB;
+// Meses cerrados: Enero, Febrero y Marzo 2026
 
 // â”€â”€ Formateo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function fmt(n)      { return n === 0 ? '—' : '$' + n.toLocaleString('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
@@ -1349,7 +1338,7 @@ function fmtDate(ds) { const [y,m,d] = ds.split('-'); return d+'/'+m+'/'+y; }
 
 // â”€â”€ Estado del filtro â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let currentAgency = 'all';
-let currentPeriod = 'mar_mtd';
+let currentPeriod = 'mar';
 
 // â”€â”€ Agregación de filas mensuales â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function aggregate(rows) {
@@ -1372,28 +1361,26 @@ function aggregate(rows) {
 // â”€â”€ Filtrar datos según período — AR mensual + CL diario â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function filterRows(period, agency) {
   const ar = (agency === 'all' || agency === 'ar') ? MONTHLY_DATA_AR.filter(r => {
-    if (period === 'ene_closed') return r.m === 202601;
-    if (period === 'feb_closed') return r.m === 202602;
-    if (period === 'feb_mtd')    return r.m === 202602;
-    if (period === 'mar_mtd')    return r.m === 202603;
+    if (period === 'ene') return r.m === 202601;
+    if (period === 'feb') return r.m === 202602;
+    if (period === 'mar') return r.m === 202603;
     return false;
   }) : [];
 
   const cl = (agency === 'all' || agency === 'cl') ? DAILY_DATA_CL.filter(r => {
-    if (period === 'ene_closed') return r.d.startsWith('2026-01');
-    if (period === 'feb_closed') return r.d.startsWith('2026-02');
-    if (period === 'feb_mtd') {
-      if (!r.d.startsWith('2026-02')) return false;
-      return r.d <= FEB_CUTOFF_CL;
-    }
-    if (period === 'mar_mtd') return r.d.startsWith('2026-03') && r.d <= LATEST_MAR;
+    if (period === 'ene') return r.d.startsWith('2026-01');
+    if (period === 'feb') return r.d.startsWith('2026-02');
+    if (period === 'mar') return r.d.startsWith('2026-03');
     return false;
   }) : [];
 
   return [...ar, ...cl];
 }
 
-function getRows() { return aggregate(filterRows(currentPeriod, currentAgency)); }
+function getRows() {
+  const p = currentPeriod === 'comp3m' ? 'mar' : currentPeriod;
+  return aggregate(filterRows(p, currentAgency));
+}
 
 function getTotals(rows) {
   return rows.reduce((a, r) => ({
@@ -1410,7 +1397,7 @@ function renderKPIs(rows) {
   const clRows = rows.filter(r => r.agency === 'cl');
   const tAr = getTotals(arRows), tCl = getTotals(clRows);
   const periodLabel = getPeriodLabel();
-  const portKey = currentPeriod === 'mar_mtd' ? 'mar' : currentPeriod === 'feb_mtd' ? 'feb_mtd' : currentPeriod === 'ene_closed' ? 'ene' : 'feb';
+  const portKey = currentPeriod === 'mar' || currentPeriod === 'comp3m' ? 'mar' : currentPeriod === 'ene' ? 'ene' : 'feb';
 
   let lcSub = '';
   if (currentAgency === 'ar') lcSub = '<div class="kpi-sub" style="font-size:12px;color:#888;margin-top:4px">' + fmtLC(t.lc, 'ARS') + '</div>';
@@ -1439,8 +1426,6 @@ function renderPortfolio() {
   const agencies = currentAgency === 'all' ? ['ar', 'cl'] : [currentAgency];
   const agLabels = { ar: 'GDM_AR_CALL_CENTER', cl: 'GDM_CL_CALL_CENTER' };
   const agColors = { ar: '#1565c0', cl: '#00695c' };
-  const febCutAR = fmtDate(FEB_CUTOFF_AR), marCut = fmtDate(LATEST_MAR);
-
   const PROD_LABELS = { con:'Consumer', point:'Point', ccard:'Tarjeta Crédito', parce:'Parcelamento', mer:'Merchant', otros:'Otros' };
   const PROD_COLORS = { con:'#1565c0', point:'#6a1b9a', ccard:'#c62828', parce:'#e65100', mer:'#2e7d32', otros:'#777' };
   const PROD_ORDER  = ['con','point','ccard','parce','mer','otros'];
@@ -1475,21 +1460,19 @@ function renderPortfolio() {
   let html = '<div class="port-grid">';
   agencies.forEach(ag => {
     const p = PORTFOLIO[ag];
-    const delta    = p.mar.total - p.feb_mtd.total;
-    const deltaPct = (delta / p.feb_mtd.total * 100).toFixed(1);
+    const delta    = p.mar.total - p.feb.total;
+    const deltaPct = (delta / p.feb.total * 100).toFixed(1);
     const deltaClass = delta >= 0 ? 'up' : 'down';
     const deltaSign  = delta >= 0 ? '+' : '';
-    const cutFeb = ag === 'ar' ? febCutAR : fmtDate(FEB_CUTOFF_CL);
 
     html += '<div class="port-card">' +
       '<div class="port-card-title" style="color:' + agColors[ag] + '">' + agLabels[ag] + '</div>' +
 
-      periodBlock('Mes Cerrado Ene-26', p.ene) +
-      periodBlock('Mes Cerrado Feb-26', p.feb) +
-      periodBlock('MTD Feb-26 (al ' + cutFeb + ', d.h. ' + MAR_BIZ_AR + ')', p.feb_mtd) +
-      periodBlock('MTD Mar-26 (al ' + marCut + ', d.h. ' + MAR_BIZ_AR + ')', p.mar) +
+      periodBlock('Enero 2026 (Mes Cerrado)', p.ene) +
+      periodBlock('Febrero 2026 (Mes Cerrado)', p.feb) +
+      periodBlock('Marzo 2026 (Mes Cerrado)', p.mar) +
 
-      '<div class="port-row"><span class="port-label">Variación MTD (Feb &#x2192; Mar)</span><span class="port-delta ' + deltaClass + '">' + deltaSign + fmtN(delta) + ' (' + deltaSign + deltaPct + '%)</span></div>' +
+      '<div class="port-row"><span class="port-label">Variación Feb &#x2192; Mar</span><span class="port-delta ' + deltaClass + '">' + deltaSign + fmtN(delta) + ' (' + deltaSign + deltaPct + '%)</span></div>' +
       '</div>';
   });
   html += '</div>';
@@ -1515,48 +1498,58 @@ function renderChart(rows) {
 
 // â”€â”€ Render comparativo MTD homogéneo (CL: mismos d.h. que Mar; AR: mes completo vs MTD) â”€â”€
 function renderCompChart() {
-  if (currentPeriod === 'ene_closed') {
-    document.getElementById('comp-chart').innerHTML = '<p style="color:#aaa;padding:20px">No disponible para mes cerrado — el comparativo MTD requiere un mes de referencia anterior (Feb vs Mar).</p>';
-    document.getElementById('comp-legend').innerHTML = '';
-    return;
-  }
   const agencies = currentAgency === 'all' ? ['ar','cl'] : [currentAgency];
   const repMap = {};
-  agencies.forEach(ag => {
-    aggregate(filterRows('feb_mtd', ag)).forEach(r => {
-      const k = r.rep + '__' + ag;
-      if (!repMap[k]) repMap[k] = { rep: r.rep, agency: ag, feb: 0, mar: 0 };
-      repMap[k].feb += r.usd;
-    });
-    aggregate(filterRows('mar_mtd', ag)).forEach(r => {
-      const k = r.rep + '__' + ag;
-      if (!repMap[k]) repMap[k] = { rep: r.rep, agency: ag, feb: 0, mar: 0 };
-      repMap[k].mar += r.usd;
+  ['ene','feb','mar'].forEach(p => {
+    agencies.forEach(ag => {
+      aggregate(filterRows(p, ag)).forEach(r => {
+        const k = r.rep + '__' + ag;
+        if (!repMap[k]) repMap[k] = { rep: r.rep, agency: ag, ene: 0, feb: 0, mar: 0 };
+        repMap[k][p] += r.usd;
+      });
     });
   });
 
   const reps = Object.values(repMap)
-    .filter(r => r.feb > 0 || r.mar > 0)
-    .sort((a, b) => (b.feb + b.mar) - (a.feb + a.mar))
-    .slice(0, 20);
+    .filter(r => r.ene > 0 || r.feb > 0 || r.mar > 0)
+    .sort((a, b) => b.mar - a.mar)
+    .slice(0, 25);
 
-  const maxVal = Math.max(...reps.map(r => Math.max(r.feb, r.mar)), 1);
-  const maxW = 340;
-
-  document.getElementById('comp-chart').innerHTML = reps.length ? reps.map(r => {
-    const wF = Math.round((r.feb / maxVal) * maxW), wM = Math.round((r.mar / maxVal) * maxW);
-    const fc = r.agency === 'cl' ? 'feb-cl' : 'feb', mc = r.agency === 'cl' ? 'mar-cl' : 'mar';
-    const agTag = currentAgency === 'all' ? '<span style="font-size:9px;margin-left:4px;color:' + (r.agency==='ar'?'#1565c0':'#00695c') + '">[' + r.agency.toUpperCase() + ']</span>' : '';
-    return '<div class="comp-row"><div class="comp-rep" title="' + r.rep + '">' + r.rep + agTag + '</div><div class="comp-bars"><div class="comp-bar-row"><div class="comp-bar ' + fc + '" style="width:' + wF + 'px"></div><span class="comp-val">' + (r.feb > 0 ? '$'+(r.feb/1000).toFixed(1)+'k' : '—') + '</span></div><div class="comp-bar-row"><div class="comp-bar ' + mc + '" style="width:' + wM + 'px"></div><span class="comp-val">' + (r.mar > 0 ? '$'+(r.mar/1000).toFixed(1)+'k' : '—') + '</span></div></div></div>';
-  }).join('') : '<p style="color:#aaa;padding:20px">Sin datos</p>';
-
-  const bizLabel = 'día hábil ' + MAR_BIZ_AR + ' (AR) / ' + MAR_BIZ_CL + ' (CL)';
-  let legend = '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#3949ab"></div>MTD Feb-26 AR (mes completo) · CL hasta ' + fmtDate(FEB_CUTOFF_CL) + ' (' + MAR_BIZ_CL + ' d.h.)</div>' +
-               '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#90caf9"></div>MTD Mar-26 — hasta ' + fmtDate(LATEST_MAR) + ' (' + bizLabel + ')</div>';
-  if (currentAgency === 'all' || currentAgency === 'cl') {
-    legend += '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#00695c"></div>Feb-26 GDM_CL</div><div class="comp-legend-item"><div class="comp-legend-box" style="background:#80cbc4"></div>Mar-26 GDM_CL</div>';
+  if (!reps.length) {
+    document.getElementById('comp-chart').innerHTML = '<p style="color:#aaa;padding:20px">Sin datos</p>';
+    document.getElementById('comp-legend').innerHTML = '';
+    return;
   }
-  document.getElementById('comp-legend').innerHTML = legend;
+
+  const maxVal = Math.max(...reps.flatMap(r => [r.ene, r.feb, r.mar]), 1);
+  const maxW = 300;
+
+  document.getElementById('comp-chart').innerHTML = reps.map(r => {
+    const wE = Math.max(r.ene > 0 ? 2 : 0, Math.round(r.ene / maxVal * maxW));
+    const wF = Math.max(r.feb > 0 ? 2 : 0, Math.round(r.feb / maxVal * maxW));
+    const wM = Math.max(r.mar > 0 ? 2 : 0, Math.round(r.mar / maxVal * maxW));
+    const isAR = r.agency === 'ar';
+    const agTag = currentAgency === 'all' ? '<span style="font-size:9px;margin-left:4px;color:' + (isAR?'#1565c0':'#00695c') + '">[' + r.agency.toUpperCase() + ']</span>' : '';
+    return '<div class="comp-row">' +
+      '<div class="comp-rep" title="' + r.rep + '">' + r.rep + agTag + '</div>' +
+      '<div class="comp-bars">' +
+        '<div class="comp-bar-row"><div class="comp-bar ' + (isAR?'ene-ar':'ene-cl') + '" style="width:' + wE + 'px"></div><span class="comp-val">Ene: ' + (r.ene > 0 ? '$'+(r.ene/1000).toFixed(1)+'k' : '—') + '</span></div>' +
+        '<div class="comp-bar-row"><div class="comp-bar ' + (isAR?'feb-ar':'feb-cl') + '" style="width:' + wF + 'px"></div><span class="comp-val">Feb: ' + (r.feb > 0 ? '$'+(r.feb/1000).toFixed(1)+'k' : '—') + '</span></div>' +
+        '<div class="comp-bar-row"><div class="comp-bar ' + (isAR?'mar-ar':'mar-cl') + '" style="width:' + wM + 'px"></div><span class="comp-val">Mar: ' + (r.mar > 0 ? '$'+(r.mar/1000).toFixed(1)+'k' : '—') + '</span></div>' +
+      '</div></div>';
+  }).join('');
+
+  const arLegend = currentAgency !== 'cl' ? [
+    '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#7986cb"></div>Ene AR</div>',
+    '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#3949ab"></div>Feb AR</div>',
+    '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#1a237e"></div>Mar AR</div>'
+  ].join('') : '';
+  const clLegend = currentAgency !== 'ar' ? [
+    '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#80cbc4"></div>Ene CL</div>',
+    '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#00897b"></div>Feb CL</div>',
+    '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#00695c"></div>Mar CL</div>'
+  ].join('') : '';
+  document.getElementById('comp-legend').innerHTML = arLegend + clLegend;
 }
 
 // â”€â”€ Render table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1699,50 +1692,36 @@ function renderTLTable(rows) {
 
 // â”€â”€ Labels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function getPeriodLabel() {
-  if (currentPeriod === 'ene_closed') return 'Mes Cerrado Ene-26';
-  if (currentPeriod === 'feb_closed') return 'Mes Cerrado Feb-26';
-  if (currentPeriod === 'feb_mtd')   return 'MTD Feb-26 — CL hasta ' + fmtDate(FEB_CUTOFF_CL) + ' (' + MAR_BIZ_CL + ' d.h.) · AR mes completo';
-  return 'MTD Mar-26 — hasta ' + fmtDate(LATEST_MAR) + ' (d.h. ' + MAR_BIZ_AR + ' AR / ' + MAR_BIZ_CL + ' CL)';
+  if (currentPeriod === 'ene') return 'Enero 2026';
+  if (currentPeriod === 'feb') return 'Febrero 2026';
+  if (currentPeriod === 'mar') return 'Marzo 2026';
+  if (currentPeriod === 'comp3m') return 'Comparativo Ene–Feb–Mar 2026';
+  return '';
 }
 
 function updateBadges() {
   const agLabel = currentAgency === 'all' ? 'Ambas agencias' : currentAgency === 'ar' ? 'GDM_AR_CALL_CENTER' : 'GDM_CL_CALL_CENTER';
-  const perLabel = getPeriodLabel();
   document.getElementById('chart-badge').textContent = agLabel;
   document.getElementById('table-badge').textContent = agLabel;
   document.getElementById('comp-badge').textContent = agLabel;
-  document.getElementById('chart-title').textContent = 'Top Recupero — ' + perLabel + ' (USD)';
+  document.getElementById('chart-title').textContent = 'Top Recupero — ' + getPeriodLabel() + ' (USD)';
   const bc = currentAgency === 'all' ? 'badge-all' : 'badge-' + currentAgency;
   ['chart-badge','table-badge','comp-badge'].forEach(id => document.getElementById(id).className = 'badge ' + bc);
 }
 
 function updateBizInfoBar() {
-  if (currentPeriod === 'ene_closed') {
-    document.getElementById('biz-info-bar').innerHTML = '<b>Mes Cerrado Ene-26</b> — Datos del 01/01/2026 al 31/01/2026. No aplica comparativo MTD.';
-    document.getElementById('lbl-feb-biz').textContent = '(d.h.' + MAR_BIZ_AR + ')';
-    document.getElementById('lbl-mar-biz').textContent = '(d.h.' + MAR_BIZ_AR + ')';
-    document.getElementById('header-date').textContent = 'Datos al ' + fmtDate(LATEST_MAR);
-    return;
-  }
-  const range = d => d >= '2026-02-01' && d <= '2026-03-31';
-  const holAR_dates = [...HOLIDAYS.ar].filter(range).sort();
-  const clOwn = new Set(['2026-01-01','2026-04-03','2026-04-04','2026-05-01','2026-05-21','2026-06-20','2026-06-29','2026-07-16','2026-08-15','2026-09-18','2026-09-19','2026-10-12','2026-10-31','2026-11-01','2026-12-08','2026-12-25']);
-  const holAR = holAR_dates.map(fmtDate).join(', ');
-  const holCL = [...HOLIDAYS.cl].filter(range).sort().map(d =>
-    clOwn.has(d)
-      ? '<span style="color:#00695c;font-weight:600">' + fmtDate(d) + '</span>'
-      : '<span style="color:#1565c0;font-weight:600">' + fmtDate(d) + '</span>'
-  ).join(', ');
-  const legend = '&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#00695c">&#x2588;</span> feriado CL &nbsp;<span style="color:#1565c0">&#x2588;</span> feriado AR';
+  const ranges = {
+    ene: '01/01/2026 – 31/01/2026',
+    feb: '01/02/2026 – 28/02/2026',
+    mar: '01/03/2026 – 31/03/2026',
+    comp3m: 'Enero · Febrero · Marzo 2026'
+  };
   document.getElementById('biz-info-bar').innerHTML =
-    '<b>Comparaci&#xF3;n MTD (d&#xED;as h&#xE1;biles al ' + fmtDate(LATEST_MAR) + '):</b><br>' +
-    '&nbsp;&nbsp;&#x2022; D&#xED;as h&#xE1;biles en Mar-26 del 01/03 al ' + fmtDate(LATEST_MAR) + ': <b>' + MAR_BIZ_AR + '</b> (AR) / <b>' + MAR_BIZ_CL + '</b> (CL)<br>' +
-    '&nbsp;&nbsp;&#x2022; Equivalente en Feb-26 (CL): hasta el <b>' + fmtDate(FEB_CUTOFF_CL) + '</b> (' + MAR_BIZ_CL + ' d.h.) — AR muestra mes completo<br>' +
-    '&nbsp;&nbsp;&#x2022; Feriados AR excluidos en feb-mar: ' + (holAR || 'ninguno') + '<br>' +
-    '&nbsp;&nbsp;&#x2022; Feriados CL excluidos en feb-mar: ' + (holCL || 'ninguno') + (holCL ? '&nbsp;&nbsp;' + legend : '');
-  document.getElementById('lbl-feb-biz').textContent = '(d.h.' + MAR_BIZ_CL + ')';
-  document.getElementById('lbl-mar-biz').textContent = '(d.h.' + MAR_BIZ_AR + ')';
-  document.getElementById('header-date').textContent = 'Datos al ' + fmtDate(LATEST_MAR);
+    '<b>' + getPeriodLabel() + '</b> — ' + (ranges[currentPeriod] || '') +
+    ' &nbsp;·&nbsp; Fuente: OPERATION_PRODUCTIVITY_RV_REP (AR) · LK_COL_REP_DAILY_AGG_PROD (CL) · TC ARS ' +
+    RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' +
+    RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. feb-26 promedio)';
+  document.getElementById('header-date').textContent = 'Datos cerrados a Mar-26';
 }
 
 // â”€â”€ Render recupero por producto (fuente: PROD_RECOVERY / SKYNET) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1750,7 +1729,7 @@ function renderProdRec() {
   const agencies  = currentAgency === 'all' ? ['ar', 'cl'] : [currentAgency];
   const agColors  = { ar: '#1565c0', cl: '#00695c' };
   const agLabels  = { ar: 'GDM_AR', cl: 'GDM_CL' };
-  const mkey      = currentPeriod === 'mar_mtd' ? 'mar' : currentPeriod === 'ene_closed' ? 'ene' : 'feb';
+  const mkey      = currentPeriod === 'mar' || currentPeriod === 'comp3m' ? 'mar' : currentPeriod === 'ene' ? 'ene' : 'feb';
 
   const PROD_DEFS = [
     { key: 'point',           label: 'Point',            color: '#6a1b9a' },
@@ -1800,7 +1779,7 @@ function renderTelProdRec() {
   const agencies  = currentAgency === 'all' ? ['ar', 'cl'] : [currentAgency];
   const agColors  = { ar: '#1565c0', cl: '#00695c' };
   const agLabels  = { ar: 'GDM_AR', cl: 'GDM_CL' };
-  const mkey      = currentPeriod === 'mar_mtd' ? 'mar' : currentPeriod === 'ene_closed' ? 'ene' : 'feb';
+  const mkey      = currentPeriod === 'mar' || currentPeriod === 'comp3m' ? 'mar' : currentPeriod === 'ene' ? 'ene' : 'feb';
 
   const PROD_DEFS = [
     { key: 'point',           label: 'Point',            color: '#6a1b9a' },
@@ -1818,7 +1797,7 @@ function renderTelProdRec() {
     const totSky   = PROD_DEFS.reduce((s, p) => s + (PROD_RECOVERY[ag][mkey][p.key] ? PROD_RECOVERY[ag][mkey][p.key].usd : 0), 0);
     const telPct   = totSky > 0 ? (totalRec / totSky * 100).toFixed(1) : '0.0';
     // OPERATION total para esta agencia/período (para escalar la distribución SKYNET)
-    const opTotal  = getTotals(aggregate(filterRows(currentPeriod, ag))).usd;
+    const opTotal  = getTotals(aggregate(filterRows(currentPeriod === 'comp3m' ? 'mar' : currentPeriod, ag))).usd;
     const scale    = totalRec > 0 ? opTotal / totalRec : 0;
 
     html += '<div class="prod-rec-card">' +
@@ -1878,7 +1857,7 @@ function setAgency(ag) {
 
 function setPeriod(p) {
   currentPeriod = p;
-  document.querySelectorAll('#btn-ene_closed,#btn-feb_closed,#btn-feb_mtd,#btn-mar_mtd').forEach(b => b.className = 'btn');
+  document.querySelectorAll('#btn-ene,#btn-feb,#btn-mar,#btn-comp3m').forEach(b => b.className = 'btn');
   document.getElementById('btn-' + p).classList.add('active');
   render();
 }
