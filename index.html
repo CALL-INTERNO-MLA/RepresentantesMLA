@@ -5,266 +5,127 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard GDM — Recupero Telefónico</title>
 <style>
-  :root {
-    --ml-yellow: #FFE600;
-    --ml-blue:   #3483FA;
-    --ml-dark:   #2D3277;
-    --ml-green:  #00A650;
-    --ml-red:    #F23D4F;
-    --ml-orange: #FF6B00;
-    --ml-bg:     #EDEDF0;
-    --ml-white:  #FFFFFF;
-    --ml-text:   #333333;
-    --ml-muted:  #767676;
-    --ml-border: #E5E5E5;
-    --ml-shadow: 0 1px 6px rgba(0,0,0,0.09);
-  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--ml-bg); color: var(--ml-text); font-size: 14px; }
-
-  /* ── Header ── */
-  header {
-    background: var(--ml-dark);
-    color: white;
-    padding: 0 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 58px;
-    border-bottom: 4px solid var(--ml-yellow);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-  }
-  .header-left { display: flex; align-items: center; gap: 14px; }
-  .header-badge {
-    background: var(--ml-yellow);
-    color: var(--ml-dark);
-    font-weight: 800;
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 5px;
-    letter-spacing: 0.8px;
-    flex-shrink: 0;
-  }
-  header h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; }
-  header p  { font-size: 11px; opacity: 0.6; margin-top: 2px; }
-  #header-date { font-size: 11px; opacity: 0.75; text-align: right; }
-
-  /* ── Filters bar ── */
-  .filters-bar {
-    background: var(--ml-white);
-    padding: 10px 32px;
-    display: flex;
-    gap: 28px;
-    align-items: center;
-    border-bottom: 1px solid var(--ml-border);
-    flex-wrap: wrap;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  }
-  .filter-group { display: flex; align-items: center; gap: 9px; }
-  .filter-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--ml-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.7px;
-    white-space: nowrap;
-  }
-  .filter-select {
-    appearance: none;
-    -webkit-appearance: none;
-    background: var(--ml-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%233483FA' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 11px center;
-    border: 1.5px solid var(--ml-border);
-    border-radius: 6px;
-    padding: 7px 34px 7px 12px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ml-dark);
-    cursor: pointer;
-    transition: border-color 0.18s, box-shadow 0.18s;
-    min-width: 170px;
-  }
-  .filter-select:hover  { border-color: var(--ml-blue); }
-  .filter-select:focus  { outline: none; border-color: var(--ml-blue); box-shadow: 0 0 0 3px rgba(52,131,250,0.13); }
-
-  /* ── Main ── */
-  .main { padding: 20px 32px; }
-
-  /* ── Info bar ── */
-  .biz-info {
-    background: linear-gradient(to right, #FFFCE0, #FFFFF5);
-    border-left: 4px solid var(--ml-yellow);
-    padding: 9px 16px;
-    font-size: 12px;
-    color: #6B5800;
-    border-radius: 0 6px 6px 0;
-    margin-bottom: 4px;
-  }
-
-  /* ── KPI cards ── */
-  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: 14px; margin-bottom: 20px; }
-  .kpi {
-    background: var(--ml-white);
-    border-radius: 8px;
-    padding: 16px 18px;
-    box-shadow: var(--ml-shadow);
-    border-top: 3px solid var(--ml-blue);
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-  .kpi:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.12); }
-  .kpi.green  { border-top-color: var(--ml-green); }
-  .kpi.orange { border-top-color: var(--ml-orange); }
-  .kpi.teal   { border-top-color: #00A6A0; }
-  .kpi-label {
-    font-size: 10px; font-weight: 700; color: var(--ml-muted);
-    text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 8px;
-  }
-  .kpi-value { font-size: 22px; font-weight: 800; color: var(--ml-dark); line-height: 1.1; }
-  .kpi.green  .kpi-value { color: var(--ml-green); }
-  .kpi.orange .kpi-value { color: var(--ml-orange); }
-  .kpi.teal   .kpi-value { color: #00A6A0; }
-  .kpi-sub { font-size: 11px; color: var(--ml-muted); margin-top: 4px; }
-
-  /* ── Sections ── */
-  .section {
-    background: var(--ml-white);
-    border-radius: 8px;
-    box-shadow: var(--ml-shadow);
-    margin-bottom: 16px;
-    overflow: hidden;
-  }
-  .section-header {
-    padding: 13px 20px;
-    border-bottom: 1px solid var(--ml-border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-    background: linear-gradient(to right, #F6F8FF, var(--ml-white));
-  }
-  .section-title { font-size: 13px; font-weight: 700; color: var(--ml-dark); }
-  .badge { font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 700; letter-spacing: 0.2px; }
-  .badge-ar  { background: #EBF2FF; color: var(--ml-blue); }
-  .badge-cl  { background: #E6F9F0; color: var(--ml-green); }
-  .badge-all { background: #FFF9CC; color: #7A6200; }
-
-  /* ── Tables ── */
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #2d3436; font-size: 14px; }
+  header { background: linear-gradient(135deg, #1a237e, #283593); color: white; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
+  header h1 { font-size: 20px; font-weight: 600; }
+  header p { font-size: 12px; opacity: 0.75; margin-top: 3px; }
+  .filters-bar { background: white; padding: 14px 32px; display: flex; gap: 32px; align-items: center; border-bottom: 1px solid #e0e0e0; flex-wrap: wrap; }
+  .filter-group { display: flex; align-items: center; gap: 10px; }
+  .filter-label { font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+  .btn-group { display: flex; gap: 4px; }
+  .btn { padding: 6px 14px; border: 1.5px solid #c5cae9; background: white; border-radius: 20px; cursor: pointer; font-size: 12px; color: #555; transition: all 0.2s; font-weight: 500; }
+  .btn:hover { border-color: #3949ab; color: #3949ab; }
+  .btn.active { background: #3949ab; border-color: #3949ab; color: white; }
+  .main { padding: 24px 32px; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .kpi { background: white; border-radius: 10px; padding: 18px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-left: 4px solid #3949ab; }
+  .kpi.green { border-left-color: #2e7d32; }
+  .kpi.orange { border-left-color: #e65100; }
+  .kpi.teal { border-left-color: #00695c; }
+  .kpi-label { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .kpi-value { font-size: 24px; font-weight: 700; color: #1a237e; }
+  .kpi.green .kpi-value { color: #2e7d32; }
+  .kpi.orange .kpi-value { color: #e65100; }
+  .kpi.teal .kpi-value { color: #00695c; }
+  .kpi-sub { font-size: 11px; color: #aaa; margin-top: 2px; }
+  .section { background: white; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 20px; overflow: hidden; }
+  .section-header { padding: 14px 20px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .section-title { font-size: 14px; font-weight: 600; color: #333; }
+  .badge { font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+  .badge-ar { background: #e3f2fd; color: #1565c0; }
+  .badge-cl { background: #e0f2f1; color: #00695c; }
+  .badge-all { background: #ede7f6; color: #4527a0; }
   table { width: 100%; border-collapse: collapse; }
-  thead th {
-    background: #F5F7FB;
-    padding: 10px 14px;
-    text-align: left;
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--ml-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid var(--ml-border);
-    white-space: nowrap;
-  }
+  thead th { background: #f5f6fa; padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 2px solid #e8e8e8; white-space: nowrap; }
   thead th.num { text-align: right; }
-  tbody td { padding: 9px 14px; border-bottom: 1px solid #F0F0F0; font-size: 13px; }
+  tbody td { padding: 9px 14px; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
   tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  tbody tr:hover { background: #F0F6FF; }
-  tbody tr.total-row { background: #EBF2FF; font-weight: 700; border-top: 2px solid #C3D9FF; }
-  tbody tr.total-row td { color: var(--ml-blue); }
-  .agency-pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
-  .agency-ar { background: #EBF2FF; color: var(--ml-blue); }
-  .agency-cl { background: #E6F9F0; color: var(--ml-green); }
-
-  /* ── Bar helpers ── */
+  tbody tr:hover { background: #fafbff; }
+  tbody tr.total-row { background: #e8eaf6; font-weight: 700; border-top: 2px solid #c5cae9; }
+  tbody tr.total-row td { color: #1a237e; }
+  .agency-pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .agency-ar { background: #e3f2fd; color: #1565c0; }
+  .agency-cl { background: #e0f2f1; color: #00695c; }
   .bar-wrap { position: relative; display: flex; align-items: center; gap: 8px; }
-  .bar-bg   { flex: 1; background: #EAEAEA; border-radius: 4px; height: 8px; min-width: 60px; }
-  .bar-fill { height: 8px; border-radius: 4px; background: var(--ml-blue); transition: width 0.4s; }
-  .bar-fill.cl { background: var(--ml-green); }
-  .note   { font-size: 11px; color: #AAA; padding: 10px 20px 14px; }
+  .bar-bg { flex: 1; background: #eee; border-radius: 4px; height: 8px; min-width: 60px; }
+  .bar-fill { height: 8px; border-radius: 4px; background: #3949ab; transition: width 0.4s; }
+  .bar-fill.cl { background: #00695c; }
+  .note { font-size: 11px; color: #999; padding: 10px 20px 14px; }
   .hidden { display: none; }
-
-  /* ── Top chart ── */
   .chart-container { padding: 16px 20px; }
-  .chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 160px; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 160px; }
   .chart-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
   .chart-bar-inner { width: 100%; border-radius: 4px 4px 0 0; transition: height 0.4s; min-width: 20px; }
-  .chart-bar-label { font-size: 9px; color: #999; text-align: center; word-break: break-all; margin-top: 4px; }
-  .chart-bar-val   { font-size: 9px; color: #666; font-weight: 700; }
-
-  /* ── Comparativo ── */
+  .chart-bar-label { font-size: 10px; color: #888; text-align: center; word-break: break-all; margin-top: 4px; }
+  .chart-bar-val { font-size: 9px; color: #555; font-weight: 600; }
   .comp-chart-wrap { padding: 20px 20px 8px; overflow-x: auto; }
   .comp-chart { min-width: 600px; }
-  .comp-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
-  .comp-rep {
-    width: 115px; font-size: 11px; color: var(--ml-text); text-align: right;
-    flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500;
-  }
+  .comp-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .comp-rep { width: 110px; font-size: 12px; color: #444; text-align: right; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .comp-bars { flex: 1; display: flex; flex-direction: column; gap: 3px; }
   .comp-bar-row { display: flex; align-items: center; gap: 6px; }
-  .comp-bar { height: 13px; border-radius: 3px; transition: width 0.4s; min-width: 2px; }
-  .comp-bar.ene-ar { background: #A8C8FF; }
-  .comp-bar.feb-ar { background: var(--ml-blue); }
-  .comp-bar.mar-ar { background: #1A4FA8; }
-  .comp-bar.ene-cl { background: #80DBBB; }
-  .comp-bar.feb-cl { background: var(--ml-green); }
-  .comp-bar.mar-cl { background: #006B34; }
-  .comp-val { font-size: 10px; color: var(--ml-muted); white-space: nowrap; }
-  .comp-legend { display: flex; gap: 16px; padding: 8px 20px 14px; flex-wrap: wrap; }
-  .comp-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--ml-muted); }
-  .comp-legend-box  { width: 12px; height: 12px; border-radius: 3px; }
-
-  /* ── Portfolio ── */
-  .port-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
-  .port-card { border: 1px solid var(--ml-border); border-radius: 8px; padding: 14px 16px; background: var(--ml-white); }
-  .port-card-title { font-size: 11px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .port-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #F5F5F5; font-size: 13px; }
+  .comp-bar { height: 14px; border-radius: 3px; transition: width 0.4s; min-width: 2px; }
+  .comp-bar.feb { background: #3949ab; }
+  .comp-bar.mar { background: #90caf9; }
+  .comp-bar.feb-cl { background: #00695c; }
+  .comp-bar.mar-cl { background: #80cbc4; }
+  .comp-val { font-size: 10px; color: #666; white-space: nowrap; }
+  .comp-legend { display: flex; gap: 20px; padding: 8px 20px 14px; flex-wrap: wrap; }
+  .comp-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #666; }
+  .comp-legend-box { width: 14px; height: 14px; border-radius: 3px; }
+  .biz-info { background: #e8f5e9; border-left: 3px solid #2e7d32; padding: 8px 16px; font-size: 12px; color: #2e7d32; }
+  .port-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .port-card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 16px; }
+  .port-card-title { font-size: 12px; font-weight: 700; color: #555; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .port-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
   .port-row:last-child { border-bottom: none; }
-  .port-label { color: var(--ml-muted); }
-  .port-value { font-weight: 700; color: var(--ml-dark); }
-  .port-value.teal { color: var(--ml-green); }
-  .port-delta { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 700; }
-  .port-delta.down { background: #FFECEE; color: #C62828; }
-  .port-delta.up   { background: #E6F9F0; color: var(--ml-green); }
-
-  /* ── Product recovery ── */
-  .prod-rec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; padding: 16px 20px; }
-  .prod-rec-card { border: 1px solid var(--ml-border); border-radius: 8px; padding: 14px 16px; background: var(--ml-white); }
-  .prod-rec-card-title { font-size: 11px; font-weight: 700; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .port-label { color: #666; }
+  .port-value { font-weight: 600; color: #1a237e; }
+  .port-value.teal { color: #00695c; }
+  .port-delta { font-size: 11px; padding: 2px 7px; border-radius: 10px; font-weight: 600; }
+  .port-delta.down { background: #fce4ec; color: #c62828; }
+  .port-delta.up { background: #e8f5e9; color: #2e7d32; }
+  .prod-rec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; padding: 16px 20px; }
+  .prod-rec-card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 16px; }
+  .prod-rec-card-title { font-size: 12px; font-weight: 700; color: #555; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.4px; }
   .prod-rec-row { margin-bottom: 10px; }
   .prod-rec-label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-  .prod-rec-label { font-size: 12px; color: var(--ml-text); font-weight: 500; }
-  .prod-rec-vals  { font-size: 11px; color: var(--ml-muted); }
-  .prod-rec-bar-bg   { height: 8px; background: #EAEAEA; border-radius: 4px; }
-  .prod-rec-bar-fill { height: 8px; border-radius: 4px; transition: width 0.4s; }
+  .prod-rec-label { font-size: 12px; color: #555; font-weight: 500; }
+  .prod-rec-vals { font-size: 11px; color: #888; }
+  .prod-rec-bar-bg { height: 10px; background: #eee; border-radius: 5px; }
+  .prod-rec-bar-fill { height: 10px; border-radius: 5px; transition: width 0.4s; }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-left">
-    <span class="header-badge">GDM</span>
-    <div>
-      <h1>Dashboard — Recupero Telefónico</h1>
-      <p>meli-bi-data · OPERATION_PRODUCTIVITY_RV_REP · Misma metodología que Looker Studio</p>
-    </div>
+  <div>
+    <h1>Dashboard — Recupero Telefónico GDM</h1>
+    <p>meli-bi-data · SBOX_COLLECTIONSDA.OPERATION_PRODUCTIVITY_RV_REP · Misma metodología que Looker Studio</p>
   </div>
-  <div id="header-date">Cargando...</div>
+  <div style="text-align:right; font-size:12px; opacity:0.8;" id="header-date">
+    Cargando...
+  </div>
 </header>
 
 <div class="filters-bar">
   <div class="filter-group">
-    <label class="filter-label" for="sel-agency">Agencia</label>
-    <select id="sel-agency" class="filter-select" onchange="setAgency(this.value)">
-      <option value="all">Ambas agencias</option>
-      <option value="ar">GDM_AR</option>
-      <option value="cl">GDM_CL</option>
-    </select>
+    <span class="filter-label">Agencia</span>
+    <div class="btn-group">
+      <button class="btn active" id="btn-all" onclick="setAgency('all')">Ambas</button>
+      <button class="btn" id="btn-ar" onclick="setAgency('ar')">GDM_AR</button>
+      <button class="btn" id="btn-cl" onclick="setAgency('cl')">GDM_CL</button>
+    </div>
   </div>
   <div class="filter-group">
-    <label class="filter-label" for="sel-period">Período</label>
-    <select id="sel-period" class="filter-select" onchange="setPeriod(this.value)">
-      <option value="ene">Enero 2026</option>
-      <option value="feb">Febrero 2026</option>
-      <option value="mar" selected>Marzo 2026</option>
-      <option value="comp3m">Comparativo Ene–Mar</option>
-    </select>
+    <span class="filter-label">Período</span>
+    <div class="btn-group">
+      <button class="btn" id="btn-ene_closed" onclick="setPeriod('ene_closed')">Mes Cerrado (Ene-26)</button>
+      <button class="btn" id="btn-feb_closed" onclick="setPeriod('feb_closed')">Mes Cerrado (Feb-26)</button>
+      <button class="btn" id="btn-feb_mtd" onclick="setPeriod('feb_mtd')">MTD Feb-26 <span id="lbl-feb-biz" style="opacity:0.8"></span></button>
+      <button class="btn active" id="btn-mar_mtd" onclick="setPeriod('mar_mtd')">MTD Mar-26 <span id="lbl-mar-biz" style="opacity:0.8"></span></button>
+    </div>
   </div>
 </div>
 
@@ -314,7 +175,7 @@
   </div>
   <div class="section">
     <div class="section-header">
-      <span class="section-title" id="comp-title">Comparativo Ene–Feb–Mar 2026 — Recupero USD por Representante</span>
+      <span class="section-title" id="comp-title">Comparativo MTD homogéneo — Recupero USD por Representante</span>
       <span class="badge" id="comp-badge">Ambas agencias</span>
     </div>
     <div class="comp-chart-wrap">
@@ -518,27 +379,6 @@ const MONTHLY_DATA_AR = [
   {m:202602,ag:'ar',rep:'mmenschik',lc:49577334,pp:146,ppk:83,gest:1154,cd:307},
   {m:202602,ag:'ar',rep:'msanchezspur',lc:40977508.05,pp:232,ppk:105,gest:1912,cd:462},
   {m:202602,ag:'ar',rep:'tomlohrmann',lc:46181571.55,pp:340,ppk:167,gest:2667,cd:641},
-  // Marzo 2026 — fuente: SBOX_COLLECTIONSDA.OPERATION_PRODUCTIVITY_RV_REP (mes cerrado 31/03)
-  {m:202603,ag:'ar',rep:'aciabattini',lc:22246253.4,pp:131,ppk:70,gest:951,cd:293},
-  {m:202603,ag:'ar',rep:'aistrak',lc:46301924.74,pp:349,ppk:139,gest:1677,cd:583},
-  {m:202603,ag:'ar',rep:'bipereira',lc:33778435.81,pp:193,ppk:93,gest:1505,cd:396},
-  {m:202603,ag:'ar',rep:'camilac',lc:29827384.41,pp:217,ppk:92,gest:1623,cd:432},
-  {m:202603,ag:'ar',rep:'cincata',lc:41721356.38,pp:237,ppk:122,gest:1722,cd:450},
-  {m:202603,ag:'ar',rep:'dagimenez',lc:46714808.25,pp:224,ppk:85,gest:988,cd:364},
-  {m:202603,ag:'ar',rep:'fkiefer',lc:43878456.73,pp:208,ppk:78,gest:1097,cd:412},
-  {m:202603,ag:'ar',rep:'ftochecabani',lc:17105030.82,pp:181,ppk:76,gest:1847,cd:337},
-  {m:202603,ag:'ar',rep:'imir',lc:35458575.5,pp:187,ppk:75,gest:786,cd:306},
-  {m:202603,ag:'ar',rep:'jdroubi',lc:24054845.18,pp:145,ppk:64,gest:1271,cd:323},
-  {m:202603,ag:'ar',rep:'jmarchetti',lc:39844434.11,pp:320,ppk:148,gest:1783,cd:595},
-  {m:202603,ag:'ar',rep:'jobarreiro',lc:37638995.68,pp:318,ppk:131,gest:1547,cd:519},
-  {m:202603,ag:'ar',rep:'luctorres',lc:26903294.92,pp:318,ppk:118,gest:1850,cd:554},
-  {m:202603,ag:'ar',rep:'maaltamirano',lc:29957026.79,pp:185,ppk:66,gest:1105,cd:355},
-  {m:202603,ag:'ar',rep:'mcabana',lc:18057191.33,pp:142,ppk:58,gest:1018,cd:210},
-  {m:202603,ag:'ar',rep:'mciechanowic',lc:38985919.08,pp:229,ppk:89,gest:1504,cd:453},
-  {m:202603,ag:'ar',rep:'mgarrigue',lc:19725863.24,pp:120,ppk:45,gest:990,cd:237},
-  {m:202603,ag:'ar',rep:'mmenschik',lc:54137883.62,pp:235,ppk:117,gest:1597,cd:513},
-  {m:202603,ag:'ar',rep:'msanchezspur',lc:40808419.76,pp:274,ppk:114,gest:1426,cd:463},
-  {m:202603,ag:'ar',rep:'tomlohrmann',lc:47771155.53,pp:283,ppk:127,gest:1596,cd:496},
 ];
 
 // â”€â”€ Datos CL diarios (fuente: WHOWNER.LK_COL_REP_DAILY_AGG_PROD, gdm_cl_call_center) â”€â”€
@@ -1446,25 +1286,142 @@ const DAILY_DATA_CL = [
   {d:'2026-04-13',ag:'cl',rep:'aciabattini',lc:0,pp:1,ppk:0,gest:21,cd:1},
   {d:'2026-04-13',ag:'cl',rep:'aistrak',lc:11300,pp:1,ppk:1,gest:21,cd:1},
   {d:'2026-04-13',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:52,cd:0},
-  {d:'2026-04-13',ag:'cl',rep:'camilac',lc:8785,pp:3,ppk:1,gest:42,cd:4},
+  {d:'2026-04-13',ag:'cl',rep:'camilac',lc:54233,pp:3,ppk:3,gest:42,cd:4},
   {d:'2026-04-13',ag:'cl',rep:'cincata',lc:0,pp:0,ppk:0,gest:15,cd:1},
   {d:'2026-04-13',ag:'cl',rep:'dagimenez',lc:0,pp:0,ppk:0,gest:42,cd:0},
   {d:'2026-04-13',ag:'cl',rep:'fkiefer',lc:0,pp:0,ppk:0,gest:27,cd:2},
-  {d:'2026-04-13',ag:'cl',rep:'ftochecabani',lc:0,pp:0,ppk:0,gest:33,cd:3},
+  {d:'2026-04-13',ag:'cl',rep:'ftochecabani',lc:0,pp:0,ppk:0,gest:32,cd:2},
   {d:'2026-04-13',ag:'cl',rep:'imir',lc:0,pp:1,ppk:0,gest:33,cd:1},
   {d:'2026-04-13',ag:'cl',rep:'jdroubi',lc:0,pp:0,ppk:0,gest:31,cd:0},
   {d:'2026-04-13',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:56,cd:2},
   {d:'2026-04-13',ag:'cl',rep:'jobarreiro',lc:0,pp:0,ppk:0,gest:46,cd:1},
   {d:'2026-04-13',ag:'cl',rep:'maaltamirano',lc:1598,pp:1,ppk:1,gest:25,cd:2},
-  {d:'2026-04-13',ag:'cl',rep:'mciechanowic',lc:0,pp:1,ppk:0,gest:35,cd:4},
+  {d:'2026-04-13',ag:'cl',rep:'mciechanowic',lc:10576,pp:1,ppk:1,gest:35,cd:4},
   {d:'2026-04-13',ag:'cl',rep:'mgarrigue',lc:78601,pp:3,ppk:1,gest:48,cd:5},
   {d:'2026-04-13',ag:'cl',rep:'mmenschik',lc:0,pp:1,ppk:0,gest:56,cd:5},
-  {d:'2026-04-13',ag:'cl',rep:'msanchezspur',lc:0,pp:0,ppk:0,gest:25,cd:3},
+  {d:'2026-04-13',ag:'cl',rep:'msanchezspur',lc:0,pp:0,ppk:0,gest:24,cd:2},
   {d:'2026-04-13',ag:'cl',rep:'orisilva',lc:0,pp:0,ppk:0,gest:24,cd:3},
   {d:'2026-04-13',ag:'cl',rep:'tomlohrmann',lc:2000,pp:1,ppk:1,gest:61,cd:3},
+  {d:'2026-04-14',ag:'cl',rep:'aciabattini',lc:34079,pp:1,ppk:1,gest:29,cd:3},
+  {d:'2026-04-14',ag:'cl',rep:'aistrak',lc:14433,pp:2,ppk:1,gest:13,cd:3},
+  {d:'2026-04-14',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:55,cd:2},
+  {d:'2026-04-14',ag:'cl',rep:'camilac',lc:0,pp:2,ppk:0,gest:30,cd:2},
+  {d:'2026-04-14',ag:'cl',rep:'cincata',lc:24438,pp:1,ppk:1,gest:17,cd:1},
+  {d:'2026-04-14',ag:'cl',rep:'dagimenez',lc:32424,pp:2,ppk:1,gest:34,cd:5},
+  {d:'2026-04-14',ag:'cl',rep:'fkiefer',lc:0,pp:0,ppk:0,gest:16,cd:1},
+  {d:'2026-04-14',ag:'cl',rep:'ftochecabani',lc:0,pp:0,ppk:0,gest:43,cd:2},
+  {d:'2026-04-14',ag:'cl',rep:'imir',lc:0,pp:0,ppk:0,gest:38,cd:1},
+  {d:'2026-04-14',ag:'cl',rep:'jdroubi',lc:0,pp:0,ppk:0,gest:23,cd:1},
+  {d:'2026-04-14',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:31,cd:4},
+  {d:'2026-04-14',ag:'cl',rep:'jobarreiro',lc:41005,pp:1,ppk:1,gest:34,cd:2},
+  {d:'2026-04-14',ag:'cl',rep:'luctorres',lc:0,pp:0,ppk:0,gest:40,cd:2},
+  {d:'2026-04-14',ag:'cl',rep:'maaltamirano',lc:0,pp:0,ppk:0,gest:42,cd:0},
+  {d:'2026-04-14',ag:'cl',rep:'mciechanowic',lc:8683,pp:1,ppk:1,gest:38,cd:3},
+  {d:'2026-04-14',ag:'cl',rep:'mgarrigue',lc:0,pp:1,ppk:0,gest:44,cd:3},
+  {d:'2026-04-14',ag:'cl',rep:'mmenschik',lc:35171,pp:3,ppk:1,gest:35,cd:7},
+  {d:'2026-04-14',ag:'cl',rep:'msanchezspur',lc:23377,pp:2,ppk:1,gest:29,cd:4},
+  {d:'2026-04-14',ag:'cl',rep:'orisilva',lc:0,pp:1,ppk:0,gest:31,cd:6},
+  {d:'2026-04-14',ag:'cl',rep:'tomlohrmann',lc:31876,pp:1,ppk:1,gest:28,cd:2},
+  {d:'2026-04-15',ag:'cl',rep:'aciabattini',lc:0,pp:0,ppk:0,gest:12,cd:1},
+  {d:'2026-04-15',ag:'cl',rep:'aistrak',lc:0,pp:0,ppk:0,gest:15,cd:0},
+  {d:'2026-04-15',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:13,cd:1},
+  {d:'2026-04-15',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:10,cd:0},
+  {d:'2026-04-15',ag:'cl',rep:'cincata',lc:0,pp:0,ppk:0,gest:15,cd:0},
+  {d:'2026-04-15',ag:'cl',rep:'dagimenez',lc:28117,pp:2,ppk:1,gest:17,cd:2},
+  {d:'2026-04-15',ag:'cl',rep:'fkiefer',lc:0,pp:0,ppk:0,gest:9,cd:1},
+  {d:'2026-04-15',ag:'cl',rep:'ftochecabani',lc:86326,pp:4,ppk:2,gest:19,cd:4},
+  {d:'2026-04-15',ag:'cl',rep:'imir',lc:0,pp:0,ppk:0,gest:8,cd:1},
+  {d:'2026-04-15',ag:'cl',rep:'jdroubi',lc:0,pp:0,ppk:0,gest:16,cd:0},
+  {d:'2026-04-15',ag:'cl',rep:'jmarchetti',lc:0,pp:1,ppk:0,gest:14,cd:4},
+  {d:'2026-04-15',ag:'cl',rep:'jobarreiro',lc:28537,pp:5,ppk:1,gest:21,cd:7},
+  {d:'2026-04-15',ag:'cl',rep:'luctorres',lc:0,pp:0,ppk:0,gest:10,cd:1},
+  {d:'2026-04-15',ag:'cl',rep:'maaltamirano',lc:0,pp:2,ppk:0,gest:9,cd:4},
+  {d:'2026-04-15',ag:'cl',rep:'mciechanowic',lc:44634,pp:2,ppk:1,gest:2,cd:2},
+  {d:'2026-04-15',ag:'cl',rep:'mgarrigue',lc:0,pp:1,ppk:0,gest:16,cd:1},
+  {d:'2026-04-15',ag:'cl',rep:'mmenschik',lc:19853,pp:1,ppk:1,gest:8,cd:1},
+  {d:'2026-04-15',ag:'cl',rep:'msanchezspur',lc:118016,pp:3,ppk:3,gest:18,cd:3},
+  {d:'2026-04-15',ag:'cl',rep:'orisilva',lc:15113,pp:2,ppk:1,gest:13,cd:2},
+  {d:'2026-04-15',ag:'cl',rep:'tomlohrmann',lc:0,pp:0,ppk:0,gest:11,cd:0},
+  {d:'2026-04-16',ag:'cl',rep:'aciabattini',lc:19142,pp:1,ppk:1,gest:11,cd:2},
+  {d:'2026-04-16',ag:'cl',rep:'aistrak',lc:100236,pp:3,ppk:3,gest:12,cd:3},
+  {d:'2026-04-16',ag:'cl',rep:'bipereira',lc:21648,pp:1,ppk:1,gest:10,cd:2},
+  {d:'2026-04-16',ag:'cl',rep:'camilac',lc:0,pp:0,ppk:0,gest:9,cd:0},
+  {d:'2026-04-16',ag:'cl',rep:'cincata',lc:0,pp:2,ppk:0,gest:8,cd:2},
+  {d:'2026-04-16',ag:'cl',rep:'dagimenez',lc:0,pp:0,ppk:0,gest:6,cd:2},
+  {d:'2026-04-16',ag:'cl',rep:'fkiefer',lc:0,pp:1,ppk:0,gest:10,cd:3},
+  {d:'2026-04-16',ag:'cl',rep:'ftochecabani',lc:0,pp:0,ppk:0,gest:3,cd:0},
+  {d:'2026-04-16',ag:'cl',rep:'imir',lc:53420,pp:2,ppk:2,gest:10,cd:4},
+  {d:'2026-04-16',ag:'cl',rep:'jdroubi',lc:0,pp:0,ppk:0,gest:3,cd:0},
+  {d:'2026-04-16',ag:'cl',rep:'jmarchetti',lc:0,pp:0,ppk:0,gest:12,cd:1},
+  {d:'2026-04-16',ag:'cl',rep:'jobarreiro',lc:0,pp:0,ppk:0,gest:6,cd:0},
+  {d:'2026-04-16',ag:'cl',rep:'maaltamirano',lc:0,pp:1,ppk:0,gest:9,cd:2},
+  {d:'2026-04-16',ag:'cl',rep:'mciechanowic',lc:0,pp:0,ppk:0,gest:8,cd:1},
+  {d:'2026-04-16',ag:'cl',rep:'mgarrigue',lc:0,pp:0,ppk:0,gest:10,cd:1},
+  {d:'2026-04-16',ag:'cl',rep:'mmenschik',lc:14496,pp:2,ppk:2,gest:7,cd:2},
+  {d:'2026-04-16',ag:'cl',rep:'msanchezspur',lc:46691,pp:2,ppk:2,gest:6,cd:3},
+  {d:'2026-04-16',ag:'cl',rep:'orisilva',lc:0,pp:0,ppk:0,gest:10,cd:0},
+  {d:'2026-04-16',ag:'cl',rep:'tomlohrmann',lc:0,pp:1,ppk:0,gest:7,cd:1},
+  {d:'2026-04-17',ag:'cl',rep:'aciabattini',lc:0,pp:0,ppk:0,gest:7,cd:1},
+  {d:'2026-04-17',ag:'cl',rep:'aistrak',lc:0,pp:0,ppk:0,gest:3,cd:1},
+  {d:'2026-04-17',ag:'cl',rep:'bipereira',lc:0,pp:0,ppk:0,gest:9,cd:0},
+  {d:'2026-04-17',ag:'cl',rep:'camilac',lc:28716,pp:1,ppk:1,gest:8,cd:1},
+  {d:'2026-04-17',ag:'cl',rep:'cincata',lc:0,pp:0,ppk:0,gest:9,cd:1},
+  {d:'2026-04-17',ag:'cl',rep:'dagimenez',lc:38811,pp:2,ppk:2,gest:7,cd:3},
+  {d:'2026-04-17',ag:'cl',rep:'fkiefer',lc:0,pp:0,ppk:0,gest:5,cd:0},
+  {d:'2026-04-17',ag:'cl',rep:'ftochecabani',lc:30673,pp:2,ppk:2,gest:9,cd:2},
+  {d:'2026-04-17',ag:'cl',rep:'jdroubi',lc:0,pp:1,ppk:0,gest:5,cd:1},
+  {d:'2026-04-17',ag:'cl',rep:'jmarchetti',lc:0,pp:0,ppk:0,gest:8,cd:0},
+  {d:'2026-04-17',ag:'cl',rep:'jobarreiro',lc:18571,pp:1,ppk:1,gest:7,cd:4},
+  {d:'2026-04-17',ag:'cl',rep:'luctorres',lc:0,pp:0,ppk:0,gest:10,cd:0},
+  {d:'2026-04-17',ag:'cl',rep:'maaltamirano',lc:35948,pp:1,ppk:1,gest:3,cd:2},
+  {d:'2026-04-17',ag:'cl',rep:'mciechanowic',lc:0,pp:2,ppk:0,gest:7,cd:3},
+  {d:'2026-04-17',ag:'cl',rep:'mgarrigue',lc:0,pp:1,ppk:0,gest:7,cd:1},
+  {d:'2026-04-17',ag:'cl',rep:'mmenschik',lc:0,pp:2,ppk:0,gest:9,cd:3},
+  {d:'2026-04-17',ag:'cl',rep:'msanchezspur',lc:3067,pp:1,ppk:1,gest:5,cd:2},
+  {d:'2026-04-17',ag:'cl',rep:'orisilva',lc:0,pp:0,ppk:0,gest:6,cd:0},
+  {d:'2026-04-17',ag:'cl',rep:'tomlohrmann',lc:1000,pp:2,ppk:1,gest:9,cd:3},
+  {d:'2026-04-18',ag:'cl',rep:'aistrak',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-04-18',ag:'cl',rep:'dagimenez',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-04-18',ag:'cl',rep:'mgarrigue',lc:0,pp:1,ppk:0,gest:1,cd:1},
+  {d:'2026-04-18',ag:'cl',rep:'tomlohrmann',lc:10458,pp:2,ppk:2,gest:2,cd:2},
+  {d:'2026-04-19',ag:'cl',rep:'imir',lc:16277,pp:1,ppk:1,gest:1,cd:1},
 ];
 
-// Meses cerrados: Enero, Febrero y Marzo 2026
+// â”€â”€ Fechas de corte (calculadas desde datos CL diarios) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const LATEST_MAR = '2026-03-31';
+const LATEST_FEB = '2026-02-28';
+
+// â”€â”€ Helpers de días hábiles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function isWeekend(ds) { const dw = new Date(ds + 'T12:00:00').getDay(); return dw === 0 || dw === 6; }
+function isBizDay(ds, country) { return !isWeekend(ds) && !HOLIDAYS[country].has(ds); }
+
+function countBizDays(country, upToDate) {
+  const [y, m] = upToDate.split('-');
+  let count = 0, cur = new Date(y + '-' + m + '-01T12:00:00');
+  const end = new Date(upToDate + 'T12:00:00');
+  while (cur <= end) {
+    if (isBizDay(cur.toISOString().slice(0, 10), country)) count++;
+    cur.setDate(cur.getDate() + 1);
+  }
+  return count;
+}
+
+function bizDayCutoff(country, year, month, targetN) {
+  const mm = String(month).padStart(2, '0');
+  let count = 0, lastBiz = null, cur = new Date(year + '-' + mm + '-01T12:00:00');
+  while (cur.getFullYear() === year && cur.getMonth() + 1 === month) {
+    const ds = cur.toISOString().slice(0, 10);
+    if (isBizDay(ds, country)) { count++; lastBiz = ds; if (count === targetN) return ds; }
+    cur.setDate(cur.getDate() + 1);
+  }
+  return lastBiz;
+}
+
+// â”€â”€ Calcular períodos MTD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const MAR_BIZ_AR = countBizDays('ar', LATEST_MAR);
+const MAR_BIZ_CL = countBizDays('cl', LATEST_MAR);
+const FEB_CUTOFF_AR = bizDayCutoff('ar', 2026, 2, MAR_BIZ_AR) || LATEST_FEB;
+const FEB_CUTOFF_CL = bizDayCutoff('cl', 2026, 2, MAR_BIZ_CL) || LATEST_FEB;
 
 // â”€â”€ Formateo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function fmt(n)      { return n === 0 ? '—' : '$' + n.toLocaleString('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
@@ -1475,7 +1432,7 @@ function fmtDate(ds) { const [y,m,d] = ds.split('-'); return d+'/'+m+'/'+y; }
 
 // â”€â”€ Estado del filtro â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let currentAgency = 'all';
-let currentPeriod = 'mar';
+let currentPeriod = 'mar_mtd';
 
 // â”€â”€ Agregación de filas mensuales â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function aggregate(rows) {
@@ -1498,26 +1455,28 @@ function aggregate(rows) {
 // â”€â”€ Filtrar datos según período — AR mensual + CL diario â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function filterRows(period, agency) {
   const ar = (agency === 'all' || agency === 'ar') ? MONTHLY_DATA_AR.filter(r => {
-    if (period === 'ene') return r.m === 202601;
-    if (period === 'feb') return r.m === 202602;
-    if (period === 'mar') return r.m === 202603;
+    if (period === 'ene_closed') return r.m === 202601;
+    if (period === 'feb_closed') return r.m === 202602;
+    if (period === 'feb_mtd')    return r.m === 202602;
+    if (period === 'mar_mtd')    return r.m === 202603;
     return false;
   }) : [];
 
   const cl = (agency === 'all' || agency === 'cl') ? DAILY_DATA_CL.filter(r => {
-    if (period === 'ene') return r.d.startsWith('2026-01');
-    if (period === 'feb') return r.d.startsWith('2026-02');
-    if (period === 'mar') return r.d.startsWith('2026-03');
+    if (period === 'ene_closed') return r.d.startsWith('2026-01');
+    if (period === 'feb_closed') return r.d.startsWith('2026-02');
+    if (period === 'feb_mtd') {
+      if (!r.d.startsWith('2026-02')) return false;
+      return r.d <= FEB_CUTOFF_CL;
+    }
+    if (period === 'mar_mtd') return r.d.startsWith('2026-03') && r.d <= LATEST_MAR;
     return false;
   }) : [];
 
   return [...ar, ...cl];
 }
 
-function getRows() {
-  const p = currentPeriod === 'comp3m' ? 'mar' : currentPeriod;
-  return aggregate(filterRows(p, currentAgency));
-}
+function getRows() { return aggregate(filterRows(currentPeriod, currentAgency)); }
 
 function getTotals(rows) {
   return rows.reduce((a, r) => ({
@@ -1534,7 +1493,7 @@ function renderKPIs(rows) {
   const clRows = rows.filter(r => r.agency === 'cl');
   const tAr = getTotals(arRows), tCl = getTotals(clRows);
   const periodLabel = getPeriodLabel();
-  const portKey = currentPeriod === 'mar' || currentPeriod === 'comp3m' ? 'mar' : currentPeriod === 'ene' ? 'ene' : 'feb';
+  const portKey = currentPeriod === 'mar_mtd' ? 'mar' : currentPeriod === 'feb_mtd' ? 'feb_mtd' : currentPeriod === 'ene_closed' ? 'ene' : 'feb';
 
   let lcSub = '';
   if (currentAgency === 'ar') lcSub = '<div class="kpi-sub" style="font-size:12px;color:#888;margin-top:4px">' + fmtLC(t.lc, 'ARS') + '</div>';
@@ -1563,6 +1522,8 @@ function renderPortfolio() {
   const agencies = currentAgency === 'all' ? ['ar', 'cl'] : [currentAgency];
   const agLabels = { ar: 'GDM_AR_CALL_CENTER', cl: 'GDM_CL_CALL_CENTER' };
   const agColors = { ar: '#1565c0', cl: '#00695c' };
+  const febCutAR = fmtDate(FEB_CUTOFF_AR), marCut = fmtDate(LATEST_MAR);
+
   const PROD_LABELS = { con:'Consumer', point:'Point', ccard:'Tarjeta Crédito', parce:'Parcelamento', mer:'Merchant', otros:'Otros' };
   const PROD_COLORS = { con:'#1565c0', point:'#6a1b9a', ccard:'#c62828', parce:'#e65100', mer:'#2e7d32', otros:'#777' };
   const PROD_ORDER  = ['con','point','ccard','parce','mer','otros'];
@@ -1597,19 +1558,21 @@ function renderPortfolio() {
   let html = '<div class="port-grid">';
   agencies.forEach(ag => {
     const p = PORTFOLIO[ag];
-    const delta    = p.mar.total - p.feb.total;
-    const deltaPct = (delta / p.feb.total * 100).toFixed(1);
+    const delta    = p.mar.total - p.feb_mtd.total;
+    const deltaPct = (delta / p.feb_mtd.total * 100).toFixed(1);
     const deltaClass = delta >= 0 ? 'up' : 'down';
     const deltaSign  = delta >= 0 ? '+' : '';
+    const cutFeb = ag === 'ar' ? febCutAR : fmtDate(FEB_CUTOFF_CL);
 
     html += '<div class="port-card">' +
       '<div class="port-card-title" style="color:' + agColors[ag] + '">' + agLabels[ag] + '</div>' +
 
-      periodBlock('Enero 2026 (Mes Cerrado)', p.ene) +
-      periodBlock('Febrero 2026 (Mes Cerrado)', p.feb) +
-      periodBlock('Marzo 2026 (Mes Cerrado)', p.mar) +
+      periodBlock('Mes Cerrado Ene-26', p.ene) +
+      periodBlock('Mes Cerrado Feb-26', p.feb) +
+      periodBlock('MTD Feb-26 (al ' + cutFeb + ', d.h. ' + MAR_BIZ_AR + ')', p.feb_mtd) +
+      periodBlock('MTD Mar-26 (al ' + marCut + ', d.h. ' + MAR_BIZ_AR + ')', p.mar) +
 
-      '<div class="port-row"><span class="port-label">Variación Feb &#x2192; Mar</span><span class="port-delta ' + deltaClass + '">' + deltaSign + fmtN(delta) + ' (' + deltaSign + deltaPct + '%)</span></div>' +
+      '<div class="port-row"><span class="port-label">Variación MTD (Feb &#x2192; Mar)</span><span class="port-delta ' + deltaClass + '">' + deltaSign + fmtN(delta) + ' (' + deltaSign + deltaPct + '%)</span></div>' +
       '</div>';
   });
   html += '</div>';
@@ -1628,65 +1591,55 @@ function renderChart(rows) {
   const max = Math.max(...top.map(r => r.usd));
   document.getElementById('chart-bars').innerHTML = top.map(r => {
     const h = Math.round((r.usd / max) * 130);
-    const color = r.agency === 'cl' ? '#00A650' : '#3483FA';
+    const color = r.agency === 'cl' ? '#00695c' : '#3949ab';
     return '<div class="chart-bar-col"><div class="chart-bar-val">$' + (r.usd/1000).toFixed(0) + 'k</div><div class="chart-bar-inner" style="height:' + h + 'px;background:' + color + '"></div><div class="chart-bar-label">' + r.rep + '</div></div>';
   }).join('');
 }
 
 // â”€â”€ Render comparativo MTD homogéneo (CL: mismos d.h. que Mar; AR: mes completo vs MTD) â”€â”€
 function renderCompChart() {
+  if (currentPeriod === 'ene_closed') {
+    document.getElementById('comp-chart').innerHTML = '<p style="color:#aaa;padding:20px">No disponible para mes cerrado — el comparativo MTD requiere un mes de referencia anterior (Feb vs Mar).</p>';
+    document.getElementById('comp-legend').innerHTML = '';
+    return;
+  }
   const agencies = currentAgency === 'all' ? ['ar','cl'] : [currentAgency];
   const repMap = {};
-  ['ene','feb','mar'].forEach(p => {
-    agencies.forEach(ag => {
-      aggregate(filterRows(p, ag)).forEach(r => {
-        const k = r.rep + '__' + ag;
-        if (!repMap[k]) repMap[k] = { rep: r.rep, agency: ag, ene: 0, feb: 0, mar: 0 };
-        repMap[k][p] += r.usd;
-      });
+  agencies.forEach(ag => {
+    aggregate(filterRows('feb_mtd', ag)).forEach(r => {
+      const k = r.rep + '__' + ag;
+      if (!repMap[k]) repMap[k] = { rep: r.rep, agency: ag, feb: 0, mar: 0 };
+      repMap[k].feb += r.usd;
+    });
+    aggregate(filterRows('mar_mtd', ag)).forEach(r => {
+      const k = r.rep + '__' + ag;
+      if (!repMap[k]) repMap[k] = { rep: r.rep, agency: ag, feb: 0, mar: 0 };
+      repMap[k].mar += r.usd;
     });
   });
 
   const reps = Object.values(repMap)
-    .filter(r => r.ene > 0 || r.feb > 0 || r.mar > 0)
-    .sort((a, b) => b.mar - a.mar)
-    .slice(0, 25);
+    .filter(r => r.feb > 0 || r.mar > 0)
+    .sort((a, b) => (b.feb + b.mar) - (a.feb + a.mar))
+    .slice(0, 20);
 
-  if (!reps.length) {
-    document.getElementById('comp-chart').innerHTML = '<p style="color:#aaa;padding:20px">Sin datos</p>';
-    document.getElementById('comp-legend').innerHTML = '';
-    return;
+  const maxVal = Math.max(...reps.map(r => Math.max(r.feb, r.mar)), 1);
+  const maxW = 340;
+
+  document.getElementById('comp-chart').innerHTML = reps.length ? reps.map(r => {
+    const wF = Math.round((r.feb / maxVal) * maxW), wM = Math.round((r.mar / maxVal) * maxW);
+    const fc = r.agency === 'cl' ? 'feb-cl' : 'feb', mc = r.agency === 'cl' ? 'mar-cl' : 'mar';
+    const agTag = currentAgency === 'all' ? '<span style="font-size:9px;margin-left:4px;color:' + (r.agency==='ar'?'#1565c0':'#00695c') + '">[' + r.agency.toUpperCase() + ']</span>' : '';
+    return '<div class="comp-row"><div class="comp-rep" title="' + r.rep + '">' + r.rep + agTag + '</div><div class="comp-bars"><div class="comp-bar-row"><div class="comp-bar ' + fc + '" style="width:' + wF + 'px"></div><span class="comp-val">' + (r.feb > 0 ? '$'+(r.feb/1000).toFixed(1)+'k' : '—') + '</span></div><div class="comp-bar-row"><div class="comp-bar ' + mc + '" style="width:' + wM + 'px"></div><span class="comp-val">' + (r.mar > 0 ? '$'+(r.mar/1000).toFixed(1)+'k' : '—') + '</span></div></div></div>';
+  }).join('') : '<p style="color:#aaa;padding:20px">Sin datos</p>';
+
+  const bizLabel = 'día hábil ' + MAR_BIZ_AR + ' (AR) / ' + MAR_BIZ_CL + ' (CL)';
+  let legend = '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#3949ab"></div>MTD Feb-26 AR (mes completo) · CL hasta ' + fmtDate(FEB_CUTOFF_CL) + ' (' + MAR_BIZ_CL + ' d.h.)</div>' +
+               '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#90caf9"></div>MTD Mar-26 — hasta ' + fmtDate(LATEST_MAR) + ' (' + bizLabel + ')</div>';
+  if (currentAgency === 'all' || currentAgency === 'cl') {
+    legend += '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#00695c"></div>Feb-26 GDM_CL</div><div class="comp-legend-item"><div class="comp-legend-box" style="background:#80cbc4"></div>Mar-26 GDM_CL</div>';
   }
-
-  const maxVal = Math.max(...reps.flatMap(r => [r.ene, r.feb, r.mar]), 1);
-  const maxW = 300;
-
-  document.getElementById('comp-chart').innerHTML = reps.map(r => {
-    const wE = Math.max(r.ene > 0 ? 2 : 0, Math.round(r.ene / maxVal * maxW));
-    const wF = Math.max(r.feb > 0 ? 2 : 0, Math.round(r.feb / maxVal * maxW));
-    const wM = Math.max(r.mar > 0 ? 2 : 0, Math.round(r.mar / maxVal * maxW));
-    const isAR = r.agency === 'ar';
-    const agTag = currentAgency === 'all' ? '<span style="font-size:9px;margin-left:4px;color:' + (isAR?'#1565c0':'#00695c') + '">[' + r.agency.toUpperCase() + ']</span>' : '';
-    return '<div class="comp-row">' +
-      '<div class="comp-rep" title="' + r.rep + '">' + r.rep + agTag + '</div>' +
-      '<div class="comp-bars">' +
-        '<div class="comp-bar-row"><div class="comp-bar ' + (isAR?'ene-ar':'ene-cl') + '" style="width:' + wE + 'px"></div><span class="comp-val">Ene: ' + (r.ene > 0 ? '$'+(r.ene/1000).toFixed(1)+'k' : '—') + '</span></div>' +
-        '<div class="comp-bar-row"><div class="comp-bar ' + (isAR?'feb-ar':'feb-cl') + '" style="width:' + wF + 'px"></div><span class="comp-val">Feb: ' + (r.feb > 0 ? '$'+(r.feb/1000).toFixed(1)+'k' : '—') + '</span></div>' +
-        '<div class="comp-bar-row"><div class="comp-bar ' + (isAR?'mar-ar':'mar-cl') + '" style="width:' + wM + 'px"></div><span class="comp-val">Mar: ' + (r.mar > 0 ? '$'+(r.mar/1000).toFixed(1)+'k' : '—') + '</span></div>' +
-      '</div></div>';
-  }).join('');
-
-  const arLegend = currentAgency !== 'cl' ? [
-    '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#7986cb"></div>Ene AR</div>',
-    '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#3949ab"></div>Feb AR</div>',
-    '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#1a237e"></div>Mar AR</div>'
-  ].join('') : '';
-  const clLegend = currentAgency !== 'ar' ? [
-    '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#80cbc4"></div>Ene CL</div>',
-    '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#00897b"></div>Feb CL</div>',
-    '<div class="comp-legend-item"><div class="comp-legend-box" style="background:#00695c"></div>Mar CL</div>'
-  ].join('') : '';
-  document.getElementById('comp-legend').innerHTML = arLegend + clLegend;
+  document.getElementById('comp-legend').innerHTML = legend;
 }
 
 // â”€â”€ Render table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1829,36 +1782,50 @@ function renderTLTable(rows) {
 
 // â”€â”€ Labels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function getPeriodLabel() {
-  if (currentPeriod === 'ene') return 'Enero 2026';
-  if (currentPeriod === 'feb') return 'Febrero 2026';
-  if (currentPeriod === 'mar') return 'Marzo 2026';
-  if (currentPeriod === 'comp3m') return 'Comparativo Ene–Feb–Mar 2026';
-  return '';
+  if (currentPeriod === 'ene_closed') return 'Mes Cerrado Ene-26';
+  if (currentPeriod === 'feb_closed') return 'Mes Cerrado Feb-26';
+  if (currentPeriod === 'feb_mtd')   return 'MTD Feb-26 — CL hasta ' + fmtDate(FEB_CUTOFF_CL) + ' (' + MAR_BIZ_CL + ' d.h.) · AR mes completo';
+  return 'MTD Mar-26 — hasta ' + fmtDate(LATEST_MAR) + ' (d.h. ' + MAR_BIZ_AR + ' AR / ' + MAR_BIZ_CL + ' CL)';
 }
 
 function updateBadges() {
   const agLabel = currentAgency === 'all' ? 'Ambas agencias' : currentAgency === 'ar' ? 'GDM_AR_CALL_CENTER' : 'GDM_CL_CALL_CENTER';
+  const perLabel = getPeriodLabel();
   document.getElementById('chart-badge').textContent = agLabel;
   document.getElementById('table-badge').textContent = agLabel;
   document.getElementById('comp-badge').textContent = agLabel;
-  document.getElementById('chart-title').textContent = 'Top Recupero — ' + getPeriodLabel() + ' (USD)';
+  document.getElementById('chart-title').textContent = 'Top Recupero — ' + perLabel + ' (USD)';
   const bc = currentAgency === 'all' ? 'badge-all' : 'badge-' + currentAgency;
   ['chart-badge','table-badge','comp-badge'].forEach(id => document.getElementById(id).className = 'badge ' + bc);
 }
 
 function updateBizInfoBar() {
-  const ranges = {
-    ene: '01/01/2026 – 31/01/2026',
-    feb: '01/02/2026 – 28/02/2026',
-    mar: '01/03/2026 – 31/03/2026',
-    comp3m: 'Enero · Febrero · Marzo 2026'
-  };
+  if (currentPeriod === 'ene_closed') {
+    document.getElementById('biz-info-bar').innerHTML = '<b>Mes Cerrado Ene-26</b> — Datos del 01/01/2026 al 31/01/2026. No aplica comparativo MTD.';
+    document.getElementById('lbl-feb-biz').textContent = '(d.h.' + MAR_BIZ_AR + ')';
+    document.getElementById('lbl-mar-biz').textContent = '(d.h.' + MAR_BIZ_AR + ')';
+    document.getElementById('header-date').textContent = 'Datos al ' + fmtDate(LATEST_MAR);
+    return;
+  }
+  const range = d => d >= '2026-02-01' && d <= '2026-03-31';
+  const holAR_dates = [...HOLIDAYS.ar].filter(range).sort();
+  const clOwn = new Set(['2026-01-01','2026-04-03','2026-04-04','2026-05-01','2026-05-21','2026-06-20','2026-06-29','2026-07-16','2026-08-15','2026-09-18','2026-09-19','2026-10-12','2026-10-31','2026-11-01','2026-12-08','2026-12-25']);
+  const holAR = holAR_dates.map(fmtDate).join(', ');
+  const holCL = [...HOLIDAYS.cl].filter(range).sort().map(d =>
+    clOwn.has(d)
+      ? '<span style="color:#00695c;font-weight:600">' + fmtDate(d) + '</span>'
+      : '<span style="color:#1565c0;font-weight:600">' + fmtDate(d) + '</span>'
+  ).join(', ');
+  const legend = '&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#00695c">&#x2588;</span> feriado CL &nbsp;<span style="color:#1565c0">&#x2588;</span> feriado AR';
   document.getElementById('biz-info-bar').innerHTML =
-    '<b>' + getPeriodLabel() + '</b> — ' + (ranges[currentPeriod] || '') +
-    ' &nbsp;·&nbsp; Fuente: OPERATION_PRODUCTIVITY_RV_REP (AR) · LK_COL_REP_DAILY_AGG_PROD (CL) · TC ARS ' +
-    RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' +
-    RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. feb-26 promedio)';
-  document.getElementById('header-date').textContent = 'Datos cerrados a Mar-26';
+    '<b>Comparaci&#xF3;n MTD (d&#xED;as h&#xE1;biles al ' + fmtDate(LATEST_MAR) + '):</b><br>' +
+    '&nbsp;&nbsp;&#x2022; D&#xED;as h&#xE1;biles en Mar-26 del 01/03 al ' + fmtDate(LATEST_MAR) + ': <b>' + MAR_BIZ_AR + '</b> (AR) / <b>' + MAR_BIZ_CL + '</b> (CL)<br>' +
+    '&nbsp;&nbsp;&#x2022; Equivalente en Feb-26 (CL): hasta el <b>' + fmtDate(FEB_CUTOFF_CL) + '</b> (' + MAR_BIZ_CL + ' d.h.) — AR muestra mes completo<br>' +
+    '&nbsp;&nbsp;&#x2022; Feriados AR excluidos en feb-mar: ' + (holAR || 'ninguno') + '<br>' +
+    '&nbsp;&nbsp;&#x2022; Feriados CL excluidos en feb-mar: ' + (holCL || 'ninguno') + (holCL ? '&nbsp;&nbsp;' + legend : '');
+  document.getElementById('lbl-feb-biz').textContent = '(d.h.' + MAR_BIZ_CL + ')';
+  document.getElementById('lbl-mar-biz').textContent = '(d.h.' + MAR_BIZ_AR + ')';
+  document.getElementById('header-date').textContent = 'Datos al ' + fmtDate(LATEST_MAR);
 }
 
 // â”€â”€ Render recupero por producto (fuente: PROD_RECOVERY / SKYNET) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1866,7 +1833,7 @@ function renderProdRec() {
   const agencies  = currentAgency === 'all' ? ['ar', 'cl'] : [currentAgency];
   const agColors  = { ar: '#1565c0', cl: '#00695c' };
   const agLabels  = { ar: 'GDM_AR', cl: 'GDM_CL' };
-  const mkey      = currentPeriod === 'mar' || currentPeriod === 'comp3m' ? 'mar' : currentPeriod === 'ene' ? 'ene' : 'feb';
+  const mkey      = currentPeriod === 'mar_mtd' ? 'mar' : currentPeriod === 'ene_closed' ? 'ene' : 'feb';
 
   const PROD_DEFS = [
     { key: 'point',           label: 'Point',            color: '#6a1b9a' },
@@ -1916,7 +1883,7 @@ function renderTelProdRec() {
   const agencies  = currentAgency === 'all' ? ['ar', 'cl'] : [currentAgency];
   const agColors  = { ar: '#1565c0', cl: '#00695c' };
   const agLabels  = { ar: 'GDM_AR', cl: 'GDM_CL' };
-  const mkey      = currentPeriod === 'mar' || currentPeriod === 'comp3m' ? 'mar' : currentPeriod === 'ene' ? 'ene' : 'feb';
+  const mkey      = currentPeriod === 'mar_mtd' ? 'mar' : currentPeriod === 'ene_closed' ? 'ene' : 'feb';
 
   const PROD_DEFS = [
     { key: 'point',           label: 'Point',            color: '#6a1b9a' },
@@ -1934,7 +1901,7 @@ function renderTelProdRec() {
     const totSky   = PROD_DEFS.reduce((s, p) => s + (PROD_RECOVERY[ag][mkey][p.key] ? PROD_RECOVERY[ag][mkey][p.key].usd : 0), 0);
     const telPct   = totSky > 0 ? (totalRec / totSky * 100).toFixed(1) : '0.0';
     // OPERATION total para esta agencia/período (para escalar la distribución SKYNET)
-    const opTotal  = getTotals(aggregate(filterRows(currentPeriod === 'comp3m' ? 'mar' : currentPeriod, ag))).usd;
+    const opTotal  = getTotals(aggregate(filterRows(currentPeriod, ag))).usd;
     const scale    = totalRec > 0 ? opTotal / totalRec : 0;
 
     html += '<div class="prod-rec-card">' +
@@ -1987,13 +1954,15 @@ function render() {
 
 function setAgency(ag) {
   currentAgency = ag;
-  document.getElementById('sel-agency').value = ag;
+  document.querySelectorAll('#btn-all,#btn-ar,#btn-cl').forEach(b => b.className = 'btn');
+  document.getElementById('btn-' + ag).classList.add('active');
   render();
 }
 
 function setPeriod(p) {
   currentPeriod = p;
-  document.getElementById('sel-period').value = p;
+  document.querySelectorAll('#btn-ene_closed,#btn-feb_closed,#btn-feb_mtd,#btn-mar_mtd').forEach(b => b.className = 'btn');
+  document.getElementById('btn-' + p).classList.add('active');
   render();
 }
 
