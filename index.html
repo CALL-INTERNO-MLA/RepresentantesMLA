@@ -240,7 +240,7 @@
 
 <script>
 // â”€â”€ Exchange rates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const RATES = { ar: 1408.3889, cl: 862.3355 }; // feb-26 promedio (proxy mar-26)
+const RATES = { ar: 1395.95, cl: 912.4409 }; // mar-26 promedio
 
 // â”€â”€ Recupero total por producto (fuente: LK_COL_SKYNET_RECOVERY_DATA) â”€â”€â”€â”€â”€â”€â”€
 const PROD_RECOVERY = {
@@ -1690,7 +1690,7 @@ function renderTable(rows) {
     '<td class="num">' + tLcClStr + '</td>' +
     '<td class="num">' + fmtN(t.pp) + '</td><td class="num">' + fmtN(t.ppk) + '</td><td class="num">' + pct(t.ppk,t.pp) + '</td><td class="num">' + fmtN(t.gest) + '</td><td class="num">' + fmtN(t.cd) + '</td><td class="num">' + pct(t.pp,t.cd) + '</td></tr>';
   document.getElementById('table-body').innerHTML = html;
-  document.getElementById('table-note').textContent = 'Recupero: OPERATION (acuerdos/promesas pagados) · Período: ' + getPeriodLabel() + ' · TC: ARS ' + RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' + RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. feb-26 promedio)';
+  document.getElementById('table-note').textContent = 'Recupero: OPERATION (acuerdos/promesas pagados) · Período: ' + getPeriodLabel() + ' · TC: ARS ' + RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' + RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. mar-26 promedio)';
 }
 
 // â”€â”€ Team Leader map â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1796,7 +1796,7 @@ function renderTLTable(rows) {
   const el = document.getElementById('tl-badge');
   el.className  = 'badge ' + badgeClass;
   el.textContent = agLabel;
-  document.getElementById('tl-table-note').textContent = 'Recupero: OPERATION (acuerdos/promesas pagados) · Período: ' + getPeriodLabel() + ' · TC: ARS ' + RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' + RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. feb-26 promedio)';
+  document.getElementById('tl-table-note').textContent = 'Recupero: OPERATION (acuerdos/promesas pagados) · Período: ' + getPeriodLabel() + ' · TC: ARS ' + RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' + RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. mar-26 promedio)';
 }
 
 // â”€â”€ Labels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
