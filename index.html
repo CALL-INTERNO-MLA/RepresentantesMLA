@@ -86,6 +86,49 @@
   .filter-select:hover  { border-color: var(--ml-blue); }
   .filter-select:focus  { outline: none; border-color: var(--ml-blue); box-shadow: 0 0 0 3px rgba(52,131,250,0.13); }
 
+  /* ── Multi-select período ── */
+  .multi-select { position: relative; }
+  .multi-select-btn {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    border: 1.5px solid var(--ml-border); border-radius: 6px;
+    padding: 7px 12px 7px 12px; font-size: 13px; font-weight: 600;
+    color: var(--ml-dark); cursor: pointer; min-width: 200px;
+    background: var(--ml-white); transition: border-color 0.18s;
+    user-select: none;
+  }
+  .multi-select-btn:hover { border-color: var(--ml-blue); }
+  .multi-select-btn.open  { border-color: var(--ml-blue); box-shadow: 0 0 0 3px rgba(52,131,250,0.13); }
+  .multi-select-btn svg   { flex-shrink: 0; transition: transform 0.2s; }
+  .multi-select-btn.open svg { transform: rotate(180deg); }
+  .multi-select-dropdown {
+    display: none; position: absolute; top: calc(100% + 5px); left: 0;
+    background: var(--ml-white); border: 1.5px solid var(--ml-border);
+    border-radius: 8px; padding: 4px 0;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.13); z-index: 200; min-width: 230px;
+  }
+  .multi-select-dropdown.open { display: block; }
+  .multi-check {
+    display: flex; align-items: center; gap: 9px;
+    padding: 9px 14px; cursor: pointer; font-size: 13px; color: var(--ml-dark);
+    font-weight: 500;
+  }
+  .multi-check:hover { background: #F0F6FF; }
+  .multi-check input[type=checkbox] { accent-color: var(--ml-blue); width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
+  .multi-check .check-sub { font-size: 10px; color: var(--ml-muted); margin-left: auto; }
+
+  /* ── Vision toggle ── */
+  .vision-toggle {
+    display: flex; border: 1.5px solid var(--ml-border); border-radius: 6px; overflow: hidden;
+  }
+  .vision-btn {
+    padding: 7px 14px; font-size: 11px; font-weight: 700; cursor: pointer;
+    border: none; background: var(--ml-white); color: var(--ml-muted);
+    letter-spacing: 0.4px; text-transform: uppercase;
+    transition: background 0.15s, color 0.15s;
+  }
+  .vision-btn + .vision-btn { border-left: 1px solid var(--ml-border); }
+  .vision-btn.active { background: var(--ml-blue); color: white; }
+
   /* ── Main ── */
   .main { padding: 20px 32px; }
 
@@ -260,14 +303,26 @@
     </select>
   </div>
   <div class="filter-group">
-    <label class="filter-label" for="sel-period">Período</label>
-    <select id="sel-period" class="filter-select" onchange="setPeriod(this.value)">
-      <option value="ene">Enero 2026 — Cerrado</option>
-      <option value="feb">Febrero 2026 — Cerrado</option>
-      <option value="mar">Marzo 2026 — Cerrado</option>
-      <option value="abr" selected>Abril 2026 — MTD (en curso)</option>
-      <option value="comp4m">Comparativo Ene–Abr</option>
-    </select>
+    <label class="filter-label">Período</label>
+    <div class="multi-select" id="period-multisel">
+      <div class="multi-select-btn" id="period-btn" onclick="togglePeriodDropdown()">
+        <span id="period-btn-text">Abril 2026 (MTD)</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="7"><path d="M1 1l4.5 4.5L10 1" stroke="#3483FA" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="multi-select-dropdown" id="period-dropdown">
+        <label class="multi-check"><input type="checkbox" id="cb-ene" value="ene" onchange="togglePeriod('ene')"> Enero 2026 <span class="check-sub">Cerrado</span></label>
+        <label class="multi-check"><input type="checkbox" id="cb-feb" value="feb" onchange="togglePeriod('feb')"> Febrero 2026 <span class="check-sub">Cerrado</span></label>
+        <label class="multi-check"><input type="checkbox" id="cb-mar" value="mar" onchange="togglePeriod('mar')"> Marzo 2026 <span class="check-sub">Cerrado</span></label>
+        <label class="multi-check"><input type="checkbox" id="cb-abr" value="abr" checked onchange="togglePeriod('abr')"> Abril 2026 <span class="check-sub">MTD</span></label>
+      </div>
+    </div>
+  </div>
+  <div class="filter-group" id="vision-filter-group" style="display:flex">
+    <label class="filter-label">Month Vision</label>
+    <div class="vision-toggle">
+      <button class="vision-btn active" id="vision-btn-cerrado" onclick="setVision('cerrado')">Mes Cerrado</button>
+      <button class="vision-btn" id="vision-btn-mtd" onclick="setVision('mtd')">MTD</button>
+    </div>
   </div>
 </div>
 
@@ -1582,7 +1637,8 @@ function fmtDate(ds) { const [y,m,d] = ds.split('-'); return d+'/'+m+'/'+y; }
 
 // â”€â”€ Estado del filtro â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let currentAgency = 'all';
-let currentPeriod = 'abr';
+let currentPeriods = ['abr'];
+let currentVision  = 'cerrado'; // 'cerrado' | 'mtd'
 
 // â”€â”€ Agregación de filas mensuales â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function aggregate(rows) {
@@ -1623,9 +1679,32 @@ function filterRows(period, agency) {
   return [...ar, ...cl];
 }
 
+const MTD_DAY = 19;
+
+function filterRowsWithVision(period, agency) {
+  const ar = (agency === 'all' || agency === 'ar') ? MONTHLY_DATA_AR.filter(r => {
+    if (period === 'ene') return r.m === 202601;
+    if (period === 'feb') return r.m === 202602;
+    if (period === 'mar') return r.m === 202603;
+    if (period === 'abr') return r.m === 202604;
+    return false;
+  }) : [];
+  const cl = (agency === 'all' || agency === 'cl') ? DAILY_DATA_CL.filter(r => {
+    let match = false;
+    if (period === 'ene') match = r.d.startsWith('2026-01');
+    else if (period === 'feb') match = r.d.startsWith('2026-02');
+    else if (period === 'mar') match = r.d.startsWith('2026-03');
+    else if (period === 'abr') match = r.d.startsWith('2026-04');
+    if (!match) return false;
+    if (currentVision === 'mtd' && period !== 'abr') return parseInt(r.d.split('-')[2]) <= MTD_DAY;
+    return true;
+  }) : [];
+  return [...ar, ...cl];
+}
+
 function getRows() {
-  const p = currentPeriod === 'comp4m' ? 'abr' : currentPeriod;
-  return aggregate(filterRows(p, currentAgency));
+  if (!currentPeriods.length) return [];
+  return aggregate(currentPeriods.flatMap(p => filterRowsWithVision(p, currentAgency)));
 }
 
 function getTotals(rows) {
@@ -1643,7 +1722,9 @@ function renderKPIs(rows) {
   const clRows = rows.filter(r => r.agency === 'cl');
   const tAr = getTotals(arRows), tCl = getTotals(clRows);
   const periodLabel = getPeriodLabel();
-  const portKey = (currentPeriod === 'abr' || currentPeriod === 'mar' || currentPeriod === 'comp4m') ? 'mar' : currentPeriod === 'ene' ? 'ene' : 'feb';
+  const _seq = ['ene','feb','mar','abr'];
+  const _lastP = _seq.filter(p => currentPeriods.includes(p)).pop() || 'mar';
+  const portKey = (_lastP === 'abr' || _lastP === 'mar') ? 'mar' : _lastP === 'ene' ? 'ene' : 'feb';
 
   let lcSub = '';
   if (currentAgency === 'ar') lcSub = '<div class="kpi-sub" style="font-size:12px;color:#888;margin-top:4px">' + fmtLC(t.lc, 'ARS') + '</div>';
@@ -1746,14 +1827,12 @@ function renderChart(rows) {
 function renderCompChart() {
   const agencies = currentAgency === 'all' ? ['ar','cl'] : [currentAgency];
   const repMap = {};
-  const isComp4m = currentPeriod === 'comp4m';
-
-  // Meses a mostrar: comp4m → 4 meses; período específico → mes anterior + mes actual
-  const periods = isComp4m ? ['ene','feb','mar','abr'] : (() => {
-    const seq = ['ene','feb','mar','abr'];
-    const idx = seq.indexOf(currentPeriod);
-    return idx <= 0 ? [currentPeriod] : [seq[idx-1], currentPeriod];
-  })();
+  const _cseq = ['ene','feb','mar','abr'];
+  const _selected = _cseq.filter(p => currentPeriods.includes(p));
+  const periods = _selected.length >= 2 ? _selected : _selected.length === 1 ? (() => {
+    const idx = _cseq.indexOf(_selected[0]);
+    return idx <= 0 ? [_selected[0]] : [_cseq[idx-1], _selected[0]];
+  })() : [];
 
   periods.forEach(p => {
     agencies.forEach(ag => {
@@ -1943,12 +2022,17 @@ function renderTLTable(rows) {
 
 // â”€â”€ Labels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function getPeriodLabel() {
-  if (currentPeriod === 'ene') return 'Enero 2026 — Cerrado';
-  if (currentPeriod === 'feb') return 'Febrero 2026 — Cerrado';
-  if (currentPeriod === 'mar') return 'Marzo 2026 — Cerrado';
-  if (currentPeriod === 'abr') return 'Abril 2026 — MTD al 19/04';
-  if (currentPeriod === 'comp4m') return 'Comparativo Ene–Abr 2026';
-  return '';
+  const names = { ene:'Enero', feb:'Febrero', mar:'Marzo', abr:'Abril' };
+  const closed = { ene:true, feb:true, mar:true, abr:false };
+  const seq = ['ene','feb','mar','abr'];
+  const sorted = seq.filter(p => currentPeriods.includes(p));
+  if (!sorted.length) return '';
+  if (sorted.length === 1) {
+    const p = sorted[0];
+    if (p === 'abr') return 'Abril 2026 — ' + (currentVision === 'mtd' ? 'MTD al 19/04' : 'MTD en curso');
+    return names[p] + ' 2026 — ' + (currentVision === 'mtd' ? 'MTD (al día 19)' : 'Mes Cerrado');
+  }
+  return sorted.map(p => names[p]).join(', ') + ' 2026' + (currentVision === 'mtd' ? ' — MTD' : '');
 }
 
 function updateBadges() {
@@ -1962,20 +2046,20 @@ function updateBadges() {
 }
 
 function updateBizInfoBar() {
-  const ranges = {
-    ene: '01/01/2026 – 31/01/2026 · Mes Cerrado',
-    feb: '01/02/2026 – 28/02/2026 · Mes Cerrado',
-    mar: '01/03/2026 – 31/03/2026 · Mes Cerrado',
-    abr: '01/04/2026 – 19/04/2026 · MTD en curso',
-    comp4m: 'Enero · Febrero · Marzo · Abril 2026'
-  };
-  const abrBadge = currentPeriod === 'abr' ? ' <span style="background:var(--ml-yellow);color:var(--ml-dark);font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px">MTD EN CURSO</span>' : '';
+  const ranges = { ene:'01/01–31/01/2026', feb:'01/02–28/02/2026', mar:'01/03–31/03/2026', abr:'01/04–19/04/2026' };
+  const seq = ['ene','feb','mar','abr'];
+  const sorted = seq.filter(p => currentPeriods.includes(p));
+  const hasAbr = sorted.includes('abr');
+  const abrBadge = hasAbr ? ' <span style="background:var(--ml-yellow);color:var(--ml-dark);font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px">MTD EN CURSO</span>' : '';
+  const visionBadge = currentVision === 'mtd' && sorted.some(p => p !== 'abr')
+    ? ' <span style="background:#EBF2FF;color:var(--ml-blue);font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px">MTD al día 19</span>' : '';
+  const rangeText = sorted.map(p => ranges[p]).join(' · ') || '—';
   document.getElementById('biz-info-bar').innerHTML =
-    '<b>' + getPeriodLabel() + '</b>' + abrBadge + ' — ' + (ranges[currentPeriod] || '') +
+    '<b>' + getPeriodLabel() + '</b>' + abrBadge + visionBadge + ' — ' + rangeText +
     ' &nbsp;·&nbsp; Fuente: OPERATION_PRODUCTIVITY_RV_REP (AR) · LK_COL_REP_DAILY_AGG_PROD (CL) · TC ARS ' +
     RATES.ar.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' · CLP ' +
     RATES.cl.toLocaleString('es-AR',{minimumFractionDigits:4}) + ' (cotiz. mar-26 promedio)';
-  document.getElementById('header-date').textContent = currentPeriod === 'abr' ? 'MTD Abr-26 al 19/04' : 'Datos cerrados Mar-26';
+  document.getElementById('header-date').textContent = hasAbr ? 'MTD Abr-26 al 19/04' : 'Datos cerrados';
 }
 
 // â”€â”€ Render recupero por producto (fuente: PROD_RECOVERY / SKYNET) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1983,7 +2067,9 @@ function renderProdRec() {
   const agencies  = currentAgency === 'all' ? ['ar', 'cl'] : [currentAgency];
   const agColors  = { ar: '#1565c0', cl: '#00695c' };
   const agLabels  = { ar: 'GDM_AR', cl: 'GDM_CL' };
-  const mkey      = (currentPeriod === 'abr' || currentPeriod === 'mar' || currentPeriod === 'comp4m') ? 'mar' : currentPeriod === 'ene' ? 'ene' : 'feb';
+  const _mkseq = ['ene','feb','mar','abr'];
+  const _mkLast = _mkseq.filter(p => currentPeriods.includes(p)).pop() || 'mar';
+  const mkey = (_mkLast === 'abr' || _mkLast === 'mar') ? 'mar' : _mkLast === 'ene' ? 'ene' : 'feb';
 
   const PROD_DEFS = [
     { key: 'point',           label: 'Point',            color: '#6a1b9a' },
@@ -2033,7 +2119,9 @@ function renderTelProdRec() {
   const agencies  = currentAgency === 'all' ? ['ar', 'cl'] : [currentAgency];
   const agColors  = { ar: '#1565c0', cl: '#00695c' };
   const agLabels  = { ar: 'GDM_AR', cl: 'GDM_CL' };
-  const mkey      = (currentPeriod === 'abr' || currentPeriod === 'mar' || currentPeriod === 'comp4m') ? 'mar' : currentPeriod === 'ene' ? 'ene' : 'feb';
+  const _mkseq = ['ene','feb','mar','abr'];
+  const _mkLast = _mkseq.filter(p => currentPeriods.includes(p)).pop() || 'mar';
+  const mkey = (_mkLast === 'abr' || _mkLast === 'mar') ? 'mar' : _mkLast === 'ene' ? 'ene' : 'feb';
 
   const PROD_DEFS = [
     { key: 'point',           label: 'Point',            color: '#6a1b9a' },
@@ -2051,7 +2139,7 @@ function renderTelProdRec() {
     const totSky   = PROD_DEFS.reduce((s, p) => s + (PROD_RECOVERY[ag][mkey][p.key] ? PROD_RECOVERY[ag][mkey][p.key].usd : 0), 0);
     const telPct   = totSky > 0 ? (totalRec / totSky * 100).toFixed(1) : '0.0';
     // OPERATION total para esta agencia/período (para escalar la distribución SKYNET)
-    const opTotal  = getTotals(aggregate(filterRows(currentPeriod === 'comp4m' ? 'mar' : currentPeriod, ag))).usd;
+    const opTotal  = getTotals(aggregate(currentPeriods.flatMap(p => filterRowsWithVision(p, ag)))).usd;
     const scale    = totalRec > 0 ? opTotal / totalRec : 0;
 
     html += '<div class="prod-rec-card">' +
@@ -2108,12 +2196,67 @@ function setAgency(ag) {
   render();
 }
 
-function setPeriod(p) {
-  currentPeriod = p;
-  document.getElementById('sel-period').value = p;
+// ── Multi-select período ──────────────────────────────────────────────────────
+function togglePeriodDropdown() {
+  const btn = document.getElementById('period-btn');
+  const dd  = document.getElementById('period-dropdown');
+  btn.classList.toggle('open');
+  dd.classList.toggle('open');
+}
+
+document.addEventListener('click', function(e) {
+  const wrap = document.getElementById('period-multisel');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('period-btn').classList.remove('open');
+    document.getElementById('period-dropdown').classList.remove('open');
+  }
+});
+
+function togglePeriod(p) {
+  const idx = currentPeriods.indexOf(p);
+  if (idx >= 0) {
+    if (currentPeriods.length > 1) currentPeriods.splice(idx, 1);
+    // keep at least one month selected
+  } else {
+    currentPeriods.push(p);
+  }
+  syncPeriodUI();
   render();
 }
 
+function setVision(v) {
+  currentVision = v;
+  document.getElementById('vision-btn-cerrado').classList.toggle('active', v === 'cerrado');
+  document.getElementById('vision-btn-mtd').classList.toggle('active', v === 'mtd');
+  render();
+  updateBizInfoBar();
+}
+
+function syncPeriodUI() {
+  const seq = ['ene','feb','mar','abr'];
+  const fullLabels = { ene:'Enero 2026', feb:'Febrero 2026', mar:'Marzo 2026', abr:'Abril 2026 (MTD)' };
+  const shortLabels = { ene:'Ene', feb:'Feb', mar:'Mar', abr:'Abr' };
+  // sync checkboxes
+  seq.forEach(p => {
+    const cb = document.getElementById('cb-' + p);
+    if (cb) cb.checked = currentPeriods.includes(p);
+  });
+  // button label
+  const sorted = seq.filter(p => currentPeriods.includes(p));
+  let btnText = sorted.length === 1 ? fullLabels[sorted[0]]
+    : sorted.length === 4 ? 'Ene · Feb · Mar · Abr 2026'
+    : sorted.map(p => shortLabels[p]).join(', ') + ' 2026';
+  document.getElementById('period-btn-text').textContent = btnText;
+}
+
+// kept for any external calls
+function setPeriod(p) {
+  currentPeriods = [p];
+  syncPeriodUI();
+  render();
+}
+
+syncPeriodUI();
 updateBizInfoBar();
 render();
 </script>
