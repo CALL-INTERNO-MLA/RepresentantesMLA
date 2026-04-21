@@ -1680,9 +1680,20 @@ function filterRows(period, agency) {
   return [...ar, ...cl];
 }
 
-const MTD_DAY = 19;
+// MTD_DAY: día del mes actual (hoy). Para meses cerrados en visión MTD,
+// se muestran solo los días 1..MTD_DAY, replicando "dónde estábamos a esta altura".
+// Para Abril (mes en curso) se usa el último día con datos disponibles.
+const MTD_DAY = (() => {
+  const today = new Date().getDate();
+  const lastAbrDay = DAILY_DATA_CL
+    .filter(r => r.d.startsWith('2026-04'))
+    .reduce((max, r) => Math.max(max, parseInt(r.d.split('-')[2])), 0);
+  // Para Abril usamos el último dato real; para comparar con otros meses usamos hoy
+  return { abr: lastAbrDay || today, otros: today };
+})();
 
 function filterRowsWithVision(period, agency) {
+  const cutoff = period === 'abr' ? MTD_DAY.abr : MTD_DAY.otros;
   const ar = (agency === 'all' || agency === 'ar') ? MONTHLY_DATA_AR.filter(r => {
     if (period === 'ene') return r.m === 202601;
     if (period === 'feb') return r.m === 202602;
@@ -1697,7 +1708,7 @@ function filterRowsWithVision(period, agency) {
     else if (period === 'mar') match = r.d.startsWith('2026-03');
     else if (period === 'abr') match = r.d.startsWith('2026-04');
     if (!match) return false;
-    if (currentVision === 'mtd' && period !== 'abr') return parseInt(r.d.split('-')[2]) <= MTD_DAY;
+    if (currentVision === 'mtd') return parseInt(r.d.split('-')[2]) <= cutoff;
     return true;
   }) : [];
   return [...ar, ...cl];
@@ -2030,10 +2041,12 @@ function getPeriodLabel() {
   if (!sorted.length) return '';
   if (sorted.length === 1) {
     const p = sorted[0];
-    if (p === 'abr') return 'Abril 2026 — ' + (currentVision === 'mtd' ? 'MTD al 19/04' : 'MTD en curso');
-    return names[p] + ' 2026 — ' + (currentVision === 'mtd' ? 'MTD (al día 19)' : 'Mes Cerrado');
+    const day = p === 'abr' ? MTD_DAY.abr : MTD_DAY.otros;
+    if (p === 'abr') return 'Abril 2026 — ' + (currentVision === 'mtd' ? `MTD al ${day}/04` : 'MTD en curso');
+    return names[p] + ' 2026 — ' + (currentVision === 'mtd' ? `MTD (al día ${day})` : 'Mes Cerrado');
   }
-  return sorted.map(p => names[p]).join(', ') + ' 2026' + (currentVision === 'mtd' ? ' — MTD' : '');
+  const day = MTD_DAY.otros;
+  return sorted.map(p => names[p]).join(', ') + ' 2026' + (currentVision === 'mtd' ? ` — MTD (al día ${day})` : '');
 }
 
 function updateBadges() {
@@ -2052,8 +2065,11 @@ function updateBizInfoBar() {
   const sorted = seq.filter(p => currentPeriods.includes(p));
   const hasAbr = sorted.includes('abr');
   const abrBadge = hasAbr ? ' <span style="background:var(--ml-yellow);color:var(--ml-dark);font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px">MTD EN CURSO</span>' : '';
-  const visionBadge = currentVision === 'mtd' && sorted.some(p => p !== 'abr')
-    ? ' <span style="background:#EBF2FF;color:var(--ml-blue);font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px">MTD al día 19</span>' : '';
+  const day = MTD_DAY.otros;
+  const arNote = currentVision === 'mtd' && (currentAgency === 'all' || currentAgency === 'ar')
+    ? ' <span style="background:#FFF3CD;color:#856404;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px" title="Los datos de AR provienen de OPERATION (agregado mensual). MTD filtra solo los datos diarios de CL.">AR: dato mensual · CL: MTD al día ' + day + '</span>' : '';
+  const visionBadge = currentVision === 'mtd' && sorted.some(p => p !== 'abr') && currentAgency === 'cl'
+    ? ' <span style="background:#EBF2FF;color:var(--ml-blue);font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px">MTD al día ' + day + '</span>' : '';
   const rangeText = sorted.map(p => ranges[p]).join(' · ') || '—';
   document.getElementById('biz-info-bar').innerHTML =
     '<b>' + getPeriodLabel() + '</b>' + abrBadge + visionBadge + ' — ' + rangeText +
