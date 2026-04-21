@@ -129,8 +129,63 @@
   .vision-btn + .vision-btn { border-left: 1px solid var(--ml-border); }
   .vision-btn.active { background: var(--ml-blue); color: white; }
 
-  /* ── Main ── */
-  .main { padding: 20px 32px; }
+  /* ── Layout sidebar + contenido ── */
+  .main { display: flex; align-items: flex-start; padding: 0; }
+
+  .sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: var(--ml-white);
+    border-right: 1px solid var(--ml-border);
+    min-height: calc(100vh - 120px);
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.22s ease;
+    overflow: hidden;
+    box-shadow: 2px 0 6px rgba(0,0,0,0.04);
+  }
+  .sidebar.collapsed { width: 52px; }
+
+  .sidebar-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--ml-border);
+    flex-shrink: 0;
+  }
+  .sidebar-toggle-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--ml-muted); border-radius: 5px; padding: 5px 6px;
+    display: flex; align-items: center;
+    transition: background 0.15s, color 0.15s;
+  }
+  .sidebar-toggle-btn:hover { background: var(--ml-bg); color: var(--ml-blue); }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 12px; font-weight: 600;
+    color: var(--ml-muted);
+    border-left: 3px solid transparent;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap; overflow: hidden;
+    user-select: none;
+  }
+  .nav-item:hover { background: #F0F6FF; color: var(--ml-blue); }
+  .nav-item.active {
+    background: #EBF2FF; color: var(--ml-blue);
+    font-weight: 700; border-left-color: var(--ml-blue);
+  }
+  .nav-icon { font-size: 15px; flex-shrink: 0; width: 20px; text-align: center; }
+  .nav-label { transition: opacity 0.18s; white-space: nowrap; }
+  .sidebar.collapsed .nav-label { opacity: 0; }
+  .sidebar.collapsed .nav-item { padding: 12px; justify-content: center; }
+
+  .content-area { flex: 1; min-width: 0; padding: 20px 32px; }
 
   /* ── Info bar ── */
   .biz-info {
@@ -327,6 +382,38 @@
 </div>
 
 <div class="main">
+  <!-- ── Sidebar ── -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-toggle-row">
+      <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Colapsar/expandir menú">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="8.1" width="14" height="1.8" rx="0.9" fill="currentColor"/><rect x="2" y="12.2" width="14" height="1.8" rx="0.9" fill="currentColor"/></svg>
+      </button>
+    </div>
+    <div class="nav-item active" data-section="portfolio-section" onclick="showSection('portfolio-section')">
+      <span class="nav-icon">🗂</span><span class="nav-label">Cartera</span>
+    </div>
+    <div class="nav-item" data-section="prod-rec-section" onclick="showSection('prod-rec-section')">
+      <span class="nav-icon">💰</span><span class="nav-label">Recupero Total</span>
+    </div>
+    <div class="nav-item" data-section="tel-prod-rec-section" onclick="showSection('tel-prod-rec-section')">
+      <span class="nav-icon">📞</span><span class="nav-label">Rec. Acuerdos</span>
+    </div>
+    <div class="nav-item" data-section="chart-section" onclick="showSection('chart-section')">
+      <span class="nav-icon">🏆</span><span class="nav-label">Top Reps</span>
+    </div>
+    <div class="nav-item" data-section="comp-section" onclick="showSection('comp-section')">
+      <span class="nav-icon">📈</span><span class="nav-label">Comparativo</span>
+    </div>
+    <div class="nav-item" data-section="tl-section" onclick="showSection('tl-section')">
+      <span class="nav-icon">👥</span><span class="nav-label">Por Team Leader</span>
+    </div>
+    <div class="nav-item" data-section="table-section" onclick="showSection('table-section')">
+      <span class="nav-icon">📋</span><span class="nav-label">Detalle Reps</span>
+    </div>
+  </nav>
+
+  <!-- ── Contenido ── -->
+  <div class="content-area">
   <div class="biz-info" id="biz-info-bar">Calculando días hábiles...</div>
   <br>
   <div class="kpis" id="kpi-section"></div>
@@ -370,7 +457,7 @@
       <div class="chart-bars" id="chart-bars"></div>
     </div>
   </div>
-  <div class="section">
+  <div class="section" id="comp-section">
     <div class="section-header">
       <span class="section-title" id="comp-title">Comparativo mensual — Recupero USD por Representante</span>
       <span class="badge" id="comp-badge">Ambas agencias</span>
@@ -381,7 +468,7 @@
     <div class="comp-legend" id="comp-legend"></div>
   </div>
   <!-- Detalle por Team Leader -->
-  <div class="section">
+  <div class="section" id="tl-section">
     <div class="section-header">
       <span class="section-title">Productividad por Team Leader</span>
       <span class="badge" id="tl-badge">Ambas agencias</span>
@@ -408,7 +495,7 @@
   </div>
 
   <!-- Detalle por Representante -->
-  <div class="section">
+  <div class="section" id="table-section">
     <div class="section-header">
       <span class="section-title">Detalle por Representante</span>
       <span class="badge" id="table-badge">Ambas agencias</span>
@@ -433,7 +520,8 @@
     </table>
     <p class="note" id="table-note"></p>
   </div>
-</div>
+  </div><!-- /content-area -->
+</div><!-- /main -->
 
 <script>
 // â”€â”€ Exchange rates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -2276,6 +2364,31 @@ function setPeriod(p) {
 syncPeriodUI();
 updateBizInfoBar();
 render();
+
+// ── Sidebar navigation ──────────────────────────────────────────────────────
+const ALL_SECTIONS = [
+  'portfolio-section', 'prod-rec-section', 'tel-prod-rec-section',
+  'chart-section', 'comp-section', 'tl-section', 'table-section'
+];
+let currentSection = 'portfolio-section';
+
+function showSection(id) {
+  currentSection = id;
+  ALL_SECTIONS.forEach(s => {
+    document.getElementById(s).style.display = s === id ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.section === id);
+  });
+}
+
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  sb.classList.toggle('collapsed');
+}
+
+// Inicializar: mostrar solo la primera sección
+showSection('portfolio-section');
 </script>
 </body>
 </html>
