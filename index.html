@@ -1725,9 +1725,14 @@ function pct(ppk, pp){ return !pp ? '—' : (ppk/pp*100).toFixed(1) + '%'; }
 function fmtDate(ds) { const [y,m,d] = ds.split('-'); return d+'/'+m+'/'+y; }
 
 // â”€â”€ Estado del filtro â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-let currentAgency = 'all';
+let currentAgency  = 'all';
 let currentPeriods = ['abr'];
 let currentVision  = 'cerrado'; // 'cerrado' | 'mtd'
+const ALL_SECTIONS = [
+  'portfolio-section', 'prod-rec-section', 'tel-prod-rec-section',
+  'chart-section', 'comp-section', 'tl-section', 'table-section'
+];
+let currentSection = 'portfolio-section';
 
 // â”€â”€ Agregación de filas mensuales â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function aggregate(rows) {
@@ -2293,6 +2298,7 @@ function render() {
   renderTLTable(rows);
   renderTable(rows);
   updateBadges();
+  showSection(currentSection);
 }
 
 function setAgency(ag) {
@@ -2366,12 +2372,6 @@ updateBizInfoBar();
 render();
 
 // ── Sidebar navigation ──────────────────────────────────────────────────────
-const ALL_SECTIONS = [
-  'portfolio-section', 'prod-rec-section', 'tel-prod-rec-section',
-  'chart-section', 'comp-section', 'tl-section', 'table-section'
-];
-let currentSection = 'portfolio-section';
-
 function showSection(id) {
   currentSection = id;
   ALL_SECTIONS.forEach(s => {
@@ -2386,9 +2386,6 @@ function toggleSidebar() {
   const sb = document.getElementById('sidebar');
   sb.classList.toggle('collapsed');
 }
-
-// Inicializar: mostrar solo la primera sección
-showSection('portfolio-section');
 </script>
 </body>
 </html>
