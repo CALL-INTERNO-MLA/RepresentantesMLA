@@ -2417,9 +2417,29 @@ function setPeriod(p) {
   render();
 }
 
-syncPeriodUI();
-updateBizInfoBar();
-render();
+// Captura errores globales y los muestra en pantalla (útil en entornos iframe como Grid)
+window.onerror = function(msg, src, line, col, err) {
+  var box = document.getElementById('js-error-box');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'js-error-box';
+    box.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#c62828;color:#fff;font-size:12px;padding:8px 16px;z-index:9999;font-family:monospace';
+    document.body.appendChild(box);
+  }
+  box.textContent = 'Error JS: ' + msg + ' (línea ' + line + ')';
+  return false;
+};
+
+try {
+  syncPeriodUI();
+  updateBizInfoBar();
+  render();
+} catch(e) {
+  document.body.insertAdjacentHTML('afterbegin',
+    '<div style="background:#c62828;color:#fff;padding:16px;font-family:monospace;font-size:13px;position:fixed;top:0;left:0;right:0;z-index:9999">' +
+    'Error al inicializar dashboard: ' + e.message + '<br>' + e.stack + '</div>'
+  );
+}
 
 // ── Sidebar navigation ──────────────────────────────────────────────────────
 function showSection(id) {
