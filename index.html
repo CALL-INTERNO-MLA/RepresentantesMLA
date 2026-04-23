@@ -567,36 +567,40 @@ const TEL_PROD_RECOVERY = {
 // Cartera actualizada automáticamente — último snapshot disponible por mes (LK_COL_PORTFOLIO_PROD)
 // AR  ene:2026-01-31  feb:2026-02-28  mar:2026-03-31  abr:2026-04-20
 // CL  ene:2026-01-31  feb:2026-02-28  mar:2026-03-31  abr:2026-04-20
+// Cartera actualizada automáticamente — último snapshot disponible por mes
+// AR  ene:2026-01-31 feb:2026-02-28 mar:2026-03-31 abr:2026-04-22
+// CL  ene:2026-01-31 feb:2026-02-28 mar:2026-03-31 abr:2026-04-22
 const PORTFOLIO = {
   ar: {
-    ene: { total:62283,
-           credits:{ total:53913, con:9849,  point:22301, ccard:14607, parce:5526, mer:1595, otros:35  },
-           mixto:  { total:8370  } },
-    feb: { total:72802,
-           credits:{ total:63749, con:10684, point:22773, ccard:23295, parce:5417, mer:1524, otros:56  },
-           mixto:  { total:9053  } },
-    mar: { total:69523,
-           credits:{ total:60096, con:10578, point:24378, ccard:15984, parce:7012, mer:1879, otros:265 },
-           mixto:  { total:9427  } },
-    abr: { total:67695,
-           credits:{ total:59782, con:15429, point:22605, ccard:12766, parce:5052, mer:2910, otros:1020 },
-           mixto:  { total:7913  } }
+    ene:     { total:62283,
+               credits:{ total:53913, con:9849, point:22301, ccard:14607, parce:5526, mer:1595, otros:35 },
+               mixto:  { total:8370 } }  // snap 2026-01-31,
+    feb:     { total:72802,
+               credits:{ total:63749, con:10684, point:22773, ccard:23295, parce:5417, mer:1524, otros:56 },
+               mixto:  { total:9053 } }  // snap 2026-02-28,
+    mar:     { total:69523,
+               credits:{ total:60096, con:10578, point:24378, ccard:15984, parce:7012, mer:1879, otros:265 },
+               mixto:  { total:9427 } }  // snap 2026-03-31,
+    abr:     { total:73401,
+               credits:{ total:64950, con:16231, point:23216, ccard:16300, parce:5182, mer:2999, otros:1022 },
+               mixto:  { total:8451 } }  // snap 2026-04-22
   },
   cl: {
-    ene: { total:14653,
-           credits:{ total:14279, con:13704, point:0, ccard:0, parce:575,  mer:0, otros:0 },
-           mixto:  { total:374   } },
-    feb: { total:16977,
-           credits:{ total:16524, con:16053, point:0, ccard:0, parce:471,  mer:0, otros:0 },
-           mixto:  { total:453   } },
-    mar: { total:14128,
-           credits:{ total:13641, con:13086, point:0, ccard:0, parce:555,  mer:0, otros:0 },
-           mixto:  { total:487   } },
-    abr: { total:8869,
-           credits:{ total:8377,  con:7923,  point:0, ccard:0, parce:454,  mer:0, otros:0 },
-           mixto:  { total:492   } }
-  }
+    ene:     { total:14653,
+               credits:{ total:14279, con:13704, point:0, ccard:0, parce:575, mer:0, otros:0 },
+               mixto:  { total:374 } }  // snap 2026-01-31,
+    feb:     { total:16977,
+               credits:{ total:16524, con:16053, point:0, ccard:0, parce:471, mer:0, otros:0 },
+               mixto:  { total:453 } }  // snap 2026-02-28,
+    mar:     { total:14128,
+               credits:{ total:13641, con:13086, point:0, ccard:0, parce:555, mer:0, otros:0 },
+               mixto:  { total:487 } }  // snap 2026-03-31,
+    abr:     { total:8883,
+               credits:{ total:8387, con:7923, point:0, ccard:0, parce:464, mer:0, otros:0 },
+               mixto:  { total:496 } }  // snap 2026-04-22
+  },
 };
+
 
 // â”€â”€ Feriados nacionales Feb y Mar 2026 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const HOLIDAYS = {
