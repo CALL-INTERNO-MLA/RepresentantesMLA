@@ -2456,6 +2456,52 @@ function toggleSidebar() {
   const sb = document.getElementById('sidebar');
   sb.classList.toggle('collapsed');
 }
+
+// ── addEventListener equivalents (Grid iframe CSP compatibility) ──────────────
+// Registra todos los handlers via JS para que funcionen incluso si el iframe
+// bloquea los atributos onclick/onchange inline del HTML.
+(function bindEvents() {
+  // Agencia
+  var selAg = document.getElementById('sel-agency');
+  if (selAg) selAg.addEventListener('change', function() { setAgency(this.value); });
+
+  // Período: botón del dropdown
+  var periodBtn = document.getElementById('period-btn');
+  if (periodBtn) periodBtn.addEventListener('click', togglePeriodDropdown);
+
+  // Período: checkboxes
+  ['ene','feb','mar','abr'].forEach(function(p) {
+    var cb = document.getElementById('cb-' + p);
+    if (cb) cb.addEventListener('change', function() { togglePeriod(p); });
+  });
+
+  // Month Vision
+  var btnCerrado = document.getElementById('vision-btn-cerrado');
+  if (btnCerrado) btnCerrado.addEventListener('click', function() { setVision('cerrado'); });
+  var btnMtd = document.getElementById('vision-btn-mtd');
+  if (btnMtd) btnMtd.addEventListener('click', function() { setVision('mtd'); });
+
+  // Sidebar: botón toggle
+  var sidebarToggle = document.querySelector('.sidebar-toggle-btn');
+  if (sidebarToggle) sidebarToggle.addEventListener('click', toggleSidebar);
+
+  // Sidebar: ítems de navegación
+  document.querySelectorAll('.nav-item[data-section]').forEach(function(el) {
+    var sec = el.dataset.section;
+    el.addEventListener('click', function() { showSection(sec); });
+  });
+
+  // Cerrar dropdown al click fuera (respaldo para el listener de document)
+  document.addEventListener('click', function(e) {
+    var wrap = document.getElementById('period-multisel');
+    if (wrap && !wrap.contains(e.target)) {
+      var btn = document.getElementById('period-btn');
+      var dd  = document.getElementById('period-dropdown');
+      if (btn) btn.classList.remove('open');
+      if (dd)  dd.classList.remove('open');
+    }
+  });
+})();
 </script>
 </body>
 </html>
