@@ -2015,7 +2015,7 @@ function renderCompChart() {
 
   const labels = { ene:'Ene', feb:'Feb', mar:'Mar', abr:'Abr MTD' };
   const maxVal = Math.max(...reps.flatMap(r => periods.map(p => r[p])), 1);
-  const maxW = isComp4m ? 240 : 300;
+  const maxW = _selected.length >= 2 ? 240 : 300;
 
   document.getElementById('comp-chart').innerHTML = reps.map(r => {
     const isAR = r.agency === 'ar';
