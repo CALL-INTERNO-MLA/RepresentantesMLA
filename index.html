@@ -548,7 +548,11 @@
 </div><!-- /main -->
 
 <script>
-// â”€â”€ Exchange rates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TEST: si este texto aparece en header-date, el JS corre OK hasta aquí
+document.addEventListener('DOMContentLoaded', function() {
+  var hdr = document.getElementById('header-date');
+  if (hdr && hdr.textContent === 'Cargando...') hdr.textContent = 'JS OK - cargando datos...';
+});
 const RATES = { ar: 1395.95, cl: 912.4409 }; // mar-26 promedio
 
 // â”€â”€ Recupero total por producto (fuente: LK_COL_SKYNET_RECOVERY_DATA) â”€â”€â”€â”€â”€â”€â”€
