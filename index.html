@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard GDM — Recupero Telefónico v2</title>
+<title>Dashboard GDM — Recupero Telefónico</title>
 <style>
   :root {
     --ml-yellow: #FFE600;
@@ -548,8 +548,7 @@
 </div><!-- /main -->
 
 <script>
-// TEST SINCRONO: si header-date dice 'JS-OK' el script corre
-document.getElementById('header-date').textContent = 'JS-OK';
+// â”€â”€ Exchange rates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const RATES = { ar: 1395.95, cl: 912.4409 }; // mar-26 promedio
 
 // â”€â”€ Recupero total por producto (fuente: LK_COL_SKYNET_RECOVERY_DATA) â”€â”€â”€â”€â”€â”€â”€
@@ -2418,17 +2417,9 @@ function setPeriod(p) {
   render();
 }
 
-function showErr(fn, e) {
-  var bar = document.getElementById('biz-info-bar');
-  if (bar) bar.innerHTML = '<b style="color:#c62828">Error en ' + fn + '():</b> ' + e.message +
-    ' &nbsp;|&nbsp; <span style="font-size:10px">' + (e.stack||'').split('\n')[1] + '</span>';
-  var hdr = document.getElementById('header-date');
-  if (hdr) hdr.textContent = 'ERROR — ver abajo';
-}
-
-try { syncPeriodUI(); } catch(e) { showErr('syncPeriodUI', e); }
-try { updateBizInfoBar(); } catch(e) { showErr('updateBizInfoBar', e); }
-try { render(); } catch(e) { showErr('render', e); }
+syncPeriodUI();
+updateBizInfoBar();
+render();
 
 // ── Sidebar navigation ──────────────────────────────────────────────────────
 function showSection(id) {
@@ -2445,52 +2436,6 @@ function toggleSidebar() {
   const sb = document.getElementById('sidebar');
   sb.classList.toggle('collapsed');
 }
-
-// ── addEventListener equivalents (Grid iframe CSP compatibility) ──────────────
-// Registra todos los handlers via JS para que funcionen incluso si el iframe
-// bloquea los atributos onclick/onchange inline del HTML.
-(function bindEvents() {
-  // Agencia
-  var selAg = document.getElementById('sel-agency');
-  if (selAg) selAg.addEventListener('change', function() { setAgency(this.value); });
-
-  // Período: botón del dropdown
-  var periodBtn = document.getElementById('period-btn');
-  if (periodBtn) periodBtn.addEventListener('click', togglePeriodDropdown);
-
-  // Período: checkboxes
-  ['ene','feb','mar','abr'].forEach(function(p) {
-    var cb = document.getElementById('cb-' + p);
-    if (cb) cb.addEventListener('change', function() { togglePeriod(p); });
-  });
-
-  // Month Vision
-  var btnCerrado = document.getElementById('vision-btn-cerrado');
-  if (btnCerrado) btnCerrado.addEventListener('click', function() { setVision('cerrado'); });
-  var btnMtd = document.getElementById('vision-btn-mtd');
-  if (btnMtd) btnMtd.addEventListener('click', function() { setVision('mtd'); });
-
-  // Sidebar: botón toggle
-  var sidebarToggle = document.querySelector('.sidebar-toggle-btn');
-  if (sidebarToggle) sidebarToggle.addEventListener('click', toggleSidebar);
-
-  // Sidebar: ítems de navegación
-  document.querySelectorAll('.nav-item[data-section]').forEach(function(el) {
-    var sec = el.dataset.section;
-    el.addEventListener('click', function() { showSection(sec); });
-  });
-
-  // Cerrar dropdown al click fuera (respaldo para el listener de document)
-  document.addEventListener('click', function(e) {
-    var wrap = document.getElementById('period-multisel');
-    if (wrap && !wrap.contains(e.target)) {
-      var btn = document.getElementById('period-btn');
-      var dd  = document.getElementById('period-dropdown');
-      if (btn) btn.classList.remove('open');
-      if (dd)  dd.classList.remove('open');
-    }
-  });
-})();
 </script>
 </body>
 </html>
